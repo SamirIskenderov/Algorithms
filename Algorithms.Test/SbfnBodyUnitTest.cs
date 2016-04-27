@@ -766,7 +766,6 @@ namespace Algorithms.Test
 			Assert.AreEqual(rhs, lhs * added);
 		}
 
-
 		[TestMethod]
 		public void OperatorMultiplicativeMultipleMustBeCommutative()
 		{
@@ -1250,6 +1249,7 @@ namespace Algorithms.Test
 		#endregion operators
 
 		#region tostring
+
 		[TestMethod]
 		public void ToStringPositiveVer0()
 		{
@@ -1282,7 +1282,6 @@ namespace Algorithms.Test
 			Assert.AreEqual("-0,123456", obj.ToString());
 		}
 
-
 		[TestMethod]
 		public void ToStringPositiveVer2()
 		{
@@ -1298,6 +1297,7 @@ namespace Algorithms.Test
 
 			Assert.AreEqual("-123456789123456,12345678912345679", obj.ToString());
 		}
+
 		#endregion tostring
 	}
 }

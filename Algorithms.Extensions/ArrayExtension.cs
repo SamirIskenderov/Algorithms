@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Algorithms.Extensions
+﻿namespace Algorithms.Extensions
 {
 	public static class ArrayExtension
 	{
@@ -17,7 +11,7 @@ namespace Algorithms.Extensions
 			while (number > 1)
 			{
 				output[i] = number % decade;
-					i++;
+				i++;
 				number /= decade;
 				//decade *= 10;
 			}

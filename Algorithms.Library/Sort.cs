@@ -1,343 +1,356 @@
 ﻿namespace Algorithms.Library
 {
-    using Extensions;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+	using Extensions;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 
-    public static class Sort
-    {
-        public static void Bogosort<T>(ref IList<T> arr)
-            where T : IComparable
-        {
-            while (!IsArraySorted(arr))
-            {
-                arr = arr.Shuffle(Common.rand).ToList();
-            }
-        }
+	public static class Sort
+	{
+		public static void Bogosort<T>(ref IList<T> arr)
+		    where T : IComparable
+		{
+			if (arr == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
 
-        public static void BubbleSort<T>(IList<T> array)
-                    where T : IComparable
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException("Array is null");
-            }
+			while (!IsArraySorted(arr))
+			{
+				arr = arr.Shuffle(Common.rand).ToList();
+			}
+		}
 
-            for (int i = 0; i < array.Count; ++i)
-            {
-                for (int j = 0; j < array.Count; j++)
-                {
-                    if (array[i].CompareTo(array[j]) < 0)
-                    {
-                        T tmp = array[i];
-                        array[i] = array[j];
-                        array[j] = tmp;
-                    }
-                }
-            }
-        }
+		public static void BubbleSort<T>(IList<T> array)
+			    where T : IComparable
+		{
+			if (array == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
 
-        public static void InsertSort<T>(IList<T> arr)
-            where T : IComparable
-        {
-            if (arr == null)
-            {
-                throw new ArgumentNullException("Arr is null");
-            }
+			for (int i = 0; i < array.Count; ++i)
+			{
+				for (int j = 0; j < array.Count; j++)
+				{
+					if (array[i].CompareTo(array[j]) < 0)
+					{
+						T tmp = array[i];
+						array[i] = array[j];
+						array[j] = tmp;
+					}
+				}
+			}
+		}
 
-            InsertSort(arr, 0, arr.Count);
-        }
+		public static void InsertSort<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			if (arr == null)
+			{
+				throw new ArgumentNullException("Arr is null");
+			}
 
-        public static IList<T> MergeSort<T>(IList<T> array)
-            where T : IComparable
-        {
-            #region nullchecks
+			InsertSort(arr, 0, arr.Count);
+		}
 
-            if (array == null)
-            {
-                throw new ArgumentNullException("Array is null");
-            }
+		public static IList<T> MergeSort<T>(IList<T> array)
+		    where T : IComparable
+		{
+			#region nullchecks
 
-            #endregion nullchecks
+			if (array == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
 
-            if (array.Count == 1)
-            {
-                return array;
-            }
+			#endregion nullchecks
 
-            int cap = array.Count / 2;
+			if (array.Count == 1)
+			{
+				return array;
+			}
 
-            IList<T> lhs_array = new List<T>(cap);
+			int cap = array.Count / 2;
 
-            for (int i = 0; i < array.Count / 2; i++)
-            {
-                lhs_array.Add(array[i]);
-            }
+			IList<T> lhs_array = new List<T>(cap);
 
-            cap = array.Count % 2 == 0 ? array.Count / 2 : array.Count / 2 + 1;
+			for (int i = 0; i < array.Count / 2; i++)
+			{
+				lhs_array.Add(array[i]);
+			}
 
-            IList<T> rhs_array = new List<T>(cap);
+			cap = array.Count % 2 == 0 ? array.Count / 2 : array.Count / 2 + 1;
 
-            for (int i = 0; i < cap; i++)
-            {
-                rhs_array.Add(array[(array.Count / 2) + i]);
-            }
+			IList<T> rhs_array = new List<T>(cap);
 
-            lhs_array = MergeSort(lhs_array).ToList();
-            rhs_array = MergeSort(rhs_array).ToList();
+			for (int i = 0; i < cap; i++)
+			{
+				rhs_array.Add(array[(array.Count / 2) + i]);
+			}
 
-            return Merge(lhs_array, rhs_array);
-        }
+			lhs_array = MergeSort(lhs_array).ToList();
+			rhs_array = MergeSort(rhs_array).ToList();
 
-        public static void PancakeSort<T>(IList<T> arr, int cutoffValue = 2)
-            where T : IComparable
-        {
-            if (arr.Count < cutoffValue)
-            {
-                return;
-            }
+			return Merge(lhs_array, rhs_array);
+		}
 
-            for (int i = arr.Count - 1; i >= 0; --i)
-            {
-                int pos = i;
-                // Find position of max number between beginning and i
-                for (int j = 0; j < i - 1; j++)
-                {
-                    if (arr[j].CompareTo(arr[pos]) > 0)
-                    {
-                        pos = j;
-                    }
-                }
+		public static void PancakeSort<T>(IList<T> arr, int cutoffValue = 2)
+		    where T : IComparable
+		{
+			if (arr == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
+			if (arr.Count < cutoffValue)
+			{
+				return;
+			}
 
-                // is it in the correct position already?
-                if (pos == i)
-                {
-                    continue;
-                }
+			for (int i = arr.Count - 1; i >= 0; --i)
+			{
+				int pos = i;
+				// Find position of max number between beginning and i
+				for (int j = 0; j < i - 1; j++)
+				{
+					if (arr[j].CompareTo(arr[pos]) > 0)
+					{
+						pos = j;
+					}
+				}
 
-                // is it at the beginning of the array? If not flip array section so it is
-                if (pos != 0)
-                {
-                    Flip(arr, pos + 1);
-                }
+				// is it in the correct position already?
+				if (pos == i)
+				{
+					continue;
+				}
 
-                // Flip array section to get max number to correct position
-                Flip(arr, i + 1);
-            }
-        }
+				// is it at the beginning of the array? If not flip array section so it is
+				if (pos != 0)
+				{
+					Flip(arr, pos + 1);
+				}
 
-        public static void QuickBubbleSort<T>(IList<T> array)
-                                    where T : IComparable
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException("Array is null");
-            }
+				// Flip array section to get max number to correct position
+				Flip(arr, i + 1);
+			}
+		}
 
-            for (int i = 0; i < array.Count - 1; ++i)
-            {
-                for (int j = i; j >= 0; --j)
-                {
-                    if (array[j].CompareTo(array[j + 1]) < 0)
-                    {
-                        T tmp = array[j];
-                        array[j] = array[j + 1];
-                        array[j + 1] = tmp;
-                    }
-                }
-            }
-        }
+		public static void QuickBubbleSort<T>(IList<T> array)
+					    where T : IComparable
+		{
+			if (array == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
 
-        public static void QuickSort<T>(IList<T> arr, uint cutoffValue = 9)
-            where T : IComparable
-        {
-            if (arr == null)
-            {
-                throw new ArgumentNullException("Arr is null");
-            }
+			for (int i = 0; i < array.Count - 1; ++i)
+			{
+				for (int j = i; j >= 0; --j)
+				{
+					if (array[j].CompareTo(array[j + 1]) < 0)
+					{
+						T tmp = array[j];
+						array[j] = array[j + 1];
+						array[j + 1] = tmp;
+					}
+				}
+			}
+		}
 
-            if (cutoffValue <= 0)
-            {
-                throw new ArgumentException("Cutoff value must be greater that zero");
-            }
+		public static void QuickSort<T>(IList<T> arr, uint cutoffValue = 9)
+		    where T : IComparable
+		{
+			if (arr == null)
+			{
+				throw new ArgumentNullException("Arr is null");
+			}
 
-            QuickSort(arr, 0, arr.Count - 1, cutoffValue);
-            InsertSort(arr);
-        }
+			if (cutoffValue <= 0)
+			{
+				throw new ArgumentException("Cutoff value must be greater that zero");
+			}
 
-        private static void Flip<T>(IList<T> arr, int n)
-            where T : IComparable
-        {
-            for (int i = 0; i < n; i++)
-            {
-                --n;
-                T tmp = arr[i];
-                arr[i] = arr[n];
-                arr[n] = tmp;
-            }
-        }
+			QuickSort(arr, 0, arr.Count - 1, cutoffValue);
+			InsertSort(arr);
+		}
 
-        private static void InsertSort<T>(IList<T> arr, int left, int right)
-                    where T : IComparable
-        {
-            int i = 0;
-            int j = 0;
-            T tmp;
-            for (i = left + 1; i < right; i++)
-            {
-                for (j = i; j > 0; j--)
-                {
-                    if (arr[j - 1].CompareTo(arr[j]) < 0)
-                    {
-                        break;
-                    }
-                    tmp = arr[j - 1];
-                    arr[j - 1] = arr[j];
-                    arr[j] = tmp;
-                }
-            }
-        }
+		private static void Flip<T>(IList<T> arr, int n)
+		    where T : IComparable
+		{
+			for (int i = 0; i < n; i++)
+			{
+				--n;
+				T tmp = arr[i];
+				arr[i] = arr[n];
+				arr[n] = tmp;
+			}
+		}
 
-        private static bool IsArraySorted<T>(IList<T> arr)
-            where T : IComparable
-        {
-            return IsArraySortedByAcending(arr) || IsArraySortedByDecending(arr);
-        }
+		private static void InsertSort<T>(IList<T> arr, int left, int right)
+			    where T : IComparable
+		{
+			int i = 0;
+			int j = 0;
+			T tmp;
+			for (i = left + 1; i < right; i++)
+			{
+				for (j = i; j > 0; j--)
+				{
+					if (arr[j - 1].CompareTo(arr[j]) < 0)
+					{
+						break;
+					}
+					tmp = arr[j - 1];
+					arr[j - 1] = arr[j];
+					arr[j] = tmp;
+				}
+			}
+		}
 
-        private static bool IsArraySortedByAcending<T>(IList<T> arr)
-            where T : IComparable
-        {
-            for (int i = 0; i < arr.Count - 1; i++)
-            {
-                if (arr[i].CompareTo(arr[i + 1]) > 0)
-                {
-                    return false;
-                }
-            }
+		private static bool IsArraySorted<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			return IsArraySortedByAcending(arr) || IsArraySortedByDecending(arr);
+		}
 
-            return true;
-        }
+		private static bool IsArraySortedByAcending<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			for (int i = 0; i < arr.Count - 1; i++)
+			{
+				if (arr[i].CompareTo(arr[i + 1]) > 0)
+				{
+					return false;
+				}
+			}
 
-        private static bool IsArraySortedByDecending<T>(IList<T> arr)
-            where T : IComparable
-        {
-            for (int i = 0; i < arr.Count - 1; i++)
-            {
-                if (arr[i].CompareTo(arr[i + 1]) < 0)
-                {
-                    return false;
-                }
-            }
+			return true;
+		}
 
-            return true;
-        }
+		private static bool IsArraySortedByDecending<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			for (int i = 0; i < arr.Count - 1; i++)
+			{
+				if (arr[i].CompareTo(arr[i + 1]) < 0)
+				{
+					return false;
+				}
+			}
 
-        private static IList<T> Merge<T>(IList<T> lhs_array, IList<T> rhs_array)
-                                    where T : IComparable
-        {
-            int rhs = 0;
-            int lhs = 0;
-            List<T> merged = new List<T>(lhs_array.Count + rhs_array.Count);
+			return true;
+		}
 
-            for (int i = 0; i < merged.Capacity; i++)
-            {
-                if (rhs > rhs_array.Count - 1)
-                {
-                    merged.Add(lhs_array[lhs]);
-                    lhs++;
-                    continue;
-                }
+		private static IList<T> Merge<T>(IList<T> lhs_array, IList<T> rhs_array)
+					    where T : IComparable
+		{
+			int rhs = 0;
+			int lhs = 0;
+			List<T> merged = new List<T>(lhs_array.Count + rhs_array.Count);
 
-                if (lhs > lhs_array.Count - 1)
-                {
-                    merged.Add(rhs_array[rhs]);
-                    rhs++;
-                    continue;
-                }
+			for (int i = 0; i < merged.Capacity; i++)
+			{
+				if (rhs > rhs_array.Count - 1)
+				{
+					merged.Add(lhs_array[lhs]);
+					lhs++;
+					continue;
+				}
 
-                if (lhs_array[lhs].CompareTo(rhs_array[rhs]) > 0)
-                {
-                    merged.Add(rhs_array[rhs]);
-                    rhs++;
-                }
-                else
-                {
-                    merged.Add(lhs_array[lhs]);
-                    lhs++;
-                }
-            }
+				if (lhs > lhs_array.Count - 1)
+				{
+					merged.Add(rhs_array[rhs]);
+					rhs++;
+					continue;
+				}
 
-            return merged;
-        }
+				if (lhs_array[lhs].CompareTo(rhs_array[rhs]) > 0)
+				{
+					merged.Add(rhs_array[rhs]);
+					rhs++;
+				}
+				else
+				{
+					merged.Add(lhs_array[lhs]);
+					lhs++;
+				}
+			}
 
-        public static void SelectionSort<T>(IList<T> arr)
-            where T : IComparable
-        {
-            for (int i = 0; i < arr.Count - 1; i++)
-            {
-                int min = i;
+			return merged;
+		}
 
-                for (int j = i + 1; j < arr.Count; j++)
-                {
-                    if (arr[j].CompareTo(arr[min]) < 0)
-                    {
-                        min = j;
-                    }
-                }
+		public static void SelectionSort<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			if (arr == null)
+			{
+				throw new ArgumentNullException("Array is null");
+			}
+			for (int i = 0; i < arr.Count - 1; i++)
+			{
+				int min = i;
 
-                T tmp = arr[i];
-                arr[i] = arr[min];
-                arr[min] = tmp;
-            }
-        }
+				for (int j = i + 1; j < arr.Count; j++)
+				{
+					if (arr[j].CompareTo(arr[min]) < 0)
+					{
+						min = j;
+					}
+				}
 
-        private static void QuickSort<T>(IList<T> arr, int left, int right, uint cutoffValue)
-            where T : IComparable
-        {
-            /*
-			 * quicksort with mid divider
-			 */
+				T tmp = arr[i];
+				arr[i] = arr[min];
+				arr[min] = tmp;
+			}
+		}
 
-            T mid;
-            T foo;
-            int l = left;
-            int r = right;
+		private static void QuickSort<T>(IList<T> arr, int left, int right, uint cutoffValue)
+		    where T : IComparable
+		{
+			/*
+				     * quicksort with mid divider
+				     */
 
-            //finding good divider
-            mid = arr[arr.Count / 2];
+			T mid;
+			T foo;
+			int l = left;
+			int r = right;
 
-            // sorting
-            while (l <= r)
-            {
-                while ((arr[l].CompareTo(mid) < 0) && (l < right))
-                {
-                    l++;
-                }
+			//finding good divider
+			mid = arr[arr.Count / 2];
 
-                while ((mid.CompareTo(arr[r]) > 0) && (r > left))
-                {
-                    r--;
-                }
+			// sorting
+			while (l <= r)
+			{
+				while ((arr[l].CompareTo(mid) < 0) && (l < right))
+				{
+					l++;
+				}
 
-                if (l <= r)
-                {
-                    foo = arr[l];
-                    arr[l] = arr[r];
-                    arr[r] = foo;
-                    l++;
-                    r--;
-                }
-            }
+				while ((mid.CompareTo(arr[r]) > 0) && (r > left))
+				{
+					r--;
+				}
 
-            if (Math.Abs(r - left) > cutoffValue)
-            {
-                QuickSort(arr, left, r, cutoffValue);
-            }
-            if (Math.Abs(l - right) > cutoffValue)
-            {
-                QuickSort(arr, l, right, cutoffValue);
-            }
-        }
-    }
+				if (l <= r)
+				{
+					foo = arr[l];
+					arr[l] = arr[r];
+					arr[r] = foo;
+					l++;
+					r--;
+				}
+			}
+
+			if (Math.Abs(r - left) > cutoffValue)
+			{
+				QuickSort(arr, left, r, cutoffValue);
+			}
+			if (Math.Abs(l - right) > cutoffValue)
+			{
+				QuickSort(arr, l, right, cutoffValue);
+			}
+		}
+	}
 }

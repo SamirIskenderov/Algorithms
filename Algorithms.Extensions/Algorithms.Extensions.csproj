@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Algorithms.ConsoleApp\Snowinmars.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Epam.Library\Epam.Library.Bll.Core\Epam.Library.Bll.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

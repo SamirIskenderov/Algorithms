@@ -7,154 +7,154 @@ using System.Linq;
 
 namespace Algorithms.Test
 {
-    [TestClass]
-    public class SortTests
-    {
-        [TestMethod]
-        public void IsArraySortedByBogosort()
-        {
-            const int count = 10;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.Bogosort<int>(ref array);
+	[TestClass]
+	public class SortTests
+	{
+		[TestMethod]
+		public void IsArraySortedByBogosort()
+		{
+			const int count = 10;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.Bogosort<int>(ref array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByBubbleSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.BubbleSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedByBubbleSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.BubbleSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByInsertSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.InsertSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedByInsertSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.InsertSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByMergeSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+		[TestMethod]
+		public void IsArraySortedByMergeSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
 
-            array = Sort.MergeSort<int>(array).ToList();
+			array = Sort.MergeSort<int>(array).ToList();
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByPancakeSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.PancakeSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedByPancakeSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.PancakeSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByQuickBubbleSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.QuickBubbleSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedByQuickBubbleSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.QuickBubbleSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedByQuickSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.QuickSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedByQuickSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.QuickSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        [TestMethod]
-        public void IsArraySortedBySelectionSort()
-        {
-            const int count = 1000;
-            IList<int> array = new List<int>(count);
-            array.SetWithRandomElements(min: -10,
-                            max: 10,
-                            capacity: count,
-                            FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
-            Sort.SelectionSort<int>(array);
+		[TestMethod]
+		public void IsArraySortedBySelectionSort()
+		{
+			const int count = 1000;
+			IList<int> array = new List<int>(count);
+			array.SetWithRandomElements(min: -10,
+					max: 10,
+					capacity: count,
+					FuncToGetNewRandomElement: Extensions.IListExtensions.CommonRandom.Next);
+			Sort.SelectionSort<int>(array);
 
-            Assert.AreEqual(true, IsArraySorted<int>(array));
-        }
+			Assert.AreEqual(true, IsArraySorted<int>(array));
+		}
 
-        private static bool IsArraySorted<T>(IList<T> arr)
-            where T : IComparable
-        {
-            return IsArraySortedByAcending(arr) || IsArraySortedByDecending(arr);
-        }
+		private static bool IsArraySorted<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			return IsArraySortedByAcending(arr) || IsArraySortedByDecending(arr);
+		}
 
-        private static bool IsArraySortedByAcending<T>(IList<T> arr)
-                                                                                            where T : IComparable
-        {
-            for (int i = 0; i < arr.Count - 1; i++)
-            {
-                if (arr[i].CompareTo(arr[i + 1]) > 0)
-                {
-                    return false;
-                }
-            }
+		private static bool IsArraySortedByAcending<T>(IList<T> arr)
+												    where T : IComparable
+		{
+			for (int i = 0; i < arr.Count - 1; i++)
+			{
+				if (arr[i].CompareTo(arr[i + 1]) > 0)
+				{
+					return false;
+				}
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        private static bool IsArraySortedByDecending<T>(IList<T> arr)
-            where T : IComparable
-        {
-            for (int i = 0; i < arr.Count - 1; i++)
-            {
-                if (arr[i].CompareTo(arr[i + 1]) < 0)
-                {
-                    return false;
-                }
-            }
+		private static bool IsArraySortedByDecending<T>(IList<T> arr)
+		    where T : IComparable
+		{
+			for (int i = 0; i < arr.Count - 1; i++)
+			{
+				if (arr[i].CompareTo(arr[i + 1]) < 0)
+				{
+					return false;
+				}
+			}
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }

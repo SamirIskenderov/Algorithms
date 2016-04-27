@@ -1,5 +1,4 @@
-﻿using Algorithms.Library;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Algorithms.Test
 {
