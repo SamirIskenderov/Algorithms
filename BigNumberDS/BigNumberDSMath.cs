@@ -426,7 +426,6 @@ namespace Algorithms.BigNumber
 
 			#endregion checks
 
-			int lhsLength = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
 
 			// column addition
 			BigNumberDS lhsrough = BigNumberDSHelper.WithoutDot(lhs);
@@ -472,6 +471,24 @@ namespace Algorithms.BigNumber
 			{
 				output += sbfnarr[i];
 			}
+
+			int l = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
+			int m = BigNumberDSHelper.GetBigPartBlocksCount(rhs);
+
+			BigNumberDS biglhs = new BigNumberDS();
+
+			if (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) != 0)
+			{
+				biglhs = output;
+				for (int i = 0; i < l + 1; i++)
+				{
+					biglhs.isBigPart = false;
+					biglhs = biglhs.previousBlock;
+				}
+			}
+
+			BigNumberDSHelper.TrimStructure(ref output);
+
 			return output;
 		}
 
