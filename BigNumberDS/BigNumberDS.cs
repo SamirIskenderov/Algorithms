@@ -165,6 +165,10 @@ namespace Algorithms.BigNumber
 
 		public BigNumberDS()
 		{
+			this.currentValue = 0;
+			this.isBigPart = true;
+			this.isPositive = true;
+			this.previousBlock = null;
 		}
 
 		public BigNumberDS(string inputString)

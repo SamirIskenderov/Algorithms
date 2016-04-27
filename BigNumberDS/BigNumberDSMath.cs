@@ -91,7 +91,7 @@ namespace Algorithms.BigNumber
 
 							if (currentFirst.currentValue < currentSecond.currentValue && BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst))
 							{
-								currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
+								currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE - 1 - currentSecond.currentValue;
 							}
 							else if (currentFirst.currentValue >= currentSecond.currentValue)
 							{
@@ -119,7 +119,7 @@ namespace Algorithms.BigNumber
 
 						if (currentSum > MAX_ALLOWED_VALUE)
 						{
-							currentSum = currentSum - MAX_ALLOWED_VALUE + 1;
+							currentSum = currentSum - MAX_ALLOWED_VALUE - 1;
 							addOne = true;
 						}
 
@@ -151,7 +151,7 @@ namespace Algorithms.BigNumber
 
 							if (currentFirst.currentValue < currentSecond.currentValue && BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst))
 							{
-								currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
+								currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE - 1 - currentSecond.currentValue;
 							}
 							else if (currentFirst.currentValue >= currentSecond.currentValue)
 							{
@@ -179,7 +179,7 @@ namespace Algorithms.BigNumber
 
 						if (currentSum > MAX_ALLOWED_VALUE)
 						{
-							currentSum = currentSum - MAX_ALLOWED_VALUE + 1;
+							currentSum = currentSum - MAX_ALLOWED_VALUE - 1;
 							addOne = true;
 						}
 
@@ -218,7 +218,7 @@ namespace Algorithms.BigNumber
 
 						if (currentFirst.currentValue < currentSecond.currentValue && BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst))
 						{
-							currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
+							currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE - 1 - currentSecond.currentValue;
 						}
 						else if (currentFirst.currentValue >= currentSecond.currentValue)
 						{
@@ -246,7 +246,7 @@ namespace Algorithms.BigNumber
 
 					if (currentSum > MAX_ALLOWED_VALUE)
 					{
-						currentSum = currentSum - MAX_ALLOWED_VALUE + 1;
+						currentSum = currentSum - MAX_ALLOWED_VALUE - 1;
 						addOne = true;
 					}
 
@@ -278,7 +278,7 @@ namespace Algorithms.BigNumber
 
 						if (currentFirst.currentValue < currentSecond.currentValue && BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst))
 						{
-							currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
+							currentSum = currentFirst.currentValue + MAX_ALLOWED_VALUE - 1 - currentSecond.currentValue;
 						}
 						else if (currentFirst.currentValue >= currentSecond.currentValue)
 						{
@@ -339,7 +339,7 @@ namespace Algorithms.BigNumber
 
 				if (currentSum > MAX_ALLOWED_VALUE)
 				{
-					currentSum = currentSum - MAX_ALLOWED_VALUE + 1;
+					currentSum = currentSum - MAX_ALLOWED_VALUE - 1;
 					addOne = true;
 				}
 
@@ -445,11 +445,22 @@ namespace Algorithms.BigNumber
 					{
 						break;
 					}
+
+					if (a[i] == 0)
+					{
+						sbfnarr[k] = new BigNumberDS("0");
+					}
+					else
+					{
+
 					sbfnarr[k] = lhsrough * a[i];
+					}
+
 					for (int j = 0; j < k; j++)
 					{
 						sbfnarr[k] *= 10;
 					}
+
 					k++;
 				}
 				current = current.previousBlock;
@@ -457,7 +468,7 @@ namespace Algorithms.BigNumber
 			// summing output
 
 			BigNumberDS output = new BigNumberDS();
-			for (int i = 0; i < k - 1; i++)
+			for (int i = 0; i < k; i++)
 			{
 				output += sbfnarr[i];
 			}
@@ -526,12 +537,12 @@ namespace Algorithms.BigNumber
 
 			if (firstMem.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
 			{
-				int b = secondMem - MAX_ALLOWED_VALUE + 1;
+				int b = secondMem - MAX_ALLOWED_VALUE - 1;
 				firstMem.previousBlock.currentValue += 1; // TODO null ref fix
 
 				if (b > MAX_ALLOWED_VALUE)
 				{
-					b = b - MAX_ALLOWED_VALUE + 1;
+					b = b - MAX_ALLOWED_VALUE - 1;
 					firstMem.previousBlock.currentValue += 1;
 				}
 
