@@ -395,7 +395,6 @@ namespace Algorithms.BigNumber
 			if (rhs.currentValue == 1)
 			{
 				return (BigNumberDS)lhs.Clone();
-				;
 			}
 
 			if (lhs.currentValue == -1)
@@ -406,34 +405,32 @@ namespace Algorithms.BigNumber
 			if (lhs.currentValue == 1)
 			{
 				return (BigNumberDS)rhs.Clone();
-				;
 			}
 
 			// if I can multiple not by this class, but by short
 			if ((rhs.previousBlock == null) &&
-			    (rhs.currentValue < short.MaxValue) &&
+			    (rhs.currentValue < byte.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(rhs) == 0))
 			{
-				short num = (short)(rhs.isPositive ? rhs.currentValue : -rhs.currentValue);
-				return BigNumberDSMath.Multiple(lhs, num);
+				return BigNumberDSMath.Multiple(lhs, (byte)rhs.currentValue);
 			}
 
 			if ((lhs.previousBlock == null) &&
-			    (lhs.currentValue < short.MaxValue) &&
+			    (lhs.currentValue < byte.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) == 0))
 			{
-				short num = (short)(rhs.isPositive ? rhs.currentValue : -rhs.currentValue);
-				return BigNumberDSMath.Multiple(rhs, num);
+				return BigNumberDSMath.Multiple(rhs, (byte)lhs.currentValue);
 			}
 
 			#endregion checks
 
+			int lhsLength = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
 
 			// column addition
 			BigNumberDS lhsrough = BigNumberDSHelper.WithoutDot(lhs);
 			BigNumberDS rhsrough = BigNumberDSHelper.WithoutDot(rhs);
-			int count = BigNumberDSHelper.GetBigPartBlocksCount(rhsrough) * 9;
-			BigNumberDS[] sbfnarr = new BigNumberDS[count];
+			BigNumberDS output = new BigNumberDS();
+
 			int k = 0;
 			BigNumberDS current = rhsrough;
 			// work with other block
@@ -442,59 +439,25 @@ namespace Algorithms.BigNumber
 				int[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
 				for (int i = 0; i < a.Length; i++)
 				{
-					if (k > sbfnarr.Length - 1)
-					{
-						break;
-					}
+					BigNumberDS sbfnarrk = new BigNumberDS();
 
-					if (a[i] == 0)
-					{
-						sbfnarr[k] = new BigNumberDS("0");
-					}
-					else
-					{
-
-					sbfnarr[k] = lhsrough * a[i];
-					}
+					sbfnarrk = lhsrough * a[i];
 
 					for (int j = 0; j < k; j++)
 					{
-						sbfnarr[k] *= 10;
+						sbfnarrk *= 10;
 					}
 
+					output += sbfnarrk;
 					k++;
 				}
 				current = current.previousBlock;
 			}
-			// summing output
-
-			BigNumberDS output = new BigNumberDS();
-			for (int i = 0; i < k; i++)
-			{
-				output += sbfnarr[i];
-			}
-
-			int l = BigNumberDSHelper.GetSmallPartBlocksCount(lhs);
-			int m = BigNumberDSHelper.GetSmallPartBlocksCount(rhs);
-
-			BigNumberDS biglhs = new BigNumberDS();
-
-			if ((l != 0) || (m != 0))
-			{
-				biglhs = output;
-				for (int i = 0; i < l + m; i++)
-				{
-					biglhs.isBigPart = false;
-					biglhs = biglhs.previousBlock;
-				}
-			}
-
-			BigNumberDSHelper.TrimStructure(ref output);
 
 			return output;
 		}
 
-		internal static BigNumberDS Multiple(BigNumberDS lhs, short rhs)
+		internal static BigNumberDS Multiple(BigNumberDS lhs, byte rhs)
 		{
 			#region checks
 

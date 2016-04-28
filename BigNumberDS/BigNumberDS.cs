@@ -42,21 +42,24 @@ namespace Algorithms.BigNumber
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
 
-		public static BigNumberDS operator *(BigNumberDS lhs, short rhs)
+		public static BigNumberDS operator *(BigNumberDS lhs, byte rhs)
 		{
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
 
+		public static BigNumberDS operator *(int lhs, BigNumberDS rhs)
+			=> rhs * lhs;
+
 		public static BigNumberDS operator *(BigNumberDS lhs, int rhs)
 		{
-			if (rhs < short.MaxValue)
+			if (rhs < byte.MaxValue)
 			{
-				return BigNumberDSMath.Multiple(lhs, (short)rhs);
+				return BigNumberDSMath.Multiple(lhs, (byte)rhs);
 			}
 			return BigNumberDSMath.Multiple(lhs, new BigNumberDS(rhs, isBigPart: true, isPositive: rhs > 0));
 		}
 
-		public static BigNumberDS operator *(short lhs, BigNumberDS rhs)
+		public static BigNumberDS operator *(byte lhs, BigNumberDS rhs)
 		    => rhs * lhs;
 
 		public static BigNumberDS operator /(BigNumberDS lhs, BigNumberDS rhs)
@@ -278,6 +281,29 @@ namespace Algorithms.BigNumber
 
 		#endregion ctor
 
+		public BigNumberDS Abs()
+		{
+			BigNumberDS current = (BigNumberDS)this.Clone();
+
+			if (this.isPositive)
+			{
+				return current;
+			}
+			else
+			{
+				BigNumberDS result = current;
+
+				while (current != null)
+				{
+					current.isPositive = true;
+
+					current = current.previousBlock;
+				}
+
+				return result;
+			}
+		}
+
 		public object Clone()
 		{
 			BigNumberDS current = this;
@@ -367,6 +393,22 @@ namespace Algorithms.BigNumber
 			}
 		}
 
+		public BigNumberDS Invert()
+		{
+			BigNumberDS current = (BigNumberDS)this.Clone();
+
+			BigNumberDS result = current;
+
+			while (current != null)
+			{
+				current.isPositive = !current.isPositive;
+
+				current = current.previousBlock;
+			}
+
+			return result;
+		}
+
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -441,45 +483,6 @@ namespace Algorithms.BigNumber
 			}
 
 			return sb.ToString();
-		}
-
-		public BigNumberDS Invert()
-		{
-			BigNumberDS current = (BigNumberDS)this.Clone();
-
-			BigNumberDS result = current;
-
-			while (current != null)
-			{
-				current.isPositive = !current.isPositive;
-
-				current = current.previousBlock;
-			}
-
-			return result;
-		}
-
-		public BigNumberDS Abs()
-		{
-			BigNumberDS current = (BigNumberDS)this.Clone();
-
-			if (this.isPositive)
-			{
-				return current;
-			}
-			else
-			{
-				BigNumberDS result = current;
-
-				while (current != null)
-				{
-					current.isPositive = true;
-
-					current = current.previousBlock;
-				}
-
-				return result;
-			}
 		}
 	}
 }
