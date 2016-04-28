@@ -7,10 +7,10 @@ namespace Algorithms.ConsoleApp
 	{
 		private static void Main()
 		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
-			BigNumberDS added = new BigNumberDS("9");
+			BigNumberDS lhs = new BigNumberDS("20000,505");
+			BigNumberDS added = new BigNumberDS("10,501");
 
-			Console.WriteLine(lhs * added);
+			Console.WriteLine(added * lhs);
 		}
 	}
 }

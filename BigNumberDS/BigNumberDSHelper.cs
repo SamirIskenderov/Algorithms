@@ -8,7 +8,7 @@ namespace Algorithms.BigNumber
 		{
 			int size = 1;
 
-			while (number > Math.Pow(10, size))
+			while (number >= Math.Pow(10, size))
 			{
 				size++;
 			}
@@ -29,7 +29,7 @@ namespace Algorithms.BigNumber
 			const int decade = 10;
 			int i = 0;
 
-			while (number > 1)
+			while (number >= 1)
 			{
 				if (i > output.Length - 1)
 				{

@@ -42,7 +42,7 @@ namespace Algorithms.BigNumber
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
 
-		public static BigNumberDS operator *(BigNumberDS lhs, byte rhs)
+		public static BigNumberDS operator *(BigNumberDS lhs, short rhs)
 		{
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
@@ -52,14 +52,14 @@ namespace Algorithms.BigNumber
 
 		public static BigNumberDS operator *(BigNumberDS lhs, int rhs)
 		{
-			if (rhs < byte.MaxValue)
+			if (rhs < short.MaxValue)
 			{
-				return BigNumberDSMath.Multiple(lhs, (byte)rhs);
+				return BigNumberDSMath.Multiple(lhs, (short)rhs);
 			}
 			return BigNumberDSMath.Multiple(lhs, new BigNumberDS(rhs, isBigPart: true, isPositive: rhs > 0));
 		}
 
-		public static BigNumberDS operator *(byte lhs, BigNumberDS rhs)
+		public static BigNumberDS operator *(short lhs, BigNumberDS rhs)
 		    => rhs * lhs;
 
 		public static BigNumberDS operator /(BigNumberDS lhs, BigNumberDS rhs)

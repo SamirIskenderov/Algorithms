@@ -409,17 +409,17 @@ namespace Algorithms.BigNumber
 
 			// if I can multiple not by this class, but by short
 			if ((rhs.previousBlock == null) &&
-			    (rhs.currentValue < byte.MaxValue) &&
+			    (rhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(rhs) == 0))
 			{
-				return BigNumberDSMath.Multiple(lhs, (byte)rhs.currentValue);
+				return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
 			}
 
 			if ((lhs.previousBlock == null) &&
-			    (lhs.currentValue < byte.MaxValue) &&
+			    (lhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) == 0))
 			{
-				return BigNumberDSMath.Multiple(rhs, (byte)lhs.currentValue);
+				return BigNumberDSMath.Multiple(rhs, (short)lhs.currentValue);
 			}
 
 			#endregion checks
@@ -433,7 +433,7 @@ namespace Algorithms.BigNumber
 
 			int k = 0;
 			BigNumberDS current = rhsrough;
-			// work with other block
+
 			while (current != null)
 			{
 				int[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
@@ -454,10 +454,12 @@ namespace Algorithms.BigNumber
 				current = current.previousBlock;
 			}
 
+			BigNumberDSHelper.TrimStructure(ref output);
+
 			return output;
 		}
 
-		internal static BigNumberDS Multiple(BigNumberDS lhs, byte rhs)
+		internal static BigNumberDS Multiple(BigNumberDS lhs, short rhs)
 		{
 			#region checks
 
@@ -506,7 +508,7 @@ namespace Algorithms.BigNumber
 				output.isPositive ^= true; // TODO re do
 			}
 
-			if (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) != 0)
+			if (smallCount != 0)
 			{
 				biglhs = output;
 				for (int i = 0; i < smallCount; i++)
