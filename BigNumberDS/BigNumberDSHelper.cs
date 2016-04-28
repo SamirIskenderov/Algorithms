@@ -4,7 +4,14 @@ namespace Algorithms.BigNumber
 {
 	internal static class BigNumberDSHelper
 	{
-		internal static int[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
+		/// <summary>
+		/// Make byte array from number.
+		/// F.e., 12465 will be {1,2,4,6,5}.
+		/// </summary>
+		/// <param name="number"></param>
+		/// <param name="isIgnoreLastNulls"></param>
+		/// <returns></returns>
+		internal static byte[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
 		{
 			int size = 1;
 
@@ -25,7 +32,7 @@ namespace Algorithms.BigNumber
 				size = j;
 			}
 
-			int[] output = new int[size];
+			byte[] output = new byte[size];
 			const int decade = 10;
 			int i = 0;
 
@@ -35,7 +42,7 @@ namespace Algorithms.BigNumber
 				{
 					break;
 				}
-				output[i] = number % decade;
+				output[i] = (byte)(number % decade);
 				i++;
 				number /= decade;
 			}
@@ -62,6 +69,11 @@ namespace Algorithms.BigNumber
 			return false;
 		}
 
+		/// <summary>
+		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
+		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
+		/// </summary>
+		/// <param name="input"></param>
 		public static void TrimStructure(ref BigNumberDS input)
 		{
 			BigNumberDS current = input;
@@ -142,7 +154,7 @@ namespace Algorithms.BigNumber
 			return count;
 		}
 
-		internal static BigNumberDS GetBigPart(BigNumberDS input)
+		internal static BigNumberDS GetIntegerPart(BigNumberDS input)
 		{
 			BigNumberDS current = input;
 			BigNumberDS output = new BigNumberDS();
@@ -164,7 +176,7 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static int GetBigPartBlocksCount(BigNumberDS input)
+		internal static int GetIntegerPartBlocksCount(BigNumberDS input)
 		{
 			int result = 1;
 			BigNumberDS current = input;
@@ -186,12 +198,22 @@ namespace Algorithms.BigNumber
 
 		internal static int GetNumberOfZeroesPrefix(int input)
 		{
-			int result = 9 - input.ToString().Length;
+			//int result = 9 - input.ToString().Length;
 
-			return result;
+			int count = 0;
+
+			while (input > 0)
+			{
+				input /= 10;
+				count++;
+			}
+
+			count = 9 - count;
+
+			return count;
 		}
 
-		internal static BigNumberDS GetSmallPart(BigNumberDS input)
+		internal static BigNumberDS GetFractionPart(BigNumberDS input)
 		{
 			BigNumberDS current = input;
 			BigNumberDS output = new BigNumberDS();
@@ -205,7 +227,7 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static int GetSmallPartBlocksCount(BigNumberDS input)
+		internal static int GetFractionPartBlocksCount(BigNumberDS input)
 		{
 			int result = 0;
 			BigNumberDS current = input;
@@ -222,6 +244,8 @@ namespace Algorithms.BigNumber
 
 		internal static int MakeComparisionUnit(BigNumberDS firstMem, BigNumberDS secondMem)
 		{
+			// CompareTo ?
+
 			if (firstMem == null && secondMem == null)
 			{
 				return 0;
@@ -263,7 +287,7 @@ namespace Algorithms.BigNumber
 					smallToBigCross = true;
 				}
 
-				if (i + 1 != result.Length)
+				if (result.Length != i + 1)
 				{
 					current = current.previousBlock;
 				}
@@ -279,7 +303,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS WithoutDot(BigNumberDS input)
+		internal static BigNumberDS GetWithoutDot(BigNumberDS input)
 		{
 			BigNumberDS output = (BigNumberDS)input.Clone();
 			BigNumberDS current = output;
@@ -293,13 +317,13 @@ namespace Algorithms.BigNumber
 
 		internal static int[] MakeComparisionMap(BigNumberDS rhs, BigNumberDS lhs)
 		{
-			int bigPartBlocksCount = BigNumberDSHelper.GetBigPartBlocksCount(rhs) > BigNumberDSHelper.GetBigPartBlocksCount(lhs) ?
-			    BigNumberDSHelper.GetBigPartBlocksCount(rhs) :
-			    BigNumberDSHelper.GetBigPartBlocksCount(lhs);
+			int bigPartBlocksCount = BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) > BigNumberDSHelper.GetIntegerPartBlocksCount(lhs) ?
+			    BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) :
+			    BigNumberDSHelper.GetIntegerPartBlocksCount(lhs);
 
-			int smallPartBlocksCount = BigNumberDSHelper.GetSmallPartBlocksCount(rhs) > BigNumberDSHelper.GetSmallPartBlocksCount(lhs) ?
-			    BigNumberDSHelper.GetSmallPartBlocksCount(rhs) :
-			    BigNumberDSHelper.GetSmallPartBlocksCount(lhs);
+			int smallPartBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs) > BigNumberDSHelper.GetFractionPartBlocksCount(lhs) ?
+			    BigNumberDSHelper.GetFractionPartBlocksCount(rhs) :
+			    BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
 
 			int[] result = new int[bigPartBlocksCount + smallPartBlocksCount];
 
@@ -308,29 +332,21 @@ namespace Algorithms.BigNumber
 
 			for (int i = result.Length - 1; i >= 0; i--)
 			{
-				if (BigNumberDSHelper.GetSmallPartBlocksCount(currentFirst) > BigNumberDSHelper.GetSmallPartBlocksCount(currentSecond))
+				int compare = BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst).CompareTo(BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond));
+
+				if (compare > 0)
 				{
 					result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, null);
-				}
-				else if (BigNumberDSHelper.GetSmallPartBlocksCount(currentFirst) < BigNumberDSHelper.GetSmallPartBlocksCount(currentSecond))
-				{
-					result[i] = BigNumberDSHelper.MakeComparisionUnit(null, currentSecond);
-				}
-				else
-				{
-					result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, currentSecond);
-				}
-
-				if (BigNumberDSHelper.GetSmallPartBlocksCount(currentFirst) > BigNumberDSHelper.GetSmallPartBlocksCount(currentSecond))
-				{
 					currentFirst = currentFirst.previousBlock;
 				}
-				else if (BigNumberDSHelper.GetSmallPartBlocksCount(currentFirst) < BigNumberDSHelper.GetSmallPartBlocksCount(currentSecond))
+				else if (compare < 0)
 				{
+					result[i] = BigNumberDSHelper.MakeComparisionUnit(null, currentSecond);
 					currentSecond = currentSecond.previousBlock;
 				}
 				else
 				{
+					result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, currentSecond);
 					currentFirst = currentFirst.previousBlock;
 					currentSecond = currentSecond.previousBlock;
 				}

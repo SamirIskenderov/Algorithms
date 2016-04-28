@@ -12,6 +12,7 @@ namespace Algorithms.BigNumber
 		internal bool isBigPart;
 
 		internal bool isPositive;
+
 		internal BigNumberDS previousBlock;
 
 		#region operators
@@ -281,6 +282,10 @@ namespace Algorithms.BigNumber
 
 		#endregion ctor
 
+		/// <summary>
+		/// Getting absolute value of number
+		/// </summary>
+		/// <returns></returns>
 		public BigNumberDS Abs()
 		{
 			BigNumberDS current = (BigNumberDS)this.Clone();
@@ -347,11 +352,11 @@ namespace Algorithms.BigNumber
 			}
 			else if (this.isPositive)
 			{
-				if (BigNumberDSHelper.GetBigPartBlocksCount(this) > BigNumberDSHelper.GetBigPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
-				else if (BigNumberDSHelper.GetBigPartBlocksCount(this) < BigNumberDSHelper.GetBigPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
@@ -370,11 +375,11 @@ namespace Algorithms.BigNumber
 			}
 			else
 			{
-				if (BigNumberDSHelper.GetBigPartBlocksCount(this) > BigNumberDSHelper.GetBigPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
-				else if (BigNumberDSHelper.GetBigPartBlocksCount(this) < BigNumberDSHelper.GetBigPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
@@ -393,6 +398,10 @@ namespace Algorithms.BigNumber
 			}
 		}
 
+		/// <summary>
+		/// Change the sign
+		/// </summary>
+		/// <returns></returns>
 		public BigNumberDS Invert()
 		{
 			BigNumberDS current = (BigNumberDS)this.Clone();
