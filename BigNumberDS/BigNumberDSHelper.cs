@@ -2,7 +2,7 @@
 
 namespace Algorithms.BigNumber
 {
-	internal static class BigNumberDSHelper
+	public static class BigNumberDSHelper
 	{
 		/// <summary>
 		/// Make byte array from number.
@@ -92,7 +92,7 @@ namespace Algorithms.BigNumber
 
 			BigNumberDS currentEdge;
 
-			while (!current.isBigPart)
+			while (current != null && !current.isBigPart)
 			{
 				isEdgeBlock = isEdgeBlock && current.currentValue == 0;
 
@@ -104,9 +104,7 @@ namespace Algorithms.BigNumber
 				current = current.previousBlock;
 			}
 
-			isEdgeBlock = false;
-
-			while (current.previousBlock != null)
+			while (current != null && current.previousBlock != null)
 			{
 				if (current.previousBlock.currentValue == 0)
 				{
@@ -114,14 +112,14 @@ namespace Algorithms.BigNumber
 
 					while (current.previousBlock != null)
 					{
-						if (current.previousBlock.previousBlock == null)
+                        if (current.previousBlock.currentValue != 0)
+                        {
+                            break;
+                        }
+                        else if (current.previousBlock.previousBlock == null)
 						{
 							currentEdge.previousBlock = null;
 							return;
-						}
-						else if (current.previousBlock.currentValue != 0)
-						{
-							break;
 						}
 
 						current = current.previousBlock;
@@ -207,9 +205,17 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
+        /// <summary>
+        /// Define, how many zeros must add to block, formed from input number
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
 		internal static int GetNumberOfZeroesPrefix(int input)
 		{
-			//int result = 9 - input.ToString().Length;
+            if (input == 0)
+            {
+                return 8;
+            }
 
 			int count = 0;
 
@@ -220,6 +226,7 @@ namespace Algorithms.BigNumber
 			}
 
 			count = 9 - count;
+
 
 			return count;
 		}
