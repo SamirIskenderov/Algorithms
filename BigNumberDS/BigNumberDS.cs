@@ -32,7 +32,7 @@ namespace Algorithms.BigNumber
 		 => BigNumberDSMath.Subtract(rhs, lhs);
 
 		public static BigNumberDS operator --(BigNumberDS value)
-		 => BigNumberDSMath.Subtract(value, new BigNumberDS("1"));
+		 => BigNumberDSMath.Subtract(value, BigNumberDS.Create("1"));
 
 		public static bool operator !=(BigNumberDS lhs, BigNumberDS rhs)
 		 => !(lhs == rhs);
@@ -91,7 +91,7 @@ namespace Algorithms.BigNumber
 		 => BigNumberDSMath.Add(rhs, lhs);
 
 		public static BigNumberDS operator ++(BigNumberDS value)
-		 => BigNumberDSMath.Add(value, new BigNumberDS("1"));
+		 => BigNumberDSMath.Add(value, BigNumberDS.Create("1"));
 
 		public static bool operator <(BigNumberDS lhs, BigNumberDS rhs)
 		 => lhs.CompareTo(rhs) < 0;
@@ -174,10 +174,21 @@ namespace Algorithms.BigNumber
 			this.previousBlock = null;
 		}
 
-		public BigNumberDS(string inputString)
-		    : this(inputString[0] == '-' ? inputString.Substring(1) : inputString, inputString[0] != '-') // TODO to method
-		{
-		}
+        public static BigNumberDS Create(string input = "")
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return new BigNumberDS();
+            }
+            else
+            {
+                BigNumberDS result = new BigNumberDS(input[0] == '-' ? input.Substring(1) : input, input[0] != '-');
+
+                BigNumberDSHelper.TrimStructure(ref result);
+
+                return result;
+            }
+        }
 
 		internal BigNumberDS(string inputString, bool isPositive)
 		{

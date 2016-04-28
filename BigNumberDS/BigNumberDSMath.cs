@@ -47,7 +47,7 @@ namespace Algorithms.BigNumber
 			{
 				if (firstMem.Abs() == secondMem.Abs())
 				{
-					return new BigNumberDS("0");
+					return BigNumberDS.Create("0");
 				}
 				else if (!firstMem.isPositive)
 				{
@@ -332,7 +332,7 @@ namespace Algorithms.BigNumber
 
 			if ((rhs.currentValue == 0) || (lhs.currentValue == 0))
 			{
-				return new BigNumberDS("0");
+				return BigNumberDS.Create("0");
 			}
 
 			if (rhs.currentValue == -1)
@@ -410,7 +410,7 @@ namespace Algorithms.BigNumber
 
 			if ((rhs == 0) || ((lhs.currentValue == 0) && (lhs.previousBlock == null)))
 			{
-				return new BigNumberDS("0");
+				return BigNumberDS.Create("0");
 			}
 			if (rhs == -1)
 			{
