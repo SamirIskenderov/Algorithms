@@ -6,7 +6,7 @@
 		{
 			int[] output = new int[10];
 
-			int decade = 10;
+			const int decade = 10;
 			int i = 0;
 			while (number > 1)
 			{

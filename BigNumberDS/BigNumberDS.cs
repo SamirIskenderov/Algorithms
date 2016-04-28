@@ -391,7 +391,7 @@ namespace Algorithms.BigNumber
 					currentSbnf = currentSbnf.previousBlock;
 				}
 
-				sb.Insert(0, string.Format("{0},", currentSbnf.currentValue));
+				sb.Insert(0, $"{currentSbnf.currentValue},");
 
 				if (currentSbnf.previousBlock != null)
 				{

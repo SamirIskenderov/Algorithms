@@ -414,14 +414,16 @@ namespace Algorithms.BigNumber
 			    (rhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(rhs) == 0))
 			{
-				return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
+				short num = (short)(rhs.isPositive ? rhs.currentValue : -rhs.currentValue);
+				return BigNumberDSMath.Multiple(lhs, num);
 			}
 
 			if ((lhs.previousBlock == null) &&
 			    (lhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) == 0))
 			{
-				return BigNumberDSMath.Multiple(rhs, (short)lhs.currentValue);
+				short num = (short)(rhs.isPositive ? rhs.currentValue : -rhs.currentValue);
+				return BigNumberDSMath.Multiple(rhs, num);
 			}
 
 			#endregion checks
@@ -472,15 +474,15 @@ namespace Algorithms.BigNumber
 				output += sbfnarr[i];
 			}
 
-			int l = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
-			int m = BigNumberDSHelper.GetBigPartBlocksCount(rhs);
+			int l = BigNumberDSHelper.GetSmallPartBlocksCount(lhs);
+			int m = BigNumberDSHelper.GetSmallPartBlocksCount(rhs);
 
 			BigNumberDS biglhs = new BigNumberDS();
 
-			if (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) != 0)
+			if ((l != 0) || (m != 0))
 			{
 				biglhs = output;
-				for (int i = 0; i < l + 1; i++)
+				for (int i = 0; i < l + m; i++)
 				{
 					biglhs.isBigPart = false;
 					biglhs = biglhs.previousBlock;
@@ -535,10 +537,16 @@ namespace Algorithms.BigNumber
 			{
 				output += biglhs;
 			}
+
+			if (rhs < 0)
+			{
+				output.isPositive ^= true; // TODO re do
+			}
+
 			if (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) != 0)
 			{
 				biglhs = output;
-				for (int i = 0; i < lhsLength + 1; i++)
+				for (int i = 0; i < smallCount; i++)
 				{
 					biglhs.isBigPart = false;
 					biglhs = biglhs.previousBlock;
@@ -550,6 +558,11 @@ namespace Algorithms.BigNumber
 
 		public static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
 		{
+			if (secondMem == 0)
+			{
+				return firstMem;
+			}
+
 			BigNumberDS big = BigNumberDSHelper.GetBigPart(firstMem);
 
 			if (firstMem.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
@@ -580,11 +593,13 @@ namespace Algorithms.BigNumber
 
 			if (currentFirst.isPositive ^ currentSecond.isPositive)
 			{
-				if ((!currentFirst.isPositive && currentFirst.Abs() == currentSecond) || (!currentSecond.isPositive && currentSecond.Abs() == currentFirst))
+				if ((!currentFirst.isPositive && currentFirst.Abs() == currentSecond) ||
+					(!currentSecond.isPositive && currentSecond.Abs() == currentFirst))
 				{
 					return new BigNumberDS("0");
 				}
-				else if ((!currentFirst.isPositive && currentFirst.Abs() > currentSecond) || (!currentSecond.isPositive && currentSecond.Abs() > currentFirst))
+				else if ((!currentFirst.isPositive && currentFirst.Abs() > currentSecond) ||
+					(!currentSecond.isPositive && currentSecond.Abs() > currentFirst))
 				{
 					currentFirst = currentFirst.Invert();
 					currentSecond = currentSecond.Invert();

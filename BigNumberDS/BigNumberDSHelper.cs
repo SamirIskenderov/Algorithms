@@ -7,27 +7,28 @@ namespace Algorithms.BigNumber
 		internal static int[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
 		{
 			int size = 1;
+
 			while (number > Math.Pow(10, size))
 			{
 				size++;
 			}
+
 			if (isIgnoreLastNulls)
 			{
 				string str = number.ToString();
-				for (int j = str.Length - 1; j >= 0; j--)
+				int j = str.Length - 1;
+				while (str[j] == '0')
 				{
-					while (str[j] == '0')
-					{
-						j--;
-						continue;
-					}
-					size = j;
-					break;
+					j--;
+					continue;
 				}
+				size = j;
 			}
+
 			int[] output = new int[size];
-			int decade = 10;
+			const int decade = 10;
 			int i = 0;
+
 			while (number > 1)
 			{
 				if (i > output.Length - 1)
@@ -38,6 +39,7 @@ namespace Algorithms.BigNumber
 				i++;
 				number /= decade;
 			}
+
 			return output;
 		}
 
