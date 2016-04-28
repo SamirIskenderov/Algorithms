@@ -1333,7 +1333,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS rhs = BigNumberDS.Create(two);
 
-			Assert.NotEqual<BigNumberDS>(lhs, rhs);
+			Assert.True(lhs != rhs);
 		}
 
 		#endregion operator!=
