@@ -1,5 +1,4 @@
-﻿using System;
-namespace Algorithms.ConsoleApp
+﻿namespace Algorithms.ConsoleApp
 {
 	internal class Program
 	{

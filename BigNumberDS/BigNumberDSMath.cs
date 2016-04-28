@@ -40,276 +40,281 @@ namespace Algorithms.BigNumber
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
 		{
-            BigNumberDS currentFirst;
-            BigNumberDS currentSecond;
+			BigNumberDS currentFirst;
+			BigNumberDS currentSecond;
 
-            if (firstMem.isPositive ^ secondMem.isPositive)
-            {
-                if (firstMem.Abs() == secondMem.Abs())
-                {
-                    return new BigNumberDS("0");
-                }
-                else if (!firstMem.isPositive)
-                {
-                    if (firstMem.Abs() > secondMem)
-                    {
-                        currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-                        currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+			if (firstMem.isPositive ^ secondMem.isPositive)
+			{
+				if (firstMem.Abs() == secondMem.Abs())
+				{
+					return new BigNumberDS("0");
+				}
+				else if (!firstMem.isPositive)
+				{
+					if (firstMem.Abs() > secondMem)
+					{
+						currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
+						currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
 
-                        return Add(currentFirst, currentSecond, null, false).Invert();
-                    }
-                    else
-                    {
-                        currentFirst = ((BigNumberDS)secondMem.Clone());
-                        currentSecond = ((BigNumberDS)firstMem.Clone());
+						return Add(currentFirst, currentSecond, null, false).Invert();
+					}
+					else
+					{
+						currentFirst = ((BigNumberDS)secondMem.Clone());
+						currentSecond = ((BigNumberDS)firstMem.Clone());
 
-                        return Add(currentFirst, currentSecond, null, false);
-                    }
+						return Add(currentFirst, currentSecond, null, false);
+					}
+				}
+				else
+				{
+					if (secondMem.Abs() > firstMem)
+					{
+						currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
+						currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
 
-                }
-                else
-                {
-                    if (secondMem.Abs() > firstMem)
-                    {
-                        currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-                        currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+						return Add(currentFirst, currentSecond, null, false).Invert();
+					}
+					else
+					{
+						currentFirst = ((BigNumberDS)firstMem.Clone());
+						currentSecond = ((BigNumberDS)secondMem.Clone());
 
-                        return Add(currentFirst, currentSecond, null, false).Invert();
-                    }
-                    else
-                    {
-                        currentFirst = ((BigNumberDS)firstMem.Clone());
-                        currentSecond = ((BigNumberDS)secondMem.Clone());
+						return Add(currentFirst, currentSecond, null, false);
+					}
+				}
+			}
+			else if (!firstMem.isPositive)
+			{
+				if (firstMem.Abs() > secondMem.Abs())
+				{
+					currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
+					currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+				}
+				else
+				{
+					currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
+					currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+				}
 
-                        return Add(currentFirst, currentSecond, null, false);
-                    }
-                }
-            }
-            else if (!firstMem.isPositive)
-            {
-                if (firstMem.Abs() > secondMem.Abs())
-                {
-                    currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-                    currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
-                }
-                else
-                {
-                    currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-                    currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
-                }
+				return Add(currentFirst, currentSecond, null, false).Invert();
+			}
+			else
+			{
+				if (firstMem.Abs() > secondMem.Abs())
+				{
+					currentFirst = ((BigNumberDS)firstMem.Clone());
+					currentSecond = ((BigNumberDS)secondMem.Clone());
+				}
+				else
+				{
+					currentFirst = ((BigNumberDS)secondMem.Clone());
+					currentSecond = ((BigNumberDS)firstMem.Clone());
+				}
 
-                return Add(currentFirst, currentSecond, null, false).Invert();
-            }
-            else
-            {
-                if (firstMem.Abs() > secondMem.Abs())
-                {
-                    currentFirst = ((BigNumberDS)firstMem.Clone());
-                    currentSecond = ((BigNumberDS)secondMem.Clone());
-                }
-                else
-                {
-                    currentFirst = ((BigNumberDS)secondMem.Clone());
-                    currentSecond = ((BigNumberDS)firstMem.Clone());
-                }
-
-                return Add(currentFirst, currentSecond, null, false);
-            }
-        }
+				return Add(currentFirst, currentSecond, null, false);
+			}
+		}
 
 		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
 		    => BigNumberDSMath.Add(secondMem, firstMem);
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS result, bool addOne)
 		{
-            if (firstMem == null && secondMem == null && result == null)
-            {
-                throw new NullReferenceException();
-            }
-            else if (firstMem != null &&
-                secondMem != null &&
-                (!firstMem.isPositive ||
-                firstMem < secondMem))
-            {
-                throw new ArgumentException();
-            }
+			if (firstMem == null && secondMem == null && result == null)
+			{
+				throw new NullReferenceException();
+			}
+			else if (firstMem != null &&
+			    secondMem != null &&
+			    (!firstMem.isPositive ||
+			    firstMem < secondMem))
+			{
+				throw new ArgumentException();
+			}
 
-            BigNumberDS currentFirst;
+			BigNumberDS currentFirst;
 			BigNumberDS currentSecond;
 
 			int currentSum = 0;
-            bool isBigPart;
+			bool isBigPart;
 
-            currentFirst = firstMem == null ?
-                null :
-                (BigNumberDS)firstMem.Clone();
-            currentSecond = secondMem == null ?
-                null :
-                (BigNumberDS)secondMem.Clone();
+			currentFirst = firstMem == null ?
+			    null :
+			    (BigNumberDS)firstMem.Clone();
+			currentSecond = secondMem == null ?
+			    null :
+			    (BigNumberDS)secondMem.Clone();
 
-            int firstMemSmallPartBlocksCount = currentFirst == null ?
-                0 :
-                BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst),
-                    secondMemSmallPartBlocksCount = currentSecond == null ?
-                    0 :
-                    BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond);
+			int firstMemSmallPartBlocksCount = currentFirst == null ?
+			    0 :
+			    BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst),
+				secondMemSmallPartBlocksCount = currentSecond == null ?
+				0 :
+				BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond);
 
-            if (firstMem != null && secondMem != null &&
-                (!currentFirst.isBigPart || !currentSecond.isBigPart) &&
-                (firstMemSmallPartBlocksCount != secondMemSmallPartBlocksCount))
-            {
-                #region Adding numbers with different count of blocks in small part
-                if (firstMemSmallPartBlocksCount > secondMemSmallPartBlocksCount)
-                {
-                    currentSum = currentFirst.currentValue;
+			if (firstMem != null && secondMem != null &&
+			    (!currentFirst.isBigPart || !currentSecond.isBigPart) &&
+			    (firstMemSmallPartBlocksCount != secondMemSmallPartBlocksCount))
+			{
+				#region Adding numbers with different count of blocks in small part
 
-                    currentFirst = currentFirst.previousBlock;
-                }
-                else if (currentSecond.isPositive)
-                {
-                    currentSum = currentSecond.currentValue;
+				if (firstMemSmallPartBlocksCount > secondMemSmallPartBlocksCount)
+				{
+					currentSum = currentFirst.currentValue;
 
-                    currentSecond = currentSecond.previousBlock;
-                }
-                else
-                {
-                    BigNumberDSHelper.GetHelpFromTitleBlock(currentFirst);
+					currentFirst = currentFirst.previousBlock;
+				}
+				else if (currentSecond.isPositive)
+				{
+					currentSum = currentSecond.currentValue;
 
-                    currentSum = Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
+					currentSecond = currentSecond.previousBlock;
+				}
+				else
+				{
+					BigNumberDSHelper.GetHelpFromTitleBlock(currentFirst);
 
-                    currentSecond = currentSecond.previousBlock;
-                }
+					currentSum = Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
 
-                if (addOne)
-                {
-                    currentSum++;
+					currentSecond = currentSecond.previousBlock;
+				}
 
-                    addOne = false;
-                }
+				if (addOne)
+				{
+					currentSum++;
 
-                if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
-                {
-                    addOne = true;
+					addOne = false;
+				}
 
-                    currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
-                }
-                    
-                if (result == null)
-                {
-                    result = new BigNumberDS(currentSum, false, true);
-                }
-                else
-                {
-                    result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, false, true);
-                }
+				if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
+				{
+					addOne = true;
 
-                result = BigNumberDSMath.Add(currentFirst, currentSecond, result, addOne);
-                #endregion
-            }
-            else if (currentSecond != null)
-            {
-                #region Adding numbers middle blocks
-                isBigPart = currentFirst.isBigPart;
+					currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
+				}
 
-                if (!currentSecond.isPositive)
-                {
-                    if (currentFirst.currentValue > currentSecond.currentValue)
-                    {
-                        currentSum = currentFirst.currentValue - currentSecond.currentValue;
+				if (result == null)
+				{
+					result = new BigNumberDS(currentSum, false, true);
+				}
+				else
+				{
+					result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, false, true);
+				}
 
-                        currentFirst = currentFirst.previousBlock;
-                        currentSecond = currentSecond.previousBlock;
-                    }
-                    else
-                    {
-                        BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst);
+				result = BigNumberDSMath.Add(currentFirst, currentSecond, result, addOne);
 
-                        currentSum = currentFirst.currentValue + BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
+				#endregion Adding numbers with different count of blocks in small part
+			}
+			else if (currentSecond != null)
+			{
+				#region Adding numbers middle blocks
 
-                        currentFirst = currentFirst.previousBlock;
-                        currentSecond = currentSecond.previousBlock;
-                    }
-                }
-                else
-                {
-                    currentSum = currentFirst.currentValue + currentSecond.currentValue;
+				isBigPart = currentFirst.isBigPart;
 
-                    currentFirst = currentFirst.previousBlock;
-                    currentSecond = currentSecond.previousBlock;
-                }
+				if (!currentSecond.isPositive)
+				{
+					if (currentFirst.currentValue > currentSecond.currentValue)
+					{
+						currentSum = currentFirst.currentValue - currentSecond.currentValue;
 
-                if (addOne)
-                {
-                    currentSum++;
+						currentFirst = currentFirst.previousBlock;
+						currentSecond = currentSecond.previousBlock;
+					}
+					else
+					{
+						BigNumberDSHelper.GetHelpFromPreviousBlocks(currentFirst);
 
-                    addOne = false;
-                }
+						currentSum = currentFirst.currentValue + BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue;
 
-                if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
-                {
-                    addOne = true;
+						currentFirst = currentFirst.previousBlock;
+						currentSecond = currentSecond.previousBlock;
+					}
+				}
+				else
+				{
+					currentSum = currentFirst.currentValue + currentSecond.currentValue;
 
-                    currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
-                }
+					currentFirst = currentFirst.previousBlock;
+					currentSecond = currentSecond.previousBlock;
+				}
 
-                if (result == null)
-                {
-                    result = new BigNumberDS(currentSum, isBigPart, true);
-                }
-                else
-                {
-                    result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
-                }
+				if (addOne)
+				{
+					currentSum++;
 
-                result = BigNumberDSMath.Add(currentFirst, currentSecond, result, addOne); 
-                #endregion
-            }
-            else if (currentFirst != null)
-            {
-                #region Adding numbers final blocks
-                isBigPart = currentFirst.isBigPart;
+					addOne = false;
+				}
 
-                currentSum = currentFirst.currentValue;
+				if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
+				{
+					addOne = true;
 
-                if (addOne)
-                {
-                    currentSum++;
+					currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
+				}
 
-                    addOne = false;
-                }
+				if (result == null)
+				{
+					result = new BigNumberDS(currentSum, isBigPart, true);
+				}
+				else
+				{
+					result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
+				}
 
-                if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
-                {
-                    addOne = true;
+				result = BigNumberDSMath.Add(currentFirst, currentSecond, result, addOne);
 
-                    currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
-                }
+				#endregion Adding numbers middle blocks
+			}
+			else if (currentFirst != null)
+			{
+				#region Adding numbers final blocks
 
-                if (currentFirst.previousBlock != null)
-                {
-                    result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
+				isBigPart = currentFirst.isBigPart;
 
-                    currentFirst = currentFirst.previousBlock;
+				currentSum = currentFirst.currentValue;
 
-                    result = BigNumberDSMath.Add(currentFirst, null, result, addOne);
-                }
-                else
-                {
-                    result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
+				if (addOne)
+				{
+					currentSum++;
 
-                    result = BigNumberDSMath.Add(null, null, result, addOne);
-                } 
-                #endregion
-            }
-            else if (addOne)
-            {
-                result = BigNumberDSHelper.AddNewPreviousBlock(result, 1, true, true);
+					addOne = false;
+				}
 
-                result = BigNumberDSMath.Add(null, null, result, false);
-            }
+				if (currentSum > BigNumberDSMath.MAX_ALLOWED_VALUE)
+				{
+					addOne = true;
 
-            return result;
-        }
+					currentSum = currentSum - BigNumberDSMath.MAX_ALLOWED_VALUE - 1;
+				}
+
+				if (currentFirst.previousBlock != null)
+				{
+					result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
+
+					currentFirst = currentFirst.previousBlock;
+
+					result = BigNumberDSMath.Add(currentFirst, null, result, addOne);
+				}
+				else
+				{
+					result = BigNumberDSHelper.AddNewPreviousBlock(result, currentSum, isBigPart, true);
+
+					result = BigNumberDSMath.Add(null, null, result, addOne);
+				}
+
+				#endregion Adding numbers final blocks
+			}
+			else if (addOne)
+			{
+				result = BigNumberDSHelper.AddNewPreviousBlock(result, 1, true, true);
+
+				result = BigNumberDSMath.Add(null, null, result, false);
+			}
+
+			return result;
+		}
 
 		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs)
 		{

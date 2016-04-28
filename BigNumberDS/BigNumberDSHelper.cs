@@ -68,17 +68,18 @@ namespace Algorithms.BigNumber
 
 			return false;
 		}
-        
-        public static bool GetHelpFromTitleBlock(BigNumberDS input)
-        {
-            if (input.currentValue > 0)
-            {
-                input.currentValue--;
 
-                return true;
-            }
-            return false;
-        }
+		public static bool GetHelpFromTitleBlock(BigNumberDS input)
+		{
+			if (input.currentValue > 0)
+			{
+				input.currentValue--;
+
+				return true;
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
 		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
@@ -193,7 +194,7 @@ namespace Algorithms.BigNumber
 
 			while (current != null && !current.isBigPart)
 			{
-                current = current.previousBlock;
+				current = current.previousBlock;
 			}
 
 			while (current != null)

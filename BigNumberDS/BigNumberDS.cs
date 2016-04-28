@@ -20,7 +20,7 @@ namespace Algorithms.BigNumber
 		public static BigNumberDS operator -(BigNumberDS value)
 		{
 			return value.Invert();
-        }
+		}
 
 		public static BigNumberDS operator -(BigNumberDS lhs, BigNumberDS rhs)
 		 => BigNumberDSMath.Subtract(lhs, rhs);

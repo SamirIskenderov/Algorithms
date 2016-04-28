@@ -119,8 +119,8 @@ namespace Algorithms.Test
 			BigNumberDS lhs = /*    */ new BigNumberDS("99595461231975613216879412315,00203033540056462120697460");
 			BigNumberDS rhs = /*            */ new BigNumberDS("495120297894120548450,98120954509841650747165095020905");
 			BigNumberDS result = /* */ new BigNumberDS("99595461727095911110999960765,98323988049898112867862555020905");
-            
-            Assert.IsTrue(result == lhs + rhs);
+
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -143,23 +143,23 @@ namespace Algorithms.Test
 			Assert.IsTrue(result == lhs + rhs);
 		}
 
-        [TestMethod]
-        public void AddTwoNumbersMustAddItCorrectlyVer8()
-        {
-            BigNumberDS lhs = /*    */ new BigNumberDS("-0,123456789");
-            BigNumberDS rhs = /*    */ new BigNumberDS("4");
-            BigNumberDS result = /* */ new BigNumberDS("3,876543211");
+		[TestMethod]
+		public void AddTwoNumbersMustAddItCorrectlyVer8()
+		{
+			BigNumberDS lhs = /*    */ new BigNumberDS("-0,123456789");
+			BigNumberDS rhs = /*    */ new BigNumberDS("4");
+			BigNumberDS result = /* */ new BigNumberDS("3,876543211");
 
-            Assert.IsTrue(result == lhs + rhs);
-        }
+			Assert.IsTrue(result == lhs + rhs);
+		}
 
-        #endregion add
+		#endregion add
 
-        #region operators
+		#region operators
 
-        #region unary+
+		#region unary+
 
-        [TestMethod]
+		[TestMethod]
 		public void OperatorUnapyPlusMustWorkCorrectlyVer1()
 		{
 			BigNumberDS lhs = new BigNumberDS("123");
