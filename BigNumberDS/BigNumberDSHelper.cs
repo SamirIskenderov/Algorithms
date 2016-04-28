@@ -60,7 +60,18 @@ namespace Algorithms.BigNumber
 			return false;
 		}
 
-		public static void TrimStructure(ref BigNumberDS input)
+        public static bool GetHelpFromTitleBlock(BigNumberDS input)
+        {
+            if (input.currentValue > 0)
+            {
+                input.currentValue--;
+
+                return true;
+            }
+            return false;
+        }
+
+        public static void TrimStructure(ref BigNumberDS input)
 		{
 			BigNumberDS current = input;
 			bool isEdgeBlock = true;
@@ -164,15 +175,15 @@ namespace Algorithms.BigNumber
 
 		internal static int GetBigPartBlocksCount(BigNumberDS input)
 		{
-			int result = 1;
+			int result = 0;
 			BigNumberDS current = input;
 
 			while (current != null && !current.isBigPart)
 			{
-				current = current.previousBlock;
+                current = current.previousBlock;
 			}
 
-			while (current != null && current.previousBlock != null)
+			while (current != null)
 			{
 				result++;
 

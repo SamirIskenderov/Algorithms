@@ -80,7 +80,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("12");
 			BigNumberDS result = new BigNumberDS("24");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -90,7 +90,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("12,12");
 			BigNumberDS result = new BigNumberDS("24,24");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -100,7 +100,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("0,12");
 			BigNumberDS result = new BigNumberDS("0,24");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -110,7 +110,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS("12121212412,12121212412");
 			BigNumberDS result = /* */ new BigNumberDS("24242424824,24242424824");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -118,9 +118,9 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = /*    */ new BigNumberDS("99595461231975613216879412315,00203033540056462120697460");
 			BigNumberDS rhs = /*            */ new BigNumberDS("495120297894120548450,98120954509841650747165095020905");
-			BigNumberDS result = /* */ new BigNumberDS("99595461727095911110999960765,98120954712875190803627215718365");
-
-			Assert.AreEqual(result, lhs + rhs);
+			BigNumberDS result = /* */ new BigNumberDS("99595461727095911110999960765,98323988049898112867862555020905");
+            
+            Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -128,9 +128,9 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = /*                                       */ new BigNumberDS("5401009724016,15400001240000000000000000000000000000000000000001");
 			BigNumberDS rhs = /*    */ new BigNumberDS("540150000000000000000000000000000005401009766196,12121212412");
-			BigNumberDS result = /* */ new BigNumberDS("540150000000000000000000000000000010802019532392,27521213652000000000000000000000000000000000000001");
+			BigNumberDS result = /* */ new BigNumberDS("540150000000000000000000000000000010802019490212,27521213652000000000000000000000000000000000000001");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
 		[TestMethod]
@@ -140,16 +140,26 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS(",12");
 			BigNumberDS result = /* */ new BigNumberDS(",24");
 
-			Assert.AreEqual(result, lhs + rhs);
+			Assert.IsTrue(result == lhs + rhs);
 		}
 
-		#endregion add
+        [TestMethod]
+        public void AddTwoNumbersMustAddItCorrectlyVer8()
+        {
+            BigNumberDS lhs = /*    */ new BigNumberDS("-0,123456789");
+            BigNumberDS rhs = /*    */ new BigNumberDS("4");
+            BigNumberDS result = /* */ new BigNumberDS("3,876543211");
 
-		#region operators
+            Assert.IsTrue(result == lhs + rhs);
+        }
 
-		#region unary+
+        #endregion add
 
-		[TestMethod]
+        #region operators
+
+        #region unary+
+
+        [TestMethod]
 		public void OperatorUnapyPlusMustWorkCorrectlyVer1()
 		{
 			BigNumberDS lhs = new BigNumberDS("123");
