@@ -699,11 +699,11 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OperatorMultiplicativeMultipleMustBeAssociative()
 		{
-			BigNumberDS lhs = new BigNumberDS("123456789189123,123453456789123");
-			BigNumberDS mhs = new BigNumberDS("9120361651,321984981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
+			BigNumberDS /* */ one = new BigNumberDS("123456789189123,123453456789123");
+			BigNumberDS /*      */ two = new BigNumberDS("9120361651,321984981");
+			BigNumberDS /*          */ three = new BigNumberDS("1123,123");
 
-			Assert.AreEqual<BigNumberDS>((lhs * mhs) * rhs, rhs * (mhs * lhs));
+			Assert.AreEqual<BigNumberDS>((one * two) * three, three * (two * one));
 		}
 
 		[TestMethod]

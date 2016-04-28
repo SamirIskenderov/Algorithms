@@ -360,7 +360,14 @@ namespace Algorithms.BigNumber
 			    (rhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetFractionPartBlocksCount(rhs) == 0)) // and has no fraction
 			{
-				return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
+				if (rhs.isPositive)
+				{
+					return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
+				}
+				else
+				{
+					return BigNumberDSMath.Multiple(lhs, ((short)(-rhs.currentValue)));
+				}
 			}
 
 			if ((lhs.previousBlock == null) && // if lhs is less than MAX_ALLOWED_VALUE
@@ -377,10 +384,10 @@ namespace Algorithms.BigNumber
 			BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
 			BigNumberDS output = new BigNumberDS();
 
+			int k = 0;
 			while (current != null)
 			{
 				byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
-				int k = 0;
 
 				for (int i = 0; i < a.Length; i++)
 				{
@@ -450,7 +457,7 @@ namespace Algorithms.BigNumber
 			bool isRhsNegative = rhs < 0;
 			if (isRhsNegative)
 			{
-				output.isPositive ^= isRhsNegative;
+				output = output.Invert();
 			}
 
 			// move dot to the right position
