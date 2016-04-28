@@ -4,17 +4,121 @@ namespace Algorithms.BigNumber
 {
 	internal static class BigNumberDSMath
 	{
+		/// <summary>
+		/// Now we works with int.
+		/// Int can be from minus to plus 2 000 000 000.
+		/// So, if we wanna save full stack of numbers, we have to use range from minus to plus 999 999 999.
+		/// </summary>
 		internal const int MAX_ALLOWED_VALUE = 999999999;
 
-		internal static BigNumberDS Subtract(BigNumberDS lhs, BigNumberDS rhs)
+		internal static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
 		{
-			return BigNumberDSMath.Add(lhs, -rhs);
+			if (secondMem == 0)
+			{
+				return firstMem;
+			}
+
+			BigNumberDS big = BigNumberDSHelper.GetIntegerPart(firstMem);
+
+			if (firstMem.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
+			{
+				int b = secondMem - MAX_ALLOWED_VALUE - 1;
+				firstMem.previousBlock.currentValue += 1; // TODO null ref fix
+
+				if (b > MAX_ALLOWED_VALUE)
+				{
+					b = b - MAX_ALLOWED_VALUE - 1;
+					firstMem.previousBlock.currentValue += 1;
+				}
+
+				firstMem.currentValue += b;
+			}
+			firstMem.currentValue += secondMem;
+
+			return firstMem;
 		}
 
-		internal static BigNumberDS Subtract(BigNumberDS lhs, int rhs)
+		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
 		{
-			return BigNumberDSMath.Add(lhs, -rhs);
-		}
+            BigNumberDS currentFirst;
+            BigNumberDS currentSecond;
+
+            if (firstMem.isPositive ^ secondMem.isPositive)
+            {
+                if (firstMem.Abs() == secondMem.Abs())
+                {
+                    return new BigNumberDS("0");
+                }
+                else if (!firstMem.isPositive)
+                {
+                    if (firstMem.Abs() > secondMem)
+                    {
+                        currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
+                        currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+
+                        return Add(currentFirst, currentSecond, null, false).Invert();
+                    }
+                    else
+                    {
+                        currentFirst = ((BigNumberDS)secondMem.Clone());
+                        currentSecond = ((BigNumberDS)firstMem.Clone());
+
+                        return Add(currentFirst, currentSecond, null, false);
+                    }
+
+                }
+                else
+                {
+                    if (secondMem.Abs() > firstMem)
+                    {
+                        currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
+                        currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+
+                        return Add(currentFirst, currentSecond, null, false).Invert();
+                    }
+                    else
+                    {
+                        currentFirst = ((BigNumberDS)firstMem.Clone());
+                        currentSecond = ((BigNumberDS)secondMem.Clone());
+
+                        return Add(currentFirst, currentSecond, null, false);
+                    }
+                }
+            }
+            else if (!firstMem.isPositive)
+            {
+                if (firstMem.Abs() > secondMem.Abs())
+                {
+                    currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
+                    currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+                }
+                else
+                {
+                    currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
+                    currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+                }
+
+                return Add(currentFirst, currentSecond, null, false).Invert();
+            }
+            else
+            {
+                if (firstMem.Abs() > secondMem.Abs())
+                {
+                    currentFirst = ((BigNumberDS)firstMem.Clone());
+                    currentSecond = ((BigNumberDS)secondMem.Clone());
+                }
+                else
+                {
+                    currentFirst = ((BigNumberDS)secondMem.Clone());
+                    currentSecond = ((BigNumberDS)firstMem.Clone());
+                }
+
+                return Add(currentFirst, currentSecond, null, false);
+            }
+        }
+
+		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
+		    => BigNumberDSMath.Add(secondMem, firstMem);
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS result, bool addOne)
 		{
@@ -45,10 +149,10 @@ namespace Algorithms.BigNumber
 
             int firstMemSmallPartBlocksCount = currentFirst == null ?
                 0 :
-                BigNumberDSHelper.GetSmallPartBlocksCount(currentFirst),
+                BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst),
                     secondMemSmallPartBlocksCount = currentSecond == null ?
                     0 :
-                    BigNumberDSHelper.GetSmallPartBlocksCount(currentSecond);
+                    BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond);
 
             if (firstMem != null && secondMem != null &&
                 (!currentFirst.isBigPart || !currentSecond.isBigPart) &&
@@ -234,7 +338,6 @@ namespace Algorithms.BigNumber
 			if (rhs.currentValue == 1)
 			{
 				return (BigNumberDS)lhs.Clone();
-				;
 			}
 
 			if (lhs.currentValue == -1)
@@ -245,61 +348,54 @@ namespace Algorithms.BigNumber
 			if (lhs.currentValue == 1)
 			{
 				return (BigNumberDS)rhs.Clone();
-				;
 			}
 
-			// if I can multiple not by this class, but by short
-			if ((rhs.previousBlock == null) &&
+			// simple optimization. TODO check, is it an optimization
+			if ((rhs.previousBlock == null) && // if rhs is less than MAX_ALLOWED_VALUE
 			    (rhs.currentValue < short.MaxValue) &&
-			    (BigNumberDSHelper.GetSmallPartBlocksCount(rhs) == 0))
+			    (BigNumberDSHelper.GetFractionPartBlocksCount(rhs) == 0)) // and has no fraction
 			{
 				return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
 			}
 
-			if ((lhs.previousBlock == null) &&
+			if ((lhs.previousBlock == null) && // if lhs is less than MAX_ALLOWED_VALUE
 			    (lhs.currentValue < short.MaxValue) &&
-			    (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) == 0))
+			    (BigNumberDSHelper.GetFractionPartBlocksCount(lhs) == 0)) // and has no fraction
 			{
 				return BigNumberDSMath.Multiple(rhs, (short)lhs.currentValue);
 			}
 
 			#endregion checks
 
-			int lhsLength = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
-
 			// column addition
-			BigNumberDS lhsrough = BigNumberDSHelper.WithoutDot(lhs);
-			BigNumberDS rhsrough = BigNumberDSHelper.WithoutDot(rhs);
-			int count = BigNumberDSHelper.GetBigPartBlocksCount(rhsrough) * 9;
-			BigNumberDS[] sbfnarr = new BigNumberDS[count];
-			int k = 0;
-			BigNumberDS current = rhsrough;
-			// work with other block
+			BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
+			BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
+			BigNumberDS output = new BigNumberDS();
+
 			while (current != null)
 			{
-				int[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+				byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+				int k = 0;
+
 				for (int i = 0; i < a.Length; i++)
 				{
-					if (k > sbfnarr.Length - 1)
-					{
-						break;
-					}
-					sbfnarr[k] = lhsrough * a[i];
+					BigNumberDS tmp = new BigNumberDS();
+
+					tmp = lhsrough * a[i];
+
 					for (int j = 0; j < k; j++)
 					{
-						sbfnarr[k] *= 10;
+						tmp *= 10;
 					}
+
+					output += tmp;
 					k++;
 				}
 				current = current.previousBlock;
 			}
-			// summing output
 
-			BigNumberDS output = new BigNumberDS();
-			for (int i = 0; i < k - 1; i++)
-			{
-				output += sbfnarr[i];
-			}
+			BigNumberDSHelper.TrimStructure(ref output);
+
 			return output;
 		}
 
@@ -335,21 +431,29 @@ namespace Algorithms.BigNumber
 
 			BigNumberDSHelper.TrimStructure(ref lhs);
 
-			int lhsLength = BigNumberDSHelper.GetBigPartBlocksCount(lhs);
-			int smallCount = BigNumberDSHelper.GetSmallPartBlocksCount(lhs);
+			int smallBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
 
 			BigNumberDS output = new BigNumberDS();
 
-			BigNumberDS biglhs = BigNumberDSHelper.WithoutDot(lhs);
+			BigNumberDS biglhs = BigNumberDSHelper.GetWithoutDot(lhs);
 
 			for (int i = 0; i < Math.Abs(rhs); i++)
 			{
 				output += biglhs;
 			}
-			if (BigNumberDSHelper.GetSmallPartBlocksCount(lhs) != 0)
+
+			bool isRhsNegative = rhs < 0;
+			if (isRhsNegative)
 			{
+				output.isPositive ^= isRhsNegative;
+			}
+
+			// move dot to the right position
+			if (smallBlocksCount != 0)
+			{
+				// getting copy of output
 				biglhs = output;
-				for (int i = 0; i < lhsLength + 1; i++)
+				for (int i = 0; i < smallBlocksCount; i++)
 				{
 					biglhs.isBigPart = false;
 					biglhs = biglhs.previousBlock;
@@ -359,108 +463,14 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		public static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
+		internal static BigNumberDS Subtract(BigNumberDS lhs, BigNumberDS rhs)
 		{
-			BigNumberDS big = BigNumberDSHelper.GetBigPart(firstMem);
-
-			if (firstMem.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
-			{
-				int b = secondMem - MAX_ALLOWED_VALUE + 1;
-				firstMem.previousBlock.currentValue += 1; // TODO null ref fix
-
-				if (b > MAX_ALLOWED_VALUE)
-				{
-					b = b - MAX_ALLOWED_VALUE + 1;
-					firstMem.previousBlock.currentValue += 1;
-				}
-
-				firstMem.currentValue += b;
-			}
-			firstMem.currentValue += secondMem;
-
-			return firstMem;
+			return BigNumberDSMath.Add(lhs, -rhs);
 		}
 
-		public static BigNumberDS Adding(int firstMem, BigNumberDS secondMem)
-		    => BigNumberDSMath.Add(secondMem, firstMem);
-
-		public static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
+		internal static BigNumberDS Subtract(BigNumberDS lhs, int rhs)
 		{
-			BigNumberDS currentFirst;
-			BigNumberDS currentSecond;
-
-			if (firstMem.isPositive ^ secondMem.isPositive)
-			{
-				if (firstMem.Abs() == secondMem.Abs())
-				{
-					return new BigNumberDS("0");
-				}
-				else if (!firstMem.isPositive)
-				{
-                    if (firstMem.Abs() > secondMem)
-                    {
-                        currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-                        currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
-
-                        return Add(currentFirst, currentSecond, null, false).Invert();
-                    }
-                    else
-                    {
-                        currentFirst = ((BigNumberDS)secondMem.Clone());
-                        currentSecond = ((BigNumberDS)firstMem.Clone());
-
-                        return Add(currentFirst, currentSecond, null, false);
-                    }
-					
-				}
-                else
-                {
-                    if (secondMem.Abs() > firstMem)
-                    {
-                        currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-                        currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
-
-                        return Add(currentFirst, currentSecond, null, false).Invert();
-                    }
-                    else
-                    {
-                        currentFirst = ((BigNumberDS)firstMem.Clone());
-                        currentSecond = ((BigNumberDS)secondMem.Clone());
-
-                        return Add(currentFirst, currentSecond, null, false);
-                    }
-                }
-            }
-			else if (!firstMem.isPositive)
-			{
-                if (firstMem.Abs() > secondMem.Abs())
-                {
-                    currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-                    currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
-                }
-                else
-                {
-                    currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-                    currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
-                }
-
-                return Add(currentFirst, currentSecond, null, false).Invert();
-            }
-            else
-            {
-                if (firstMem.Abs() > secondMem.Abs())
-                {
-                    currentFirst = ((BigNumberDS)firstMem.Clone());
-                    currentSecond = ((BigNumberDS)secondMem.Clone());
-                }
-                else
-                {
-                    currentFirst = ((BigNumberDS)secondMem.Clone());
-                    currentSecond = ((BigNumberDS)firstMem.Clone());
-                }
-
-                return Add(currentFirst, currentSecond, null, false);
-            }
+			return BigNumberDSMath.Add(lhs, -rhs);
 		}
 	}
 }

@@ -12,15 +12,15 @@ namespace Algorithms.BigNumber
 		internal bool isBigPart;
 
 		internal bool isPositive;
+
 		internal BigNumberDS previousBlock;
 
 		#region operators
 
 		public static BigNumberDS operator -(BigNumberDS value)
 		{
-			value.isPositive = false;
-			return value;
-		}
+			return value.Invert();
+        }
 
 		public static BigNumberDS operator -(BigNumberDS lhs, BigNumberDS rhs)
 		 => BigNumberDSMath.Subtract(lhs, rhs);
@@ -46,6 +46,9 @@ namespace Algorithms.BigNumber
 		{
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
+
+		public static BigNumberDS operator *(int lhs, BigNumberDS rhs)
+			=> rhs * lhs;
 
 		public static BigNumberDS operator *(BigNumberDS lhs, int rhs)
 		{
@@ -165,6 +168,10 @@ namespace Algorithms.BigNumber
 
 		public BigNumberDS()
 		{
+			this.currentValue = 0;
+			this.isBigPart = true;
+			this.isPositive = true;
+			this.previousBlock = null;
 		}
 
 		public BigNumberDS(string inputString)
@@ -274,6 +281,33 @@ namespace Algorithms.BigNumber
 
 		#endregion ctor
 
+		/// <summary>
+		/// Getting absolute value of number
+		/// </summary>
+		/// <returns></returns>
+		public BigNumberDS Abs()
+		{
+			BigNumberDS current = (BigNumberDS)this.Clone();
+
+			if (this.isPositive)
+			{
+				return current;
+			}
+			else
+			{
+				BigNumberDS result = current;
+
+				while (current != null)
+				{
+					current.isPositive = true;
+
+					current = current.previousBlock;
+				}
+
+				return result;
+			}
+		}
+
 		public object Clone()
 		{
 			BigNumberDS current = this;
@@ -317,11 +351,11 @@ namespace Algorithms.BigNumber
 			}
 			else if (this.isPositive)
 			{
-				if (BigNumberDSHelper.GetBigPartBlocksCount(this) > BigNumberDSHelper.GetBigPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
-				else if (BigNumberDSHelper.GetBigPartBlocksCount(this) < BigNumberDSHelper.GetBigPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
@@ -340,11 +374,11 @@ namespace Algorithms.BigNumber
 			}
 			else
 			{
-				if (BigNumberDSHelper.GetBigPartBlocksCount(this) > BigNumberDSHelper.GetBigPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
-				else if (BigNumberDSHelper.GetBigPartBlocksCount(this) < BigNumberDSHelper.GetBigPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
@@ -361,6 +395,26 @@ namespace Algorithms.BigNumber
 
 				return 0;
 			}
+		}
+
+		/// <summary>
+		/// Change the sign
+		/// </summary>
+		/// <returns></returns>
+		public BigNumberDS Invert()
+		{
+			BigNumberDS current = (BigNumberDS)this.Clone();
+
+			BigNumberDS result = current;
+
+			while (current != null)
+			{
+				current.isPositive = !current.isPositive;
+
+				current = current.previousBlock;
+			}
+
+			return result;
 		}
 
 		public override string ToString()
@@ -387,7 +441,7 @@ namespace Algorithms.BigNumber
 					currentSbnf = currentSbnf.previousBlock;
 				}
 
-				sb.Insert(0, string.Format("{0},", currentSbnf.currentValue));
+				sb.Insert(0, $"{currentSbnf.currentValue},");
 
 				if (currentSbnf.previousBlock != null)
 				{
@@ -437,45 +491,6 @@ namespace Algorithms.BigNumber
 			}
 
 			return sb.ToString();
-		}
-
-		public BigNumberDS Invert()
-		{
-			BigNumberDS current = (BigNumberDS)this.Clone();
-
-			BigNumberDS result = current;
-
-			while (current != null)
-			{
-				current.isPositive = !current.isPositive;
-
-				current = current.previousBlock;
-			}
-
-			return result;
-		}
-
-		public BigNumberDS Abs()
-		{
-			BigNumberDS current = (BigNumberDS)this.Clone();
-
-			if (this.isPositive)
-			{
-				return current;
-			}
-			else
-			{
-				BigNumberDS result = current;
-
-				while (current != null)
-				{
-					current.isPositive = true;
-
-					current = current.previousBlock;
-				}
-
-				return result;
-			}
 		}
 	}
 }

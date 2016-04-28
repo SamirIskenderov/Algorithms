@@ -7,7 +7,7 @@ namespace Algorithms.Library
 		// awfull. wtf is wrong with big number's libs?
 		public string Pi()
 		{
-			int steps = 100;
+			//int steps = 100;
 
 			//BigDecimal pi = new BigDecimal();
 

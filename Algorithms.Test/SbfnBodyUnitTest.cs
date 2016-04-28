@@ -12,16 +12,16 @@ namespace Algorithms.Test
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void CtorFromNullMustThrowArgNullExc()
+		public void CtorFromEmptyStringMustThrowArgNullExc()
 		{
-			BigNumberDS num = new BigNumberDS(null);
+			BigNumberDS num = new BigNumberDS(string.Empty);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void CtorFromEmptyStringMustThrowArgNullExc()
+		public void CtorFromNullMustThrowArgNullExc()
 		{
-			BigNumberDS num = new BigNumberDS(string.Empty);
+			BigNumberDS num = new BigNumberDS(null);
 		}
 
 		[TestMethod]
@@ -240,51 +240,6 @@ namespace Algorithms.Test
 		#region pre/postfix+
 
 		[TestMethod]
-		public void OperatorPrefixPlusMustWorkCorrectlyVer0()
-		{
-			BigNumberDS lhs = new BigNumberDS("119");
-			BigNumberDS rhs = new BigNumberDS("120");
-			++lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixPlusMustWorkCorrectlyVer1()
-		{
-			BigNumberDS lhs = new BigNumberDS("123");
-			BigNumberDS rhs = new BigNumberDS("124");
-			++lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixPlusMustWorkCorrectlyVer2()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
-			BigNumberDS rhs = new BigNumberDS("123456789123456789124");
-			++lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixPlusMustWorkCorrectlyVer3()
-		{
-			BigNumberDS lhs = new BigNumberDS("0,123456789");
-			BigNumberDS rhs = new BigNumberDS("1,123456789");
-			++lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixPlusMustWorkCorrectlyVer4()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
-			BigNumberDS rhs = new BigNumberDS("123456789123456789124,123456789");
-			++lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
 		public void OperatorPostfixPlusMustWorkCorrectlyVer0()
 		{
 			BigNumberDS lhs = new BigNumberDS("119");
@@ -329,54 +284,54 @@ namespace Algorithms.Test
 			Assert.AreEqual(lhs, rhs);
 		}
 
+		[TestMethod]
+		public void OperatorPrefixPlusMustWorkCorrectlyVer0()
+		{
+			BigNumberDS lhs = new BigNumberDS("119");
+			BigNumberDS rhs = new BigNumberDS("120");
+			++lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixPlusMustWorkCorrectlyVer1()
+		{
+			BigNumberDS lhs = new BigNumberDS("123");
+			BigNumberDS rhs = new BigNumberDS("124");
+			++lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixPlusMustWorkCorrectlyVer2()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
+			BigNumberDS rhs = new BigNumberDS("123456789123456789124");
+			++lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixPlusMustWorkCorrectlyVer3()
+		{
+			BigNumberDS lhs = new BigNumberDS("0,123456789");
+			BigNumberDS rhs = new BigNumberDS("1,123456789");
+			++lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixPlusMustWorkCorrectlyVer4()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
+			BigNumberDS rhs = new BigNumberDS("123456789123456789124,123456789");
+			++lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
 		#endregion pre/postfix+
 
 		#region pre/postfix-
-
-		[TestMethod]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer0()
-		{
-			BigNumberDS lhs = new BigNumberDS("110");
-			BigNumberDS rhs = new BigNumberDS("109");
-			--lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer1()
-		{
-			BigNumberDS lhs = new BigNumberDS("123");
-			BigNumberDS rhs = new BigNumberDS("122");
-			--lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer2()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
-			BigNumberDS rhs = new BigNumberDS("123456789123456789122");
-			--lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer3()
-		{
-			BigNumberDS lhs = new BigNumberDS("0,123456789");
-			BigNumberDS rhs = new BigNumberDS("-1,123456789");
-			--lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
-
-		[TestMethod]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer4()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
-			BigNumberDS rhs = new BigNumberDS("123456789123456789122,123456789");
-			--lhs;
-			Assert.AreEqual(rhs, lhs);
-		}
 
 		[TestMethod]
 		public void OperatorPostfixMinusMustWorkCorrectlyVer0()
@@ -423,9 +378,83 @@ namespace Algorithms.Test
 			Assert.AreEqual(rhs, lhs);
 		}
 
+		[TestMethod]
+		public void OperatorPrefixMinusMustWorkCorrectlyVer0()
+		{
+			BigNumberDS lhs = new BigNumberDS("110");
+			BigNumberDS rhs = new BigNumberDS("109");
+			--lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixMinusMustWorkCorrectlyVer1()
+		{
+			BigNumberDS lhs = new BigNumberDS("123");
+			BigNumberDS rhs = new BigNumberDS("122");
+			--lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixMinusMustWorkCorrectlyVer2()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
+			BigNumberDS rhs = new BigNumberDS("123456789123456789122");
+			--lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixMinusMustWorkCorrectlyVer3()
+		{
+			BigNumberDS lhs = new BigNumberDS("0,123456789");
+			BigNumberDS rhs = new BigNumberDS("-1,123456789");
+			--lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
+		[TestMethod]
+		public void OperatorPrefixMinusMustWorkCorrectlyVer4()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
+			BigNumberDS rhs = new BigNumberDS("123456789123456789122,123456789");
+			--lhs;
+			Assert.AreEqual(rhs, lhs);
+		}
+
 		#endregion pre/postfix-
 
 		#region binary+
+
+		[TestMethod]
+		public void OperatorMultiplicativePlusMustBeAssociative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
+			BigNumberDS rhs = new BigNumberDS("1123,123");
+
+			Assert.AreEqual((lhs + mhs) + rhs, rhs + (mhs + lhs));
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativePlusMustBeCommutative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+
+			Assert.AreEqual(lhs + rhs, rhs + lhs);
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativePlusMustBeDistributive()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS mhs = new BigNumberDS("100");
+			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+
+			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
+		}
 
 		[TestMethod]
 		public void OperatorMultiplicativePlusMustWorkCorrectlyVer0()
@@ -508,25 +537,6 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativePlusMustBeCommutative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
-
-			Assert.AreEqual(lhs + rhs, rhs + lhs);
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativePlusMustBeAssociative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
-
-			Assert.AreEqual((lhs + mhs) + rhs, rhs + (mhs + lhs));
-		}
-
-		[TestMethod]
 		public void OperatorMultiplicativePlusMustWorkWithNullCorrectly()
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
@@ -534,19 +544,65 @@ namespace Algorithms.Test
 			Assert.AreEqual(lhs, lhs + 0);
 		}
 
+		#endregion binary+
+
+		#region binary-
+
 		[TestMethod]
-		public void OperatorMultiplicativePlusMustBeDistributive()
+		public void OperatorMultiplicativeMinusMustBeAbsAssociative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
+			BigNumberDS rhs = new BigNumberDS("1123,123");
+
+			Assert.AreEqual(((lhs - mhs) - rhs).Abs(), (rhs - (mhs - lhs)).Abs());
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMinusMustBeAbsCommutative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+
+			Assert.AreEqual((lhs - rhs).Abs(), (rhs - lhs).Abs());
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMinusMustBeDistributive()
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 			BigNumberDS mhs = new BigNumberDS("100");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
+			Assert.AreEqual(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
 		}
 
-		#endregion binary+
+		[TestMethod]
+		public void OperatorMultiplicativeMinusMustBeInverseElementCorrect()
+		{
+			BigNumberDS obj = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-		#region binary-
+			Assert.AreNotEqual(obj + obj, obj - (-obj));
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMinusMustBeNonAssociative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
+			BigNumberDS rhs = new BigNumberDS("1123,123");
+
+			Assert.AreNotEqual((lhs - mhs) - rhs, rhs - (mhs - lhs));
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMinusMustBeNonCommutative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+
+			Assert.AreNotEqual(lhs - rhs, rhs - lhs);
+		}
 
 		[TestMethod]
 		public void OperatorMultiplicativeMinusMustWorkCorrectlyVer0()
@@ -593,7 +649,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS added = new BigNumberDS("4");
-			BigNumberDS rhs = new BigNumberDS("-4,123456789");
+			BigNumberDS rhs = new BigNumberDS("-3,876543211");
 
 			Assert.AreEqual(rhs, lhs - added);
 		}
@@ -603,7 +659,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS added = new BigNumberDS("11");
-			BigNumberDS rhs = new BigNumberDS("-11,123456789");
+			BigNumberDS rhs = new BigNumberDS("-10,876543211");
 
 			Assert.AreEqual(rhs, lhs - added);
 		}
@@ -629,44 +685,6 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeAbsCommutative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
-
-			Assert.AreEqual((lhs - rhs).Abs(), (rhs - lhs).Abs());
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeNonCommutative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
-
-			Assert.AreNotEqual(lhs - rhs, rhs - lhs);
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeAbsAssociative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
-
-			Assert.AreEqual(((lhs - mhs) - rhs).Abs(), (rhs - (mhs - lhs)).Abs());
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeNonAssociative()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
-
-			Assert.AreNotEqual((lhs - mhs) - rhs, rhs - (mhs - lhs));
-		}
-
-		[TestMethod]
 		public void OperatorMultiplicativeMinusMustWorkWithNullCorrectly()
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
@@ -674,27 +692,38 @@ namespace Algorithms.Test
 			Assert.AreEqual(lhs, lhs - 0);
 		}
 
-		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeInverseElementCorrect()
-		{
-			BigNumberDS obj = new BigNumberDS("123456789123456789123,123456789123456789123");
+		#endregion binary-
 
-			Assert.AreNotEqual(obj + obj, obj - (-obj));
+		#region binary*
+
+		[TestMethod]
+		public void OperatorMultiplicativeMultipleMustBeAssociative()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789189123,123453456789123");
+			BigNumberDS mhs = new BigNumberDS("9120361651,321984981");
+			BigNumberDS rhs = new BigNumberDS("1123,123");
+
+			Assert.AreEqual((lhs * mhs) * rhs, rhs * (mhs * lhs));
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativeMinusMustBeDistributive()
+		public void OperatorMultiplicativeMultipleMustBeCommutative()
+		{
+			BigNumberDS lhs = /* */ new BigNumberDS("123456789189123,123453456789123");
+			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+
+			Assert.AreEqual(lhs * rhs, rhs * lhs);
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMultipleMustBeDistributive()
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 			BigNumberDS mhs = new BigNumberDS("100");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
+			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
 		}
-
-		#endregion binary-
-
-		#region binary*
 
 		[TestMethod]
 		public void OperatorMultiplicativeMultipleMustWorkCorrectlyVer0()
@@ -777,38 +806,23 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativeMultipleMustBeCommutative()
+		public void OperatorMultiplicativeMultipleMustWorkCorrectlyVer8()
 		{
-			BigNumberDS lhs = new BigNumberDS("123456789189123,123453456789123");
-			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
+			BigNumberDS added = new BigNumberDS("9,123456789");
+			BigNumberDS rhs = new BigNumberDS("1126352680876543201873,5020587268");
 
-			Assert.AreEqual(lhs * rhs, rhs * lhs);
+			Assert.AreEqual(rhs, lhs * added);
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativeMultipleMustBeAssociative()
+		public void OperatorMultiplicativeMultipleMustWorkCorrectlyVer9()
 		{
-			BigNumberDS lhs = new BigNumberDS("123456789189123,123453456789123");
-			BigNumberDS mhs = new BigNumberDS("9120361651,321984981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
+			BigNumberDS lhs = /*   */ new BigNumberDS("123456789123456789123,123456789");
+			BigNumberDS added = /*                    */ new BigNumberDS("-9,98765");
+			BigNumberDS rhs = /* */ new BigNumberDS("-1233043199888893199885,56399319865585");
 
-			Assert.AreEqual((lhs * mhs) * rhs, rhs * (mhs * lhs));
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativeMultipleMustWorkWithNullCorrectly()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-
-			Assert.AreEqual(0, lhs * 0);
-		}
-
-		[TestMethod]
-		public void OperatorMultiplicativeMultipleMustWorkWithOneCorrectly()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-
-			Assert.AreEqual(lhs, lhs * 1);
+			Assert.AreEqual(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -820,13 +834,19 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void OperatorMultiplicativeMultipleMustBeDistributive()
+		public void OperatorMultiplicativeMultipleMustWorkWithNullCorrectly()
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS mhs = new BigNumberDS("100");
-			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
+			Assert.AreEqual("0", (lhs * 0).ToString());
+		}
+
+		[TestMethod]
+		public void OperatorMultiplicativeMultipleMustWorkWithOneCorrectly()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
+
+			Assert.AreEqual(lhs, lhs * 1);
 		}
 
 		#endregion binary*
@@ -1078,11 +1098,12 @@ namespace Algorithms.Test
 		#region gethashcode
 
 		[TestMethod]
-		public void HashCodesFromObjectMustBeSame()
+		public void HashCodesFromDifferentObjectMustNotBeSame()
 		{
-			BigNumberDS obj = new BigNumberDS("-123456789123,123456789");
+			BigNumberDS lhs = new BigNumberDS("-123456789123,123456789");
+			BigNumberDS rhs = new BigNumberDS("123456789123,123456789");
 
-			Assert.AreEqual(obj.GetHashCode(), obj.GetHashCode());
+			Assert.AreNotEqual(lhs.GetHashCode(), rhs.GetHashCode());
 		}
 
 		[TestMethod]
@@ -1095,68 +1116,16 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void HashCodesFromDifferentObjectMustNotBeSame()
+		public void HashCodesFromObjectMustBeSame()
 		{
-			BigNumberDS lhs = new BigNumberDS("-123456789123,123456789");
-			BigNumberDS rhs = new BigNumberDS("123456789123,123456789");
+			BigNumberDS obj = new BigNumberDS("-123456789123,123456789");
 
-			Assert.AreNotEqual(lhs.GetHashCode(), rhs.GetHashCode());
+			Assert.AreEqual(obj.GetHashCode(), obj.GetHashCode());
 		}
 
 		#endregion gethashcode
 
 		#region equals
-
-		[TestMethod]
-		public void EqualsToItselfMustReturnTrueVer0()
-		{
-			BigNumberDS obj = new BigNumberDS("123");
-
-			Assert.AreEqual(true, obj.Equals(obj));
-		}
-
-		[TestMethod]
-		public void EqualsToItselfMustReturnTrueVer1()
-		{
-			BigNumberDS obj = new BigNumberDS("0,123456789");
-
-			Assert.AreEqual(true, obj.Equals(obj));
-		}
-
-		[TestMethod]
-		public void EqualsToItselfMustReturnTrueVer2()
-		{
-			BigNumberDS obj = new BigNumberDS("123456789,123456789");
-
-			Assert.AreEqual(true, obj.Equals(obj));
-		}
-
-		[TestMethod]
-		public void EqualsMustBeCommutativeVer0()
-		{
-			BigNumberDS lhs = new BigNumberDS("123");
-			BigNumberDS rhs = new BigNumberDS("123");
-
-			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void EqualsMustBeCommutativeVer1()
-		{
-			BigNumberDS lhs = new BigNumberDS("0,123456789");
-			BigNumberDS rhs = new BigNumberDS("0,123456789");
-
-			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void EqualsMustBeCommutativeVer2()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456789,123456789");
-			BigNumberDS rhs = new BigNumberDS("123456789,123456789");
-
-			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
-		}
 
 		[TestMethod]
 		public void EqualsMustBeAssociativeVer0()
@@ -1189,6 +1158,57 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
+		public void EqualsMustBeCommutativeVer0()
+		{
+			BigNumberDS lhs = new BigNumberDS("123");
+			BigNumberDS rhs = new BigNumberDS("123");
+
+			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
+		}
+
+		[TestMethod]
+		public void EqualsMustBeCommutativeVer1()
+		{
+			BigNumberDS lhs = new BigNumberDS("0,123456789");
+			BigNumberDS rhs = new BigNumberDS("0,123456789");
+
+			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
+		}
+
+		[TestMethod]
+		public void EqualsMustBeCommutativeVer2()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456789,123456789");
+			BigNumberDS rhs = new BigNumberDS("123456789,123456789");
+
+			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
+		}
+
+		[TestMethod]
+		public void EqualsToItselfMustReturnTrueVer0()
+		{
+			BigNumberDS obj = new BigNumberDS("123");
+
+			Assert.AreEqual(true, obj.Equals(obj));
+		}
+
+		[TestMethod]
+		public void EqualsToItselfMustReturnTrueVer1()
+		{
+			BigNumberDS obj = new BigNumberDS("0,123456789");
+
+			Assert.AreEqual(true, obj.Equals(obj));
+		}
+
+		[TestMethod]
+		public void EqualsToItselfMustReturnTrueVer2()
+		{
+			BigNumberDS obj = new BigNumberDS("123456789,123456789");
+
+			Assert.AreEqual(true, obj.Equals(obj));
+		}
+
+		[TestMethod]
 		public void EqualsToNullMustReturnFalse()
 		{
 			BigNumberDS obj = new BigNumberDS("123");
@@ -1199,33 +1219,6 @@ namespace Algorithms.Test
 		#endregion equals
 
 		#region operatorless/greater
-
-		[TestMethod]
-		public void OperatorLessMustWorkCorrectlyVer0()
-		{
-			BigNumberDS lhs = new BigNumberDS("122");
-			BigNumberDS rhs = new BigNumberDS("123");
-
-			Assert.AreEqual(true, lhs < rhs);
-		}
-
-		[TestMethod]
-		public void OperatorLessMustWorkCorrectlyVer1()
-		{
-			BigNumberDS lhs = new BigNumberDS("0,023456789");
-			BigNumberDS rhs = new BigNumberDS("0,123456789");
-
-			Assert.AreEqual(true, lhs < rhs);
-		}
-
-		[TestMethod]
-		public void OperatorLessMustWorkCorrectlyVer2()
-		{
-			BigNumberDS lhs = new BigNumberDS("123456788,123456789");
-			BigNumberDS rhs = new BigNumberDS("123456789,123456789");
-
-			Assert.AreEqual(true, lhs < rhs);
-		}
 
 		[TestMethod]
 		public void OperatorGreaterMustWorkCorrectlyVer0()
@@ -1254,6 +1247,33 @@ namespace Algorithms.Test
 			Assert.AreEqual(true, lhs > rhs);
 		}
 
+		[TestMethod]
+		public void OperatorLessMustWorkCorrectlyVer0()
+		{
+			BigNumberDS lhs = new BigNumberDS("122");
+			BigNumberDS rhs = new BigNumberDS("123");
+
+			Assert.AreEqual(true, lhs < rhs);
+		}
+
+		[TestMethod]
+		public void OperatorLessMustWorkCorrectlyVer1()
+		{
+			BigNumberDS lhs = new BigNumberDS("0,023456789");
+			BigNumberDS rhs = new BigNumberDS("0,123456789");
+
+			Assert.AreEqual(true, lhs < rhs);
+		}
+
+		[TestMethod]
+		public void OperatorLessMustWorkCorrectlyVer2()
+		{
+			BigNumberDS lhs = new BigNumberDS("123456788,123456789");
+			BigNumberDS rhs = new BigNumberDS("123456789,123456789");
+
+			Assert.AreEqual(true, lhs < rhs);
+		}
+
 		#endregion operatorless/greater
 
 		#endregion operators
@@ -1261,27 +1281,11 @@ namespace Algorithms.Test
 		#region tostring
 
 		[TestMethod]
-		public void ToStringPositiveVer0()
-		{
-			BigNumberDS obj = new BigNumberDS("123");
-
-			Assert.AreEqual("123", obj.ToString());
-		}
-
-		[TestMethod]
 		public void ToStringNegativeVer0()
 		{
 			BigNumberDS obj = new BigNumberDS("-123");
 
 			Assert.AreEqual("-123", obj.ToString());
-		}
-
-		[TestMethod]
-		public void ToStringPositiveVer1()
-		{
-			BigNumberDS obj = new BigNumberDS("0,123456");
-
-			Assert.AreEqual("0,123456", obj.ToString());
 		}
 
 		[TestMethod]
@@ -1293,19 +1297,35 @@ namespace Algorithms.Test
 		}
 
 		[TestMethod]
-		public void ToStringPositiveVer2()
-		{
-			BigNumberDS obj = new BigNumberDS("123456789123456,12345678912345679");
-
-			Assert.AreEqual("123456789123456,12345678912345679", obj.ToString());
-		}
-
-		[TestMethod]
 		public void ToStringNegativeVer2()
 		{
 			BigNumberDS obj = new BigNumberDS("-123456789123456,12345678912345679");
 
 			Assert.AreEqual("-123456789123456,12345678912345679", obj.ToString());
+		}
+
+		[TestMethod]
+		public void ToStringPositiveVer0()
+		{
+			BigNumberDS obj = new BigNumberDS("123");
+
+			Assert.AreEqual("123", obj.ToString());
+		}
+
+		[TestMethod]
+		public void ToStringPositiveVer1()
+		{
+			BigNumberDS obj = new BigNumberDS("0,123456");
+
+			Assert.AreEqual("0,123456", obj.ToString());
+		}
+
+		[TestMethod]
+		public void ToStringPositiveVer2()
+		{
+			BigNumberDS obj = new BigNumberDS("123456789123456,12345678912345679");
+
+			Assert.AreEqual("123456789123456,12345678912345679", obj.ToString());
 		}
 
 		#endregion tostring

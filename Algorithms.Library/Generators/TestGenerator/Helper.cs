@@ -29,7 +29,7 @@ namespace Algorithms.Library
 		    new MethodTestCases
 		    {
 			IsCorrectTest = true,
-			ExpectedResponse = "",
+			ExpectedResponse = string.Empty,
 			ExpectedResult = ExpectedResult.Void,
 			FieldTestCases = new FieldTestCases
 			{
@@ -97,7 +97,7 @@ namespace Algorithms.Library
 		    new MethodTestCases
 		    {
 			IsCorrectTest = true,
-			ExpectedResponse = "",
+			ExpectedResponse = string.Empty,
 			ExpectedResult = ExpectedResult.Void,
 			FieldTestCases = new FieldTestCases
 			{
