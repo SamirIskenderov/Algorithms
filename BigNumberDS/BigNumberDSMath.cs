@@ -406,6 +406,20 @@ namespace Algorithms.BigNumber
 				current = current.previousBlock;
 			}
 
+			int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
+			int fractionLhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
+
+			if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
+			{
+				// getting copy of output
+				BigNumberDS biglhs = output;
+				for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount; i++)
+				{
+					biglhs.isBigPart = false;
+					biglhs = biglhs.previousBlock;
+				}
+			}
+
 			BigNumberDSHelper.TrimStructure(ref output);
 
 			return output;
