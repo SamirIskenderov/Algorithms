@@ -551,11 +551,11 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OperatorMultiplicativeMinusMustBeAbsAssociative()
 		{
-			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
-			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
-			BigNumberDS rhs = new BigNumberDS("1123,123");
+			BigNumberDS one = new BigNumberDS("123456789123456789123,123456789123456789123");
+			BigNumberDS two = new BigNumberDS("91206951361651,321981314981");
+			BigNumberDS three = new BigNumberDS("1123,123");
 
-			Assert.AreEqual(((lhs - mhs) - rhs).Abs(), (rhs - (mhs - lhs)).Abs());
+			Assert.AreEqual(((one - two) - three).Abs(), (one - (two + three)).Abs());
 		}
 
 		[TestMethod]
@@ -582,7 +582,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS obj = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreNotEqual(obj + obj, obj - (-obj));
+			Assert.AreEqual(obj + obj, -(-obj) + -(-obj));
 		}
 
 		[TestMethod]
