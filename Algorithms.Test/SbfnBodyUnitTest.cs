@@ -1328,6 +1328,15 @@ namespace Algorithms.Test
 			Assert.AreEqual("123456789123456,12345678912345679", obj.ToString());
 		}
 
-		#endregion tostring
-	}
+        #endregion tostring
+
+        [TestMethod]
+        public void TrimStructurePositiveVer1()
+        {
+            BigNumberDS obj = new BigNumberDS("21002000000000000000000");
+            BigNumberDSHelper.TrimStructure(ref obj);
+
+            Assert.AreEqual("21002000000000000000000", obj.ToString());
+        }
+    }
 }
