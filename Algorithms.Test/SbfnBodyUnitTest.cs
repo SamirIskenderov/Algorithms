@@ -80,7 +80,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("12");
 			BigNumberDS result = new BigNumberDS("24");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result, lhs + rhs);
 		}
 
 		[TestMethod]
@@ -90,7 +90,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("12,12");
 			BigNumberDS result = new BigNumberDS("24,24");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result, lhs + rhs);
 		}
 
 		[TestMethod]
@@ -100,7 +100,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = new BigNumberDS("0,12");
 			BigNumberDS result = new BigNumberDS("0,24");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result, lhs + rhs);
 		}
 
 		[TestMethod]
@@ -110,7 +110,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS("12121212412,12121212412");
 			BigNumberDS result = /* */ new BigNumberDS("24242424824,24242424824");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result , lhs + rhs);
 		}
 
 		[TestMethod]
@@ -120,7 +120,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*            */ new BigNumberDS("495120297894120548450,98120954509841650747165095020905");
 			BigNumberDS result = /* */ new BigNumberDS("99595461727095911110999960765,98323988049898112867862555020905");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result , lhs + rhs);
 		}
 
 		[TestMethod]
@@ -130,7 +130,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS("540150000000000000000000000000000005401009766196,12121212412");
 			BigNumberDS result = /* */ new BigNumberDS("540150000000000000000000000000000010802019490212,27521213652000000000000000000000000000000000000001");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result , lhs + rhs);
 		}
 
 		[TestMethod]
@@ -140,7 +140,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS(",12");
 			BigNumberDS result = /* */ new BigNumberDS(",24");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result , lhs + rhs);
 		}
 
 		[TestMethod]
@@ -150,7 +150,7 @@ namespace Algorithms.Test
 			BigNumberDS rhs = /*    */ new BigNumberDS("4");
 			BigNumberDS result = /* */ new BigNumberDS("3,876543211");
 
-			Assert.IsTrue(result == lhs + rhs);
+			Assert.AreEqual<BigNumberDS>(result , lhs + rhs);
 		}
 
 		#endregion add
@@ -165,7 +165,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("123");
 
-			Assert.AreEqual(+lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(+lhs, rhs);
 		}
 
 		[TestMethod]
@@ -174,7 +174,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789123");
 
-			Assert.AreEqual(+lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(+lhs, rhs);
 		}
 
 		[TestMethod]
@@ -183,7 +183,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("0,123456789");
 
-			Assert.AreEqual(+lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(+lhs, rhs);
 		}
 
 		[TestMethod]
@@ -192,7 +192,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789123,123456789");
 
-			Assert.AreEqual(+lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(+lhs, rhs);
 		}
 
 		#endregion unary+
@@ -205,7 +205,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("-123");
 
-			Assert.AreEqual(rhs, -lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, -lhs);
 		}
 
 		[TestMethod]
@@ -214,7 +214,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("-123456789123456789123");
 
-			Assert.AreEqual(rhs, -lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, -lhs);
 		}
 
 		[TestMethod]
@@ -223,7 +223,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("0,123456789");
 
-			Assert.AreEqual(rhs, -lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, -lhs);
 		}
 
 		[TestMethod]
@@ -232,7 +232,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("-123456789123456789123,123456789");
 
-			Assert.AreEqual(rhs, -lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, -lhs);
 		}
 
 		#endregion unary-
@@ -245,7 +245,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("119");
 			BigNumberDS rhs = new BigNumberDS("120");
 			lhs++;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -254,7 +254,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("124");
 			lhs++;
-			Assert.AreEqual(lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -263,7 +263,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789124");
 			lhs++;
-			Assert.AreEqual(lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -272,7 +272,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("1,123456789");
 			lhs++;
-			Assert.AreEqual(lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -281,7 +281,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789124,123456789");
 			lhs++;
-			Assert.AreEqual(lhs, rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -290,7 +290,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("119");
 			BigNumberDS rhs = new BigNumberDS("120");
 			++lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -299,7 +299,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("124");
 			++lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -308,7 +308,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789124");
 			++lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -317,7 +317,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("1,123456789");
 			++lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -326,7 +326,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789124,123456789");
 			++lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		#endregion pre/postfix+
@@ -339,7 +339,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("110");
 			BigNumberDS rhs = new BigNumberDS("109");
 			lhs--;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -348,7 +348,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("122");
 			lhs--;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -357,7 +357,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789122");
 			lhs--;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -366,7 +366,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("-1,123456789");
 			lhs--;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -375,7 +375,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789122,123456789");
 			lhs--;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -384,7 +384,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("110");
 			BigNumberDS rhs = new BigNumberDS("109");
 			--lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -393,7 +393,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("122");
 			--lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -402,7 +402,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789122");
 			--lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -411,7 +411,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("0,123456789");
 			BigNumberDS rhs = new BigNumberDS("-1,123456789");
 			--lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		[TestMethod]
@@ -420,7 +420,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789122,123456789");
 			--lhs;
-			Assert.AreEqual(rhs, lhs);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs);
 		}
 
 		#endregion pre/postfix-
@@ -434,7 +434,7 @@ namespace Algorithms.Test
 			BigNumberDS mhs = new BigNumberDS("91206951361651,321981314981");
 			BigNumberDS rhs = new BigNumberDS("1123,123");
 
-			Assert.AreEqual((lhs + mhs) + rhs, rhs + (mhs + lhs));
+			Assert.AreEqual<BigNumberDS>((lhs + mhs) + rhs, rhs + (mhs + lhs));
 		}
 
 		[TestMethod]
@@ -443,7 +443,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(lhs + rhs, rhs + lhs);
+			Assert.AreEqual<BigNumberDS>(lhs + rhs, rhs + lhs);
 		}
 
 		[TestMethod]
@@ -453,7 +453,7 @@ namespace Algorithms.Test
 			BigNumberDS mhs = new BigNumberDS("100");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
+			Assert.AreEqual<BigNumberDS>(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
 		}
 
 		[TestMethod]
@@ -463,7 +463,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("132");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -473,7 +473,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("4");
 			BigNumberDS rhs = new BigNumberDS("127");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -483,7 +483,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("4");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789127");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -493,7 +493,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789132");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -503,7 +503,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("4");
 			BigNumberDS rhs = new BigNumberDS("4,123456789");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -513,7 +513,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("11");
 			BigNumberDS rhs = new BigNumberDS("11,123456789");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -523,7 +523,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("4");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789127,123456789");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -533,7 +533,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789132,123456789");
 
-			Assert.AreEqual(rhs, lhs + added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs + added);
 		}
 
 		[TestMethod]
@@ -541,7 +541,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreEqual(lhs, lhs + 0);
+			Assert.AreEqual<BigNumberDS>(lhs, lhs + 0);
 		}
 
 		#endregion binary+
@@ -555,7 +555,7 @@ namespace Algorithms.Test
 			BigNumberDS two = new BigNumberDS("91206951361651,321981314981");
 			BigNumberDS three = new BigNumberDS("1123,123");
 
-			Assert.AreEqual(((one - two) - three).Abs(), (one - (two + three)).Abs());
+			Assert.AreEqual<BigNumberDS>(((one - two) - three).Abs(), (one - (two + three)).Abs());
 		}
 
 		[TestMethod]
@@ -564,7 +564,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual((lhs - rhs).Abs(), (rhs - lhs).Abs());
+			Assert.AreEqual<BigNumberDS>((lhs - rhs).Abs(), (rhs - lhs).Abs());
 		}
 
 		[TestMethod]
@@ -574,7 +574,7 @@ namespace Algorithms.Test
 			BigNumberDS mhs = new BigNumberDS("100");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
+			Assert.AreEqual<BigNumberDS>(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
 		}
 
 		[TestMethod]
@@ -582,7 +582,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS obj = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreEqual(obj + obj, -(-obj) + -(-obj));
+			Assert.AreEqual<BigNumberDS>(obj + obj, -(-obj) + -(-obj));
 		}
 
 		[TestMethod]
@@ -611,7 +611,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("114");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -621,7 +621,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("2");
 			BigNumberDS rhs = new BigNumberDS("121");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -631,7 +631,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789114");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -641,7 +641,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("2");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789121");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -651,7 +651,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("4");
 			BigNumberDS rhs = new BigNumberDS("-3,876543211");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -661,7 +661,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("11");
 			BigNumberDS rhs = new BigNumberDS("-10,876543211");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -671,7 +671,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("2");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789121,123456789");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -681,7 +681,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("123456789123456789114,123456789");
 
-			Assert.AreEqual(rhs, lhs - added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs - added);
 		}
 
 		[TestMethod]
@@ -689,7 +689,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreEqual(lhs, lhs - 0);
+			Assert.AreEqual<BigNumberDS>(lhs, lhs - 0);
 		}
 
 		#endregion binary-
@@ -703,7 +703,7 @@ namespace Algorithms.Test
 			BigNumberDS mhs = new BigNumberDS("9120361651,321984981");
 			BigNumberDS rhs = new BigNumberDS("1123,123");
 
-			Assert.AreEqual((lhs * mhs) * rhs, rhs * (mhs * lhs));
+			Assert.AreEqual<BigNumberDS>((lhs * mhs) * rhs, rhs * (mhs * lhs));
 		}
 
 		[TestMethod]
@@ -712,7 +712,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = /* */ new BigNumberDS("123456789189123,123453456789123");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(lhs * rhs, rhs * lhs);
+			Assert.AreEqual<BigNumberDS>(lhs * rhs, rhs * lhs);
 		}
 
 		[TestMethod]
@@ -722,7 +722,7 @@ namespace Algorithms.Test
 			BigNumberDS mhs = new BigNumberDS("100");
 			BigNumberDS rhs = /*            */ new BigNumberDS("1123,123");
 
-			Assert.AreEqual(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
+			Assert.AreEqual<BigNumberDS>(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
 		}
 
 		[TestMethod]
@@ -732,7 +732,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("1107");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -742,7 +742,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-1107");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -752,7 +752,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("1111111102111111102107");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -762,7 +762,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-1111111102111111102107");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -772,7 +772,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("1,111111101");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -782,7 +782,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-1,111111101");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -792,7 +792,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("1111111102111111102108,111111101");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -802,7 +802,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-1111111102111111102108,111111101");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -812,7 +812,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9,123456789");
 			BigNumberDS rhs = new BigNumberDS("1126352680876543201873,5020587268");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -822,7 +822,7 @@ namespace Algorithms.Test
 			BigNumberDS added = /*                    */ new BigNumberDS("-9,98765");
 			BigNumberDS rhs = /* */ new BigNumberDS("-1233043199888893199885,56399319865585");
 
-			Assert.AreEqual(rhs, lhs * added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs * added);
 		}
 
 		[TestMethod]
@@ -830,7 +830,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreEqual(-lhs, lhs * -1);
+			Assert.AreEqual<BigNumberDS>(-lhs, lhs * -1);
 		}
 
 		[TestMethod]
@@ -846,7 +846,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = new BigNumberDS("123456789123456789123,123456789123456789123");
 
-			Assert.AreEqual(lhs, lhs * 1);
+			Assert.AreEqual<BigNumberDS>(lhs, lhs * 1);
 		}
 
 		#endregion binary*
@@ -860,7 +860,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("13");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -870,7 +870,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-13");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -880,7 +880,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("13717421013717421013");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -890,7 +890,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-13717421013717421013");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -900,7 +900,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("0");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -910,7 +910,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("0");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -920,7 +920,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("9");
 			BigNumberDS rhs = new BigNumberDS("13717421013717421013");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -930,7 +930,7 @@ namespace Algorithms.Test
 			BigNumberDS added = new BigNumberDS("-9");
 			BigNumberDS rhs = new BigNumberDS("-13717421013717421013");
 
-			Assert.AreEqual(rhs, lhs / added);
+			Assert.AreEqual<BigNumberDS>(rhs, lhs / added);
 		}
 
 		[TestMethod]
@@ -951,7 +951,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("123");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -960,7 +960,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123");
 			BigNumberDS rhs = new BigNumberDS("-123");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -969,7 +969,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123");
 			BigNumberDS rhs = new BigNumberDS("123456789123");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -978,7 +978,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123456789123");
 			BigNumberDS rhs = new BigNumberDS("-123456789123");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -987,7 +987,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("3,123456789");
 			BigNumberDS rhs = new BigNumberDS("3,123456789");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -996,7 +996,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-3,123456789");
 			BigNumberDS rhs = new BigNumberDS("-3,123456789");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1005,7 +1005,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123,123456789");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1014,7 +1014,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("-123456789123,123456789");
 
-			Assert.AreEqual(true, lhs == rhs);
+			Assert.AreEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		#endregion operator==
@@ -1027,7 +1027,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123");
 			BigNumberDS rhs = new BigNumberDS("121");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1036,7 +1036,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123");
 			BigNumberDS rhs = new BigNumberDS("-113");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1045,7 +1045,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123");
 			BigNumberDS rhs = new BigNumberDS("12345679123");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1054,7 +1054,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123456789123");
 			BigNumberDS rhs = new BigNumberDS("-12345789123");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1063,7 +1063,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("3,123456789");
 			BigNumberDS rhs = new BigNumberDS("3,12345789");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1072,7 +1072,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-3,123456789");
 			BigNumberDS rhs = new BigNumberDS("-3,12345789");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1081,7 +1081,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("123456789123,12356789");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		[TestMethod]
@@ -1090,7 +1090,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = new BigNumberDS("-123456789123,123456789");
 			BigNumberDS rhs = new BigNumberDS("-12345678923,123456789");
 
-			Assert.AreEqual(true, lhs != rhs);
+			Assert.AreNotEqual<BigNumberDS>(lhs, rhs);
 		}
 
 		#endregion operator!=
