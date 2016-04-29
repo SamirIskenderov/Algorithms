@@ -9,36 +9,10 @@ namespace Algorithms.BigNumber
 		/// Int can be from minus to plus 2 000 000 000.
 		/// So, if we wanna save full stack of numbers, we have to use range from minus to plus 999 999 999.
 		/// </summary>
-		internal const int MAX_ALLOWED_VALUE = 999999999;
+		internal const uint MAX_ALLOWED_VALUE = uint.MaxValue - 1;
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
-		{
-			BigNumberDS result = firstMem.Clone() as BigNumberDS;
-
-			if (secondMem == 0)
-			{
-				return result;
-			}
-
-			BigNumberDS big = BigNumberDSHelper.GetIntegerPart(result);
-
-			if (result.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
-			{
-				int b = secondMem - MAX_ALLOWED_VALUE - 1;
-				result.previousBlock.currentValue += 1; // TODO null ref fix
-
-				if (b > MAX_ALLOWED_VALUE)
-				{
-					b = b - MAX_ALLOWED_VALUE - 1;
-					result.previousBlock.currentValue += 1;
-				}
-
-				result.currentValue += b;
-			}
-			result.currentValue += secondMem;
-
-			return result;
-		}
+			=> firstMem + BigNumberDS.Create(secondMem.ToString());
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
 		{
@@ -148,7 +122,7 @@ namespace Algorithms.BigNumber
 			BigNumberDS currentFirst;
 			BigNumberDS currentSecond;
 
-			int currentSum = 0;
+			uint currentSum = 0;
 			bool isBigPart;
 
 			currentFirst = firstMem == null ?
@@ -187,7 +161,7 @@ namespace Algorithms.BigNumber
 				{
 					BigNumberDSHelper.GetHelpFromTitleBlock(ref currentFirst, secondMemSmallPartBlocksCount - firstMemSmallPartBlocksCount - 1);
 
-					currentSum = Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
+					currentSum = (uint) Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
 
 					currentSecond = currentSecond.previousBlock;
 				}
@@ -389,11 +363,11 @@ namespace Algorithms.BigNumber
 			{
 				if (rhs.isPositive)
 				{
-					return BigNumberDSMath.Multiple(lhs, (short)rhs.currentValue);
+					return BigNumberDSMath.Multiple(lhs, (byte)rhs.currentValue);
 				}
 				else
 				{
-					return BigNumberDSMath.Multiple(lhs, ((short)(-rhs.currentValue)));
+					return BigNumberDSMath.Multiple(lhs, ((byte)(-rhs.currentValue)));
 				}
 			}
 
@@ -401,7 +375,7 @@ namespace Algorithms.BigNumber
 			    (lhs.currentValue < short.MaxValue) &&
 			    (BigNumberDSHelper.GetFractionPartBlocksCount(lhs) == 0)) // and has no fraction
 			{
-				return BigNumberDSMath.Multiple(rhs, (short)lhs.currentValue);
+				return BigNumberDSMath.Multiple(rhs, (byte)lhs.currentValue);
 			}
 
 			#endregion checks
@@ -466,7 +440,7 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static BigNumberDS Multiple(BigNumberDS lhs, short rhs)
+		internal static BigNumberDS Multiple(BigNumberDS lhs, byte rhs)
 		{
 			#region checks
 

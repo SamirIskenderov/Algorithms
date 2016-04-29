@@ -9,7 +9,7 @@ namespace Algorithms.BigNumber
 	{
 		public static BigNumberDS DivisionAccuracy { get; set; } = BigNumberDS.Create("5");
 
-		internal int currentValue;
+		internal uint currentValue;
 
 		internal bool isBigPart;
 
@@ -50,25 +50,13 @@ namespace Algorithms.BigNumber
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
 
-		public static BigNumberDS operator *(BigNumberDS lhs, short rhs)
+		public static BigNumberDS operator *(BigNumberDS lhs, byte rhs)
 		{
 			return BigNumberDSMath.Multiple(lhs, rhs);
 		}
 
-		public static BigNumberDS operator *(int lhs, BigNumberDS rhs)
+		public static BigNumberDS operator *(byte lhs, BigNumberDS rhs)
 			=> rhs * lhs;
-
-		public static BigNumberDS operator *(BigNumberDS lhs, int rhs)
-		{
-			if (rhs < short.MaxValue)
-			{
-				return BigNumberDSMath.Multiple(lhs, (short)rhs);
-			}
-			return BigNumberDSMath.Multiple(lhs, new BigNumberDS(rhs, isBigPart: true, isPositive: rhs > 0));
-		}
-
-		public static BigNumberDS operator *(short lhs, BigNumberDS rhs)
-		    => rhs * lhs;
 
 		public static BigNumberDS operator /(BigNumberDS lhs, BigNumberDS rhs)
 		{
@@ -217,17 +205,17 @@ namespace Algorithms.BigNumber
 		public override int GetHashCode()
 		{
 			BigNumberDS block = this;
-			int hash = 0;
+			uint hash = 0;
 
 			while ((block != null))
 			{
 				hash ^= block.currentValue;
-				hash ^= block.isPositive ? 3 : 7;
+				hash ^= block.isPositive ? (byte)3 : (byte)7;
 
 				block = block.previousBlock;
 			}
 
-			return hash;
+			return (int)hash;
 		}
 
 		#endregion operators
@@ -260,7 +248,7 @@ namespace Algorithms.BigNumber
 
 				if (currentSmallPart.Length == 9)
 				{
-					this.currentValue = Convert.ToInt32(currentSmallPart);
+					this.currentValue = Convert.ToUInt32(currentSmallPart);
 					this.isBigPart = false;
 					this.isPositive = isPositive;
 
@@ -271,14 +259,14 @@ namespace Algorithms.BigNumber
 				}
 				else if (currentSmallPart.Length < 9)
 				{
-					int additionMultiplier = 10;
+					uint additionMultiplier = 10;
 
 					for (int i = 0; i < 8 - currentSmallPart.Length % 9; i++)
 					{
 						additionMultiplier = additionMultiplier * 10;
 					}
 
-					this.currentValue = additionMultiplier * Convert.ToInt32(currentSmallPart.Substring(currentSmallPart.Length - (currentSmallPart.Length % 9)));
+					this.currentValue = additionMultiplier * Convert.ToUInt32(currentSmallPart.Substring(currentSmallPart.Length - (currentSmallPart.Length % 9)));
 					this.isBigPart = false;
 					this.isPositive = isPositive;
 
@@ -291,7 +279,7 @@ namespace Algorithms.BigNumber
 				{
 					if (currentSmallPart.Length % 9 == 0)
 					{
-						this.currentValue = Convert.ToInt32(currentSmallPart.Substring(currentSmallPart.Length - 9));
+						this.currentValue = Convert.ToUInt32(currentSmallPart.Substring(currentSmallPart.Length - 9));
 						this.isBigPart = false;
 						this.isPositive = isPositive;
 
@@ -299,14 +287,14 @@ namespace Algorithms.BigNumber
 					}
 					else
 					{
-						int additionMultiplier = 10;
+						uint additionMultiplier = 10;
 
 						for (int i = 0; i < 8 - currentSmallPart.Length % 9; i++)
 						{
 							additionMultiplier = additionMultiplier * 10;
 						}
 
-						this.currentValue = additionMultiplier * Convert.ToInt32(currentSmallPart.Substring(currentSmallPart.Length - (currentSmallPart.Length % 9)));
+						this.currentValue = additionMultiplier * Convert.ToUInt32(currentSmallPart.Substring(currentSmallPart.Length - (currentSmallPart.Length % 9)));
 						this.isBigPart = false;
 						this.isPositive = isPositive;
 
@@ -318,13 +306,13 @@ namespace Algorithms.BigNumber
 			{
 				if (inputString.Length <= 9)
 				{
-					this.currentValue = Convert.ToInt32(inputString);
+					this.currentValue = Convert.ToUInt32(inputString);
 					this.isBigPart = true;
 					this.isPositive = isPositive;
 				}
 				else
 				{
-					this.currentValue = Convert.ToInt32(inputString.Substring(inputString.Length - 9));
+					this.currentValue = Convert.ToUInt32(inputString.Substring(inputString.Length - 9));
 					this.isBigPart = true;
 					this.isPositive = isPositive;
 
@@ -333,7 +321,7 @@ namespace Algorithms.BigNumber
 			}
 		}
 
-		internal BigNumberDS(int input, bool isBigPart, bool isPositive)
+		internal BigNumberDS(uint input, bool isBigPart, bool isPositive)
 		{
 			this.currentValue = input;
 

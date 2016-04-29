@@ -1024,7 +1024,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 
-			Assert.Equal<BigNumberDS>(-lhs, lhs * -1);
+			Assert.Equal<BigNumberDS>(-lhs, lhs * BigNumberDS.Create("-1"));
 		}
 
 		[Theory]
@@ -1087,7 +1087,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 
-			Assert.Equal<BigNumberDS>(zero, (lhs * 0));
+			Assert.Equal<BigNumberDS>(zero, (lhs * new BigNumberDS()));
 		}
 
 		[Theory]
@@ -1150,7 +1150,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 
-			Assert.Equal<BigNumberDS>(lhs, lhs * 1);
+			Assert.Equal<BigNumberDS>(lhs, lhs * BigNumberDS.Create("1"));
 		}
 
 		#endregion multiplicative*

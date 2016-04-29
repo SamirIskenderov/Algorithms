@@ -60,7 +60,7 @@ namespace Algorithms.BigNumber
 			}
 		}
 
-		internal static BigNumberDS AddNewPreviousBlock(BigNumberDS input, int value, bool isBigPart, bool isPositive)
+		internal static BigNumberDS AddNewPreviousBlock(BigNumberDS input, uint value, bool isBigPart, bool isPositive)
 		{
 			BigNumberDS current = input;
 
@@ -174,7 +174,7 @@ namespace Algorithms.BigNumber
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		internal static int GetNumberOfZeroesPrefix(int input)
+		internal static int GetNumberOfZeroesPrefix(uint input)
 		{
 			if (input == 0)
 			{
@@ -228,7 +228,7 @@ namespace Algorithms.BigNumber
 		/// <param name="number"></param>
 		/// <param name="isIgnoreLastNulls"></param>
 		/// <returns></returns>
-		internal static byte[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
+		internal static byte[] IntArrayParse(uint number, bool isIgnoreLastNulls = false)
 		{
 			int size = 1;
 
