@@ -90,6 +90,14 @@ namespace Algorithms.BigNumber
 		public static BigNumberDS operator +(int lhs, BigNumberDS rhs)
 		 => BigNumberDSMath.Add(rhs, lhs);
 
+		public static BigNumberDS operator ^(int lhs, BigNumberDS rhs)
+			=> (BigNumberDS.Create(lhs.ToString()))^rhs;
+		public static BigNumberDS operator ^(BigNumberDS lhs, int rhs)
+			=> (rhs ^ BigNumberDS.Create(rhs.ToString()));
+
+		public static BigNumberDS operator ^(BigNumberDS lhs, BigNumberDS rhs)
+			=> BigNumberDSMath.Exponentiation(lhs, rhs);
+
 		public static BigNumberDS operator ++(BigNumberDS value)
 		 => BigNumberDSMath.Add(value, BigNumberDS.Create("1"));
 
