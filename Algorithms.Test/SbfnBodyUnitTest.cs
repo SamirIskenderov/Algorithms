@@ -784,7 +784,7 @@ namespace Algorithms.Test
 
 		#endregion multiplicative-
 
-		#region binary*
+		#region multiplicative*
 
 		[Theory]
 		[InlineData("-1", "-1", "1")]
@@ -1161,13 +1161,58 @@ namespace Algorithms.Test
 			Assert.Equal<BigNumberDS>(lhs, lhs * 1);
 		}
 
-        #endregion binary*
+        #endregion multiplicative*
 
-        #region binary/
+        #region multiplicative/
 
-        
+        #endregion multiplicative/
 
-        #endregion binary/
+        #region multiplicative^
+        public void ExpVer0(string one, string two, string three)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS mhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>((lhs * mhs) ^ rhs, (lhs ^ rhs) * (mhs ^ rhs));
+		}
+
+		public void ExpVer1(string one, string two, string three)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS mhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>((lhs ^ rhs) * (lhs ^ mhs), lhs ^ (rhs + mhs));
+		}
+
+		public void ExpVer2(string one, string two, string three)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS mhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>((lhs ^ mhs) ^ rhs, lhs ^ (mhs * rhs));
+		}
+
+		public void ExpVer3(string one, string two, string three)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS mhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
+
+			Assert.NotEqual<BigNumberDS>((lhs ^ mhs) ^ rhs, (lhs ^ rhs) ^ mhs);
+		}
+
+		public void ExpVer4(string one, string two)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS rhs = BigNumberDS.Create(two);
+
+			Assert.NotEqual<BigNumberDS>((lhs ^ rhs), rhs ^ lhs);
+		}
+		#endregion multiplicative^
+
 
         #region operator==
 

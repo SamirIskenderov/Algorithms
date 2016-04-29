@@ -118,6 +118,16 @@ namespace Algorithms.BigNumber
 			}
 		}
 
+		internal static BigNumberDS Exponentiation(BigNumberDS lhs, BigNumberDS rhs)
+		{
+			if ((lhs == 0) && (rhs <= 0))
+			{
+				throw new ArgumentException($"Can't up zero to the power {rhs}: power has to be less zero.");
+			}
+
+			return null;
+		}
+
 		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
 		    => BigNumberDSMath.Add(secondMem, firstMem);
 
@@ -317,9 +327,18 @@ namespace Algorithms.BigNumber
 
 			return result;
 		}
-
-		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
+        
+		internal static BigNumberDS Or(BigNumberDS lhs, BigNumberDS rhs)
 		{
+			return null;
+		}
+
+		internal static BigNumberDS And(BigNumberDS lhs, BigNumberDS rhs)
+		{
+			return null;
+		}
+            internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
+        {
             if (accuracy == null)
             {
                 accuracy = BigNumberDS.DivisionAccuracy;
@@ -389,10 +408,10 @@ namespace Algorithms.BigNumber
 			// column addition
 
 			BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
-			BigNumberDS rhsrough= BigNumberDSHelper.GetWithoutDot(rhs);
+			BigNumberDS rhsrough = BigNumberDSHelper.GetWithoutDot(rhs);
 			BigNumberDS output = new BigNumberDS();
 
-				int k = 0;
+			int k = 0;
 			while (rhsrough != null)
 			{
 				byte[] a = BigNumberDSHelper.IntArrayParse(rhsrough.currentValue);
@@ -440,7 +459,6 @@ namespace Algorithms.BigNumber
 			{
 				BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, output.isPositive);
 			}
-
 
 			BigNumberDSHelper.TrimStructure(ref output);
 
