@@ -173,7 +173,7 @@ namespace Algorithms.BigNumber
 				}
 				else
 				{
-					BigNumberDSHelper.GetHelpFromTitleBlock(currentFirst);
+					BigNumberDSHelper.GetHelpFromTitleBlock(ref currentFirst, secondMemSmallPartBlocksCount - firstMemSmallPartBlocksCount - 1);
 
 					currentSum = Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
 
@@ -330,27 +330,27 @@ namespace Algorithms.BigNumber
 		{
 			#region checks
 
-			if ((rhs.currentValue == 0) || (lhs.currentValue == 0))
+			if ((rhs == 0) || (lhs == 0))
 			{
 				return BigNumberDS.Create("0");
 			}
 
-			if (rhs.currentValue == -1)
+			if (rhs == -1)
 			{
 				return -((BigNumberDS)lhs.Clone());
 			}
 
-			if (rhs.currentValue == 1)
+			if (rhs == 1)
 			{
 				return (BigNumberDS)lhs.Clone();
 			}
 
-			if (lhs.currentValue == -1)
+			if (lhs == -1)
 			{
 				return -((BigNumberDS)rhs.Clone());
 			}
 
-			if (lhs.currentValue == 1)
+			if (lhs == 1)
 			{
 				return (BigNumberDS)rhs.Clone();
 			}
@@ -380,30 +380,39 @@ namespace Algorithms.BigNumber
 			#endregion checks
 
 			// column addition
+
 			BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
-			BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
+			BigNumberDS rhsrough= BigNumberDSHelper.GetWithoutDot(rhs);
 			BigNumberDS output = new BigNumberDS();
 
-			int k = 0;
-			while (current != null)
+				int k = 0;
+			while (rhsrough != null)
 			{
-				byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+				byte[] a = BigNumberDSHelper.IntArrayParse(rhsrough.currentValue);
+
+				int firstZeros = BigNumberDSHelper.GetNumberOfZeroesPrefix(rhsrough.currentValue);
 
 				for (int i = 0; i < a.Length; i++)
 				{
-					BigNumberDS tmp = new BigNumberDS();
+					BigNumberDS tmp = lhsrough * a[i];
 
-					tmp = lhsrough * a[i];
-
-					for (int j = 0; j < k; j++)
-					{
-						tmp *= 10;
-					}
+					tmp = BigNumberDSHelper.MoveBy(tmp, k);
 
 					output += tmp;
 					k++;
 				}
-				current = current.previousBlock;
+
+				if (firstZeros != 0)
+				{
+					k += firstZeros;
+				}
+
+				rhsrough = rhsrough.previousBlock;
+			}
+
+			if (!rhs.isPositive)
+			{
+				output = output.Invert();
 			}
 
 			int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
@@ -419,6 +428,94 @@ namespace Algorithms.BigNumber
 					biglhs = biglhs.previousBlock;
 				}
 			}
+
+			//if (BigNumberDSHelper.HasIntegerPart(output))
+			//{
+
+			//}
+
+			if (!output.isBigPart)
+			{
+				BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, output.isPositive);
+			}
+
+			//BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
+			//BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
+			//BigNumberDS output = new BigNumberDS();
+
+			//int k = 0;
+			//bool start = false;
+			//int count = 0;
+			//while (current != null)
+			//{
+			//	byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+			//	for (int i = 0; i < a.Length; i++)
+			//	{
+			//		BigNumberDS tmp = new BigNumberDS();
+
+			//		if (!start)
+			//		{
+			//			if (a[i] != 0)
+			//			{
+			//				start = true;
+			//			}
+			//			else
+			//			{
+			//				count++;
+			//			}
+			//		}
+
+			//		if (start)
+			//		{
+			//			tmp = lhsrough * a[i];
+
+			//			for (int j = 0; j < k; j++)
+			//			{
+			//				tmp *= 10;
+			//			}
+
+			//			output += tmp;
+			//			k++;
+			//		}
+			//	}
+			//	current = current.previousBlock;
+			//}
+
+			//if (!rhs.isPositive)
+			//{
+			//	output = output.Invert();
+			//}
+
+			//for (int i = 0; i < count - 1; i++)
+			//{
+			//	output *= 10;
+			//}
+
+			//int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
+			//int fractionLhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
+			//int trashBlocksCount = 0;
+			//current = output;
+			//while (current.currentValue == 0 && current.previousBlock != null)
+			//{
+			//	trashBlocksCount++;
+			//	current = current.previousBlock;
+			//}
+
+			//if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
+			//{
+			//	// getting copy of output
+			//	BigNumberDS biglhs = output;
+			//	for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount + trashBlocksCount; i++)
+			//	{
+			//		if (biglhs == null)
+			//		{
+			//			biglhs = BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, true);
+			//		}
+
+			//			biglhs.isBigPart = false;
+			//			biglhs = biglhs.previousBlock;
+			//	}
+			//}
 
 			BigNumberDSHelper.TrimStructure(ref output);
 

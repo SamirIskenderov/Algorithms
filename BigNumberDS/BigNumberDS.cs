@@ -99,8 +99,19 @@ namespace Algorithms.BigNumber
 		public static bool operator <=(BigNumberDS lhs, BigNumberDS rhs)
 		 => lhs.CompareTo(rhs) <= 0;
 
-		public static bool operator ==(BigNumberDS lhs, BigNumberDS rhs)
+		public static bool operator ==(int lhs, BigNumberDS rhs)
+			=> rhs == lhs;
 
+		public static bool operator !=(int lhs, BigNumberDS rhs)
+			=> rhs != lhs;
+
+		public static bool operator ==(BigNumberDS lhs, int rhs)
+			=> lhs == BigNumberDS.Create(rhs.ToString());
+
+		public static bool operator !=(BigNumberDS lhs, int rhs)
+			=> lhs != BigNumberDS.Create(rhs.ToString());
+
+		public static bool operator ==(BigNumberDS lhs, BigNumberDS rhs)
 		{
 			if ((object)lhs == null && (object)rhs == null)
 			{

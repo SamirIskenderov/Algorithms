@@ -3,376 +3,403 @@ using System.Text;
 
 namespace Algorithms.BigNumber
 {
-	public static class BigNumberDSHelper
-	{
-		/// <summary>
-		/// Make byte array from number.
-		/// F.e., 12465 will be {1,2,4,6,5}.
-		/// </summary>
-		/// <param name="number"></param>
-		/// <param name="isIgnoreLastNulls"></param>
-		/// <returns></returns>
-		internal static byte[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
-		{
-			int size = 1;
+    public static class BigNumberDSHelper
+    {
+        public static bool GetHelpFromPreviousBlocks(BigNumberDS input)
+        {
+            BigNumberDS current = input;
 
-			while (number >= Math.Pow(10, size))
-			{
-				size++;
-			}
+            while (current.previousBlock != null)
+            {
+                current = current.previousBlock;
 
-			if (isIgnoreLastNulls)
-			{
-				string str = number.ToString();
-				int j = str.Length - 1;
-				while (str[j] == '0')
-				{
-					j--;
-					continue;
-				}
-				size = j;
-			}
+                if (current.currentValue > 0)
+                {
+                    current.currentValue--;
 
-			byte[] output = new byte[size];
-			const int decade = 10;
-			int i = 0;
+                    return true;
+                }
+                else if (current.currentValue == 0)
+                {
+                    current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
+                }
+            }
 
-			while (number >= 1)
-			{
-				if (i > output.Length - 1)
-				{
-					break;
-				}
-				output[i] = (byte)(number % decade);
-				i++;
-				number /= decade;
-			}
+            return false;
+        }
 
-			return output;
-		}
+        public static bool GetHelpFromTitleBlock(ref BigNumberDS input, int countOfAttachingBlocks)
+        {
+            BigNumberDS current = input;
 
-		public static bool GetHelpFromPreviousBlocks(BigNumberDS input)
-		{
-			BigNumberDS current = input;
+            while (current != null && current.currentValue == 0)
+            {
+                current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
 
-			while (current.previousBlock != null)
-			{
-				current = current.previousBlock;
+                current = current.previousBlock;
+            }
 
-				if (current.currentValue > 0)
-				{
-					current.currentValue--;
+            if (current != null && current.currentValue > 0)
+            {
+                current.currentValue--;
 
-					return true;
-				}
-			}
+                for (int i = 0; i < countOfAttachingBlocks; i++)
+                {
+                    current = input;
 
-			return false;
-		}
+                    input = new BigNumberDS(BigNumberDSMath.MAX_ALLOWED_VALUE, false, current.isPositive);
 
-		public static bool GetHelpFromTitleBlock(BigNumberDS input)
-		{
-			if (input.currentValue > 0)
-			{
-				input.currentValue--;
+                    input.previousBlock = current;
+                }
 
-				return true;
-			}
-			return false;
-		}
+                return true;
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+        }
 
-		/// <summary>
-		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
-		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
-		/// </summary>
-		/// <param name="input"></param>
-		internal static void TrimStructure(ref BigNumberDS input)
-		{
-			BigNumberDS current = input;
-			bool isEdgeBlock = true;
+        internal static BigNumberDS AddNewPreviousBlock(BigNumberDS input, int value, bool isBigPart, bool isPositive)
+        {
+            BigNumberDS current = input;
 
-			BigNumberDS currentEdge;
+            BigNumberDS addingBlock = new BigNumberDS(value, isBigPart, isPositive);
 
-			while (current != null && !current.isBigPart)
-			{
-				isEdgeBlock = isEdgeBlock && current.currentValue == 0;
+            if (current == null)
+            {
+                return addingBlock;
+            }
 
-				if (isEdgeBlock)
-				{
-					input = current.previousBlock;
-				}
+            while (current.previousBlock != null)
+            {
+                current.isPositive = isPositive;
+                current = current.previousBlock;
+            }
 
-				current = current.previousBlock;
-			}
+            current.previousBlock = addingBlock;
 
-			while (current != null && current.previousBlock != null)
-			{
-				if (current.previousBlock.currentValue == 0)
-				{
-					currentEdge = current;
+            return input;
+        }
 
-					while (current.previousBlock != null)
-					{
-                        if (current.previousBlock.currentValue != 0)
-                        {
-                            break;
-                        }
-                        else if (current.previousBlock.previousBlock == null)
-						{
-							currentEdge.previousBlock = null;
-							return;
-						}
+        internal static int DeepCount(BigNumberDS input)
+        {
+            int count = 1;
 
-						current = current.previousBlock;
-					}
-				}
+            BigNumberDS current = input;
 
-				current = current.previousBlock;
-			}
-		}
+            do
+            {
+                count++;
 
-		internal static BigNumberDS AddNewPreviousBlock(BigNumberDS input, int value, bool isBigPart, bool isPositive)
-		{
-			BigNumberDS current = input;
+                current = current.previousBlock;
+            } while (current.previousBlock != null);
 
-			BigNumberDS addingBlock = new BigNumberDS(value, isBigPart, isPositive);
+            return count;
+        }
 
-			while (current.previousBlock != null)
-			{
-				current.isPositive = isPositive;
-				current = current.previousBlock;
-			}
+        internal static BigNumberDS GetFractionPart(BigNumberDS input)
+        {
+            BigNumberDS current = input;
+            BigNumberDS output = new BigNumberDS();
 
-			current.previousBlock = addingBlock;
+            while (!current.isBigPart)
+            {
+                BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
+                current = current.previousBlock;
+            }
 
-			return input;
-		}
+            return output;
+        }
 
-		internal static int DeepCount(BigNumberDS input)
-		{
-			int count = 1;
+        internal static int GetFractionPartBlocksCount(BigNumberDS input)
+        {
+            int result = 0;
+            BigNumberDS current = input;
 
-			BigNumberDS current = input;
+            while (current != null && !current.isBigPart)
+            {
+                result++;
 
-			do
-			{
-				count++;
+                current = current.previousBlock;
+            }
 
-				current = current.previousBlock;
-			} while (current.previousBlock != null);
+            return result;
+        }
 
-			return count;
-		}
+        internal static BigNumberDS GetIntegerPart(BigNumberDS input)
+        {
+            BigNumberDS current = input;
+            BigNumberDS output = new BigNumberDS();
 
-		internal static BigNumberDS GetIntegerPart(BigNumberDS input)
-		{
-			BigNumberDS current = input;
-			BigNumberDS output = new BigNumberDS();
+            while (!current.isBigPart)
+            {
+                current = current.previousBlock;
+            }
 
-			while (!current.isBigPart)
-			{
-				current = current.previousBlock;
-			}
+            while (current.previousBlock != null)
+            {
+                BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
 
-			while (current.previousBlock != null)
-			{
-				BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
+                current = current.previousBlock;
+            }
 
-				current = current.previousBlock;
-			}
+            BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
 
-			BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
+            return output;
+        }
 
-			return output;
-		}
+        internal static int GetIntegerPartBlocksCount(BigNumberDS input)
+        {
+            int result = 0;
+            BigNumberDS current = input;
 
-		internal static int GetIntegerPartBlocksCount(BigNumberDS input)
-		{
-			int result = 0;
-			BigNumberDS current = input;
+            while (current != null && !current.isBigPart)
+            {
+                current = current.previousBlock;
+            }
 
-			while (current != null && !current.isBigPart)
-			{
-				current = current.previousBlock;
-			}
+            while (current != null)
+            {
+                result++;
 
-			while (current != null)
-			{
-				result++;
+                current = current.previousBlock;
+            }
 
-				current = current.previousBlock;
-			}
-
-			return result;
-		}
+            return result;
+        }
 
         /// <summary>
         /// Define, how many zeros must add to block, formed from input number
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-		internal static int GetNumberOfZeroesPrefix(int input)
-		{
+        internal static int GetNumberOfZeroesPrefix(int input)
+        {
             if (input == 0)
             {
                 return 8;
             }
 
-			int count = 0;
+            int count = 0;
 
-			while (input > 0)
-			{
-				input /= 10;
-				count++;
-			}
+            while (input > 0)
+            {
+                input /= 10;
+                count++;
+            }
 
-			count = 9 - count;
+            count = 9 - count;
 
+            return count;
+        }
 
-			return count;
-		}
+        internal static BigNumberDS GetWithoutDot(BigNumberDS input)
+        {
+            BigNumberDS output = (BigNumberDS)input.Clone();
+            BigNumberDS current = output;
+            while (current != null)
+            {
+                current.isBigPart = true;
+                current = current.previousBlock;
+            }
+            return output;
+        }
 
-		internal static BigNumberDS GetFractionPart(BigNumberDS input)
-		{
-			BigNumberDS current = input;
-			BigNumberDS output = new BigNumberDS();
+        internal static bool HasIntegerPart(BigNumberDS output)
+        {
+            BigNumberDS tmp = output;
 
-			while (!current.isBigPart)
-			{
-				BigNumberDSHelper.AddNewPreviousBlock(output, current.currentValue, current.isBigPart, current.isPositive);
-				current = current.previousBlock;
-			}
+            while (tmp != null)
+            {
+                if (tmp.isBigPart)
+                {
+                    return true;
+                }
+            }
 
-			return output;
-		}
+            return false;
+        }
 
-		internal static int GetFractionPartBlocksCount(BigNumberDS input)
-		{
-			int result = 0;
-			BigNumberDS current = input;
+        /// <summary>
+        /// Make byte array from number.
+        /// F.e., 12465 will be {1,2,4,6,5}.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="isIgnoreLastNulls"></param>
+        /// <returns></returns>
+        internal static byte[] IntArrayParse(int number, bool isIgnoreLastNulls = false)
+        {
+            int size = 1;
 
-			while (current != null && !current.isBigPart)
-			{
-				result++;
+            while (number >= Math.Pow(10, size))
+            {
+                size++;
+            }
 
-				current = current.previousBlock;
-			}
+            if (isIgnoreLastNulls)
+            {
+                string str = number.ToString();
+                int j = str.Length - 1;
+                while (str[j] == '0')
+                {
+                    j--;
+                    continue;
+                }
+                size = j;
+            }
 
-			return result;
-		}
+            byte[] output = new byte[size];
+            const int decade = 10;
+            int i = 0;
 
-		internal static int MakeComparisionUnit(BigNumberDS firstMem, BigNumberDS secondMem)
-		{
-			// CompareTo ?
+            while (number >= 1)
+            {
+                if (i > output.Length - 1)
+                {
+                    break;
+                }
+                output[i] = (byte)(number % decade);
+                i++;
+                number /= decade;
+            }
 
-			if (firstMem == null && secondMem == null)
-			{
-				return 0;
-			}
-			else if (firstMem == null)
-			{
-				return -1;
-			}
-			else if (secondMem == null)
-			{
-				return 1;
-			}
-			else if (firstMem.currentValue > secondMem.currentValue)
-			{
-				return 1;
-			}
-			else if (firstMem.currentValue < secondMem.currentValue)
-			{
-				return -1;
-			}
+            return output;
+        }
 
-			return 0;
-		}
+        internal static BigNumberDS IntegerDivide(BigNumberDS firstMem, BigNumberDS secondMem)
+        {
+            BigNumberDS result = new BigNumberDS();
+            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
 
-		internal static bool[] MakeMap(BigNumberDS input)
-		{
-			bool[] result = new bool[BigNumberDSHelper.DeepCount(input) + 1];
+            while (iterator <= firstMem)
+            {
+                iterator += secondMem;
 
-			BigNumberDS current = input;
+                result++;
+            }
 
-			bool smallToBigCross = false;
+            return result;
+        }
 
-			for (int i = 0; i < result.Length; i++)
-			{
-				result[i] = true;
+        //internal static BigNumberDS Divide(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS )
+        //{
+        //}
+        internal static BigNumberDS IntegerDivideLeftover(BigNumberDS firstMem, BigNumberDS secondMem)
+        {
+            BigNumberDS result;
+            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
 
-				if (!current.isBigPart)
-				{
-					smallToBigCross = true;
-				}
+            while (iterator < firstMem)
+            {
+                iterator += secondMem;
+            }
 
-				if (result.Length != i + 1)
-				{
-					current = current.previousBlock;
-				}
+            result = firstMem - iterator;
 
-				if (current.isBigPart && smallToBigCross)
-				{
-					smallToBigCross = false;
-					i++;
-					result[i] = false;
-				}
-			}
+            return result;
+        }
 
-			return result;
-		}
+        internal static int[] MakeComparisionMap(BigNumberDS rhs, BigNumberDS lhs)
+        {
+            int bigPartBlocksCount = BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) > BigNumberDSHelper.GetIntegerPartBlocksCount(lhs) ?
+                BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) :
+                BigNumberDSHelper.GetIntegerPartBlocksCount(lhs);
 
-		internal static BigNumberDS GetWithoutDot(BigNumberDS input)
-		{
-			BigNumberDS output = (BigNumberDS)input.Clone();
-			BigNumberDS current = output;
-			while (current != null)
-			{
-				current.isBigPart = true;
-				current = current.previousBlock;
-			}
-			return output;
-		}
+            int smallPartBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs) > BigNumberDSHelper.GetFractionPartBlocksCount(lhs) ?
+                BigNumberDSHelper.GetFractionPartBlocksCount(rhs) :
+                BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
 
-		internal static int[] MakeComparisionMap(BigNumberDS rhs, BigNumberDS lhs)
-		{
-			int bigPartBlocksCount = BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) > BigNumberDSHelper.GetIntegerPartBlocksCount(lhs) ?
-			    BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) :
-			    BigNumberDSHelper.GetIntegerPartBlocksCount(lhs);
+            int[] result = new int[bigPartBlocksCount + smallPartBlocksCount];
 
-			int smallPartBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs) > BigNumberDSHelper.GetFractionPartBlocksCount(lhs) ?
-			    BigNumberDSHelper.GetFractionPartBlocksCount(rhs) :
-			    BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
+            BigNumberDS currentFirst = rhs,
+                currentSecond = lhs;
 
-			int[] result = new int[bigPartBlocksCount + smallPartBlocksCount];
+            for (int i = result.Length - 1; i >= 0; i--)
+            {
+                int compare = BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst).CompareTo(BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond));
 
-			BigNumberDS currentFirst = rhs,
-			    currentSecond = lhs;
+                if (compare > 0)
+                {
+                    result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, null);
+                    currentFirst = currentFirst.previousBlock;
+                }
+                else if (compare < 0)
+                {
+                    result[i] = BigNumberDSHelper.MakeComparisionUnit(null, currentSecond);
+                    currentSecond = currentSecond.previousBlock;
+                }
+                else
+                {
+                    result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, currentSecond);
+                    currentFirst = currentFirst.previousBlock;
+                    currentSecond = currentSecond.previousBlock;
+                }
+            }
 
-			for (int i = result.Length - 1; i >= 0; i--)
-			{
-				int compare = BigNumberDSHelper.GetFractionPartBlocksCount(currentFirst).CompareTo(BigNumberDSHelper.GetFractionPartBlocksCount(currentSecond));
+            return result;
+        }
 
-				if (compare > 0)
-				{
-					result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, null);
-					currentFirst = currentFirst.previousBlock;
-				}
-				else if (compare < 0)
-				{
-					result[i] = BigNumberDSHelper.MakeComparisionUnit(null, currentSecond);
-					currentSecond = currentSecond.previousBlock;
-				}
-				else
-				{
-					result[i] = BigNumberDSHelper.MakeComparisionUnit(currentFirst, currentSecond);
-					currentFirst = currentFirst.previousBlock;
-					currentSecond = currentSecond.previousBlock;
-				}
-			}
+        internal static int MakeComparisionUnit(BigNumberDS firstMem, BigNumberDS secondMem)
+        {
+            // CompareTo ?
 
-			return result;
-		}
+            if (firstMem == null && secondMem == null)
+            {
+                return 0;
+            }
+            else if (firstMem == null)
+            {
+                return -1;
+            }
+            else if (secondMem == null)
+            {
+                return 1;
+            }
+            else if (firstMem.currentValue > secondMem.currentValue)
+            {
+                return 1;
+            }
+            else if (firstMem.currentValue < secondMem.currentValue)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        internal static bool[] MakeMap(BigNumberDS input)
+        {
+            bool[] result = new bool[BigNumberDSHelper.DeepCount(input) + 1];
+
+            BigNumberDS current = input;
+
+            bool smallToBigCross = false;
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = true;
+
+                if (!current.isBigPart)
+                {
+                    smallToBigCross = true;
+                }
+
+                if (result.Length != i + 1)
+                {
+                    current = current.previousBlock;
+                }
+
+                if (current.isBigPart && smallToBigCross)
+                {
+                    smallToBigCross = false;
+                    i++;
+                    result[i] = false;
+                }
+            }
+
+            return result;
+        }
 
         internal static StringBuilder MakeTextString(BigNumberDS input, StringBuilder result, bool isEdgeBlock)
         {
@@ -456,39 +483,79 @@ namespace Algorithms.BigNumber
             return result;
         }
 
-        //internal static BigNumberDS Divide(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS )
-        //{
-
-        //}
-
-        internal static BigNumberDS IntegerDivide(BigNumberDS firstMem, BigNumberDS secondMem)
+        internal static BigNumberDS MoveBy(BigNumberDS tmp, int count)
         {
-            BigNumberDS result = new BigNumberDS();
-            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
-
-            while (iterator <= firstMem)
+            if (count == 0)
             {
-                iterator += secondMem;
-
-                result++;
+                return tmp;
             }
 
-            return result;
+            if (count > 0)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    tmp *= 10;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < -count; i++)
+                {
+                    tmp /= 10;
+                }
+            }
+
+            return tmp;
         }
 
-        internal static BigNumberDS IntegerDivideLeftover(BigNumberDS firstMem, BigNumberDS secondMem)
+        /// <summary>
+        /// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
+        /// F.e., 0000000001230,000123000000 will be 00000123,000123000.
+        /// </summary>
+        /// <param name="input"></param>
+        internal static void TrimStructure(ref BigNumberDS input)
         {
-            BigNumberDS result;
-            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
+            BigNumberDS current = input;
+            bool isEdgeBlock = true;
 
-            while (iterator < firstMem)
+            BigNumberDS currentEdge;
+
+            while (current != null && !current.isBigPart)
             {
-                iterator += secondMem;
+                isEdgeBlock = isEdgeBlock && current.currentValue == 0;
+
+                if (isEdgeBlock)
+                {
+                    input = current.previousBlock;
+                }
+
+                current = current.previousBlock;
             }
 
-            result = firstMem - iterator;
+            while (current != null && current.previousBlock != null)
+            {
+                if (current.previousBlock.currentValue == 0)
+                {
+                    currentEdge = current;
 
-            return result;
+                    while (current.previousBlock != null)
+                    {
+                        if (current.previousBlock.currentValue != 0)
+                        {
+                            break;
+                        }
+                        else if (current.previousBlock.previousBlock == null)
+                        {
+                            currentEdge.previousBlock = null;
+                            return;
+                        }
+
+                        current = current.previousBlock;
+                    }
+                }
+
+                current = current.previousBlock;
+            }
         }
     }
 }
