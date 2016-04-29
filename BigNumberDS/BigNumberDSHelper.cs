@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Text;
 
+using big = Algorithms.BigNumber.BigNumberDS;
+
 namespace Algorithms.BigNumber
 {
 	public static class BigNumberDSHelper
 	{
-		public static bool GetHelpFromPreviousBlocks(BigNumberDS input)
+		public static bool GetHelpFromPreviousBlocks(big input)
 		{
-			BigNumberDS current = input;
+			big current = input;
 
 			while (current.previousBlock != null)
 			{
@@ -28,9 +30,9 @@ namespace Algorithms.BigNumber
 			return false;
 		}
 
-		public static bool GetHelpFromTitleBlock(ref BigNumberDS input, int countOfAttachingBlocks)
+		public static bool GetHelpFromTitleBlock(ref big input, int countOfAttachingBlocks)
 		{
-			BigNumberDS current = input;
+			big current = input;
 
 			while (current != null && current.currentValue == 0)
 			{
@@ -60,11 +62,11 @@ namespace Algorithms.BigNumber
 			}
 		}
 
-		internal static BigNumberDS AddNewPreviousBlock(BigNumberDS input, uint value, bool isBigPart, bool isPositive)
+		internal static big AddNewPreviousBlock(big input, uint value, bool isBigPart, bool isPositive)
 		{
-			BigNumberDS current = input;
+			big current = input;
 
-			BigNumberDS addingBlock = new BigNumberDS(value, isBigPart, isPositive);
+			big addingBlock = new BigNumberDS(value, isBigPart, isPositive);
 
 			if (current == null)
 			{
@@ -82,11 +84,11 @@ namespace Algorithms.BigNumber
 			return input;
 		}
 
-		internal static int DeepCount(BigNumberDS input)
+		internal static int DeepCount(big input)
 		{
 			int count = 1;
 
-			BigNumberDS current = input;
+			big current = input;
 
 			do
 			{
@@ -98,10 +100,10 @@ namespace Algorithms.BigNumber
 			return count;
 		}
 
-		internal static BigNumberDS GetFractionPart(BigNumberDS input)
+		internal static big GetFractionPart(big input)
 		{
-			BigNumberDS current = input;
-			BigNumberDS output = new BigNumberDS();
+			big current = input;
+			big output = new BigNumberDS();
 
 			while (!current.isBigPart)
 			{
@@ -112,10 +114,10 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static int GetFractionPartBlocksCount(BigNumberDS input)
+		internal static int GetFractionPartBlocksCount(big input)
 		{
 			int result = 0;
-			BigNumberDS current = input;
+			big current = input;
 
 			while (current != null && !current.isBigPart)
 			{
@@ -127,10 +129,10 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS GetIntegerPart(BigNumberDS input)
+		internal static big GetIntegerPart(big input)
 		{
-			BigNumberDS current = input;
-			BigNumberDS output = new BigNumberDS();
+			big current = input;
+			big output = new BigNumberDS();
 
 			while (!current.isBigPart)
 			{
@@ -149,10 +151,10 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static int GetIntegerPartBlocksCount(BigNumberDS input)
+		internal static int GetIntegerPartBlocksCount(big input)
 		{
 			int result = 0;
-			BigNumberDS current = input;
+			big current = input;
 
 			while (current != null && !current.isBigPart)
 			{
@@ -194,10 +196,10 @@ namespace Algorithms.BigNumber
 			return count;
 		}
 
-		internal static BigNumberDS GetWithoutDot(BigNumberDS input)
+		internal static big GetWithoutDot(big input)
 		{
-			BigNumberDS output = (BigNumberDS)input.Clone();
-			BigNumberDS current = output;
+			big output = (BigNumberDS)input.Clone();
+			big current = output;
 			while (current != null)
 			{
 				current.isBigPart = true;
@@ -206,9 +208,9 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static bool HasIntegerPart(BigNumberDS output)
+		internal static bool HasIntegerPart(big output)
 		{
-			BigNumberDS tmp = output;
+			big tmp = output;
 
 			while (tmp != null)
 			{
@@ -267,10 +269,10 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static BigNumberDS IntegerDivide(BigNumberDS firstMem, BigNumberDS secondMem)
+		internal static big IntegerDivide(big firstMem, big secondMem)
 		{
-			BigNumberDS result = new BigNumberDS();
-			BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
+			big result = new BigNumberDS();
+			big iterator = (BigNumberDS)secondMem.Clone();
 
 			while (iterator <= firstMem)
 			{
@@ -282,7 +284,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS DivideService(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS accuracy)
+		internal static big DivideService(big firstMem, big secondMem, big accuracy)
 		{
 			if (firstMem == null || secondMem == null)
 			{
@@ -305,7 +307,7 @@ namespace Algorithms.BigNumber
 				return BigNumberDS.Create("0");
 			}
 
-			BigNumberDS currentIntResult, currentLeftOvResult, workingCopy;
+			big currentIntResult, currentLeftOvResult, workingCopy;
 
 			if (firstMem > secondMem)
 			{
@@ -331,10 +333,10 @@ namespace Algorithms.BigNumber
 				//{
 				//    workingCopy = BigNumberDSHelper.IntegerDivide(secondMem, firstMem);
 
-				//    BigNumberDS divider = BigNumberDS.Create("1");
-				//    BigNumberDS multiplier = BigNumberDS.Create("1");
+				//    big divider = BigNumberDS.Create("1");
+				//    big multiplier = BigNumberDS.Create("1");
 
-				//    for (BigNumberDS i = BigNumberDS.Create("0"); i < accuracy; i++)
+				//    for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
 				//    {
 				//        divider = divider * BigNumberDS.Create("10");
 				//        multiplier = multiplier * BigNumberDS.Create("0,1");
@@ -346,10 +348,10 @@ namespace Algorithms.BigNumber
 				{
 					workingCopy = DivideService(secondMem, firstMem, accuracy - 1);
 
-					BigNumberDS divider = BigNumberDS.Create("1");
-					BigNumberDS multiplier = BigNumberDS.Create("1");
+					big divider = BigNumberDS.Create("1");
+					big multiplier = BigNumberDS.Create("1");
 
-					for (BigNumberDS i = BigNumberDS.Create("0"); i < accuracy; i++)
+					for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
 					{
 						divider = divider * BigNumberDS.Create("10");
 						multiplier = multiplier * BigNumberDS.Create("0,1");
@@ -362,10 +364,10 @@ namespace Algorithms.BigNumber
 			return workingCopy;
 		}
 
-		internal static BigNumberDS IntegerDivideLeftover(BigNumberDS firstMem, BigNumberDS secondMem)
+		internal static big IntegerDivideLeftover(big firstMem, big secondMem)
 		{
-			BigNumberDS result;
-			BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
+			big result;
+			big iterator = (BigNumberDS)secondMem.Clone();
 
 			while (iterator + secondMem <= firstMem)
 			{
@@ -377,7 +379,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static int[] MakeComparisionMap(BigNumberDS rhs, BigNumberDS lhs)
+		internal static int[] MakeComparisionMap(big rhs, big lhs)
 		{
 			int bigPartBlocksCount = BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) > BigNumberDSHelper.GetIntegerPartBlocksCount(lhs) ?
 			    BigNumberDSHelper.GetIntegerPartBlocksCount(rhs) :
@@ -389,7 +391,7 @@ namespace Algorithms.BigNumber
 
 			int[] result = new int[bigPartBlocksCount + smallPartBlocksCount];
 
-			BigNumberDS currentFirst = rhs,
+			big currentFirst = rhs,
 			    currentSecond = lhs;
 
 			for (int i = result.Length - 1; i >= 0; i--)
@@ -417,7 +419,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static int MakeComparisionUnit(BigNumberDS firstMem, BigNumberDS secondMem)
+		internal static int MakeComparisionUnit(big firstMem, big secondMem)
 		{
 			// CompareTo ?
 
@@ -445,11 +447,11 @@ namespace Algorithms.BigNumber
 			return 0;
 		}
 
-		internal static bool[] MakeMap(BigNumberDS input)
+		internal static bool[] MakeMap(big input)
 		{
 			bool[] result = new bool[BigNumberDSHelper.DeepCount(input) + 1];
 
-			BigNumberDS current = input;
+			big current = input;
 
 			bool smallToBigCross = false;
 
@@ -478,7 +480,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static StringBuilder MakeTextString(BigNumberDS input, StringBuilder result, bool isEdgeBlock)
+		internal static StringBuilder MakeTextString(big input, StringBuilder result, bool isEdgeBlock)
 		{
 			if (input == null && result == null)
 			{
@@ -558,7 +560,7 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS MoveBy(BigNumberDS tmp, int count)
+		internal static big MoveBy(big tmp, int count)
 		{
 			if (count == 0)
 			{
@@ -588,12 +590,12 @@ namespace Algorithms.BigNumber
 		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
 		/// </summary>
 		/// <param name="input"></param>
-		internal static void TrimStructure(ref BigNumberDS input)
+		internal static void TrimStructure(ref big input)
 		{
-			BigNumberDS current = input;
+			big current = input;
 			bool isEdgeBlock = true;
 
-			BigNumberDS currentEdge;
+			big currentEdge;
 
 			while (current != null && !current.isBigPart)
 			{

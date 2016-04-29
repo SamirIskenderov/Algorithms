@@ -80,7 +80,7 @@
     <Compile Include="Isbn10GeneratorUnitTest.cs" />
     <Compile Include="IssnGeneratorUnitTest.cs" />
     <Compile Include="PrimeGeneratorUnitTest.cs" />
-    <Compile Include="SbfnBodyUnitTest.cs" />
+    <Compile Include="BigNumberDSUnitTest.cs" />
     <Compile Include="SortTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextGeneratorUnitTest.cs" />

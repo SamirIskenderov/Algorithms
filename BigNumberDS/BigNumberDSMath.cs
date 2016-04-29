@@ -1,5 +1,7 @@
 ﻿using System;
 
+using big = Algorithms.BigNumber.BigNumberDS;
+
 namespace Algorithms.BigNumber
 {
 	internal static class BigNumberDSMath
@@ -11,33 +13,33 @@ namespace Algorithms.BigNumber
 		/// </summary>
 		internal const uint MAX_ALLOWED_VALUE = uint.MaxValue - 1;
 
-		internal static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
-			=> firstMem + BigNumberDS.Create(secondMem.ToString());
+		internal static big Add(big firstMem, int secondMem)
+			=> firstMem + big.Create(secondMem.ToString());
 
-		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
+		internal static big Add(big firstMem, big secondMem)
 		{
-			BigNumberDS currentFirst;
-			BigNumberDS currentSecond;
+			big currentFirst;
+			big currentSecond;
 
 			if (firstMem.isPositive ^ secondMem.isPositive)
 			{
 				if (firstMem.Abs() == secondMem.Abs())
 				{
-					return BigNumberDS.Create("0");
+					return big.Create("0");
 				}
 				else if (!firstMem.isPositive)
 				{
 					if (firstMem.Abs() > secondMem)
 					{
-						currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-						currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+						currentFirst = ((big)firstMem.Clone()).Invert();
+						currentSecond = ((big)secondMem.Clone()).Invert();
 
 						return Add(currentFirst, currentSecond, null, false).Invert();
 					}
 					else
 					{
-						currentFirst = ((BigNumberDS)secondMem.Clone());
-						currentSecond = ((BigNumberDS)firstMem.Clone());
+						currentFirst = ((big)secondMem.Clone());
+						currentSecond = ((big)firstMem.Clone());
 
 						return Add(currentFirst, currentSecond, null, false);
 					}
@@ -46,15 +48,15 @@ namespace Algorithms.BigNumber
 				{
 					if (secondMem.Abs() > firstMem)
 					{
-						currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-						currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+						currentFirst = ((big)secondMem.Clone()).Invert();
+						currentSecond = ((big)firstMem.Clone()).Invert();
 
 						return Add(currentFirst, currentSecond, null, false).Invert();
 					}
 					else
 					{
-						currentFirst = ((BigNumberDS)firstMem.Clone());
-						currentSecond = ((BigNumberDS)secondMem.Clone());
+						currentFirst = ((big)firstMem.Clone());
+						currentSecond = ((big)secondMem.Clone());
 
 						return Add(currentFirst, currentSecond, null, false);
 					}
@@ -64,13 +66,13 @@ namespace Algorithms.BigNumber
 			{
 				if (firstMem.Abs() > secondMem.Abs())
 				{
-					currentFirst = ((BigNumberDS)firstMem.Clone()).Invert();
-					currentSecond = ((BigNumberDS)secondMem.Clone()).Invert();
+					currentFirst = ((big)firstMem.Clone()).Invert();
+					currentSecond = ((big)secondMem.Clone()).Invert();
 				}
 				else
 				{
-					currentFirst = ((BigNumberDS)secondMem.Clone()).Invert();
-					currentSecond = ((BigNumberDS)firstMem.Clone()).Invert();
+					currentFirst = ((big)secondMem.Clone()).Invert();
+					currentSecond = ((big)firstMem.Clone()).Invert();
 				}
 
 				return Add(currentFirst, currentSecond, null, false).Invert();
@@ -79,20 +81,20 @@ namespace Algorithms.BigNumber
 			{
 				if (firstMem.Abs() > secondMem.Abs())
 				{
-					currentFirst = ((BigNumberDS)firstMem.Clone());
-					currentSecond = ((BigNumberDS)secondMem.Clone());
+					currentFirst = ((big)firstMem.Clone());
+					currentSecond = ((big)secondMem.Clone());
 				}
 				else
 				{
-					currentFirst = ((BigNumberDS)secondMem.Clone());
-					currentSecond = ((BigNumberDS)firstMem.Clone());
+					currentFirst = ((big)secondMem.Clone());
+					currentSecond = ((big)firstMem.Clone());
 				}
 
 				return Add(currentFirst, currentSecond, null, false);
 			}
 		}
 
-		internal static BigNumberDS Exponentiation(BigNumberDS lhs, BigNumberDS rhs)
+		internal static big Exponentiation(big lhs, big rhs)
 		{
 			if ((lhs == 0) && (rhs <= 0))
 			{
@@ -102,10 +104,10 @@ namespace Algorithms.BigNumber
 			return null;
 		}
 
-		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
+		internal static big Add(int firstMem, big secondMem)
 		    => BigNumberDSMath.Add(secondMem, firstMem);
 
-		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS result, bool addOne)
+		internal static big Add(big firstMem, big secondMem, big result, bool addOne)
 		{
 			if (firstMem == null && secondMem == null && result == null)
 			{
@@ -119,18 +121,18 @@ namespace Algorithms.BigNumber
 				throw new ArgumentException();
 			}
 
-			BigNumberDS currentFirst;
-			BigNumberDS currentSecond;
+			big currentFirst;
+			big currentSecond;
 
 			uint currentSum = 0;
 			bool isBigPart;
 
 			currentFirst = firstMem == null ?
 			    null :
-			    (BigNumberDS)firstMem.Clone();
+			    (big)firstMem.Clone();
 			currentSecond = secondMem == null ?
 			    null :
-			    (BigNumberDS)secondMem.Clone();
+			    (big)secondMem.Clone();
 
 			int firstMemSmallPartBlocksCount = currentFirst == null ?
 			    0 :
@@ -182,7 +184,7 @@ namespace Algorithms.BigNumber
 
 				if (result == null)
 				{
-					result = new BigNumberDS(currentSum, false, true);
+					result = new big(currentSum, false, true);
 				}
 				else
 				{
@@ -242,7 +244,7 @@ namespace Algorithms.BigNumber
 
 				if (result == null)
 				{
-					result = new BigNumberDS(currentSum, isBigPart, true);
+					result = new big(currentSum, isBigPart, true);
 				}
 				else
 				{
@@ -302,58 +304,74 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS Or(BigNumberDS lhs, BigNumberDS rhs)
+		internal static big Or(big lhs, big rhs)
 		{
 			return null;
 		}
 
-		internal static BigNumberDS And(BigNumberDS lhs, BigNumberDS rhs)
+		internal static big And(big lhs, big rhs)
 		{
-			return null;
+			big current = rhs;
+			big lhss = lhs;
+			big result = new big();
+			big tmp = result;
+
+			tmp.currentValue = current.currentValue;
+
+			while (current != null)
+			{
+				tmp.currentValue &= current.currentValue;
+
+				tmp = BigNumberDSHelper.AddNewPreviousBlock(tmp, 0, true, true);
+				current = current.previousBlock;
+				tmp = tmp.previousBlock;
+			}
+
+			return result;
 		}
 
-		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
+		internal static big Divide(big lhs, big rhs, big accuracy = null)
 		{
 			if (accuracy == null)
 			{
-				accuracy = BigNumberDS.DivisionAccuracy;
+				accuracy = big.DivisionAccuracy;
 			}
 
 			return BigNumberDSHelper.DivideService(lhs, rhs, accuracy);
 		}
 
-		internal static BigNumberDS Divide(BigNumberDS lhs, int rhs)
+		internal static big Divide(big lhs, int rhs)
 		{
-			return BigNumberDSMath.Divide(lhs, BigNumberDS.Create(rhs.ToString()));
+			return BigNumberDSMath.Divide(lhs, big.Create(rhs.ToString()));
 		}
 
-		internal static BigNumberDS Multiple(BigNumberDS lhs, BigNumberDS rhs)
+		internal static big Multiple(big lhs, big rhs)
 		{
 			#region checks
 
 			if ((rhs == 0) || (lhs == 0))
 			{
-				return BigNumberDS.Create("0");
+				return big.Create("0");
 			}
 
 			if (rhs == -1)
 			{
-				return -((BigNumberDS)lhs.Clone());
+				return -((big)lhs.Clone());
 			}
 
 			if (rhs == 1)
 			{
-				return (BigNumberDS)lhs.Clone();
+				return (big)lhs.Clone();
 			}
 
 			if (lhs == -1)
 			{
-				return -((BigNumberDS)rhs.Clone());
+				return -((big)rhs.Clone());
 			}
 
 			if (lhs == 1)
 			{
-				return (BigNumberDS)rhs.Clone();
+				return (big)rhs.Clone();
 			}
 
 			// simple optimization. TODO check, is it an optimization
@@ -382,9 +400,9 @@ namespace Algorithms.BigNumber
 
 			// column addition
 
-			BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
-			BigNumberDS rhsrough = BigNumberDSHelper.GetWithoutDot(rhs);
-			BigNumberDS output = new BigNumberDS();
+			big lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
+			big rhsrough = BigNumberDSHelper.GetWithoutDot(rhs);
+			big output = new big();
 
 			int k = 0;
 			while (rhsrough != null)
@@ -395,7 +413,7 @@ namespace Algorithms.BigNumber
 
 				for (int i = 0; i < a.Length; i++)
 				{
-					BigNumberDS tmp = lhsrough * a[i];
+					big tmp = lhsrough * a[i];
 
 					tmp = BigNumberDSHelper.MoveBy(tmp, k);
 
@@ -422,7 +440,7 @@ namespace Algorithms.BigNumber
 			if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
 			{
 				// getting copy of output
-				BigNumberDS biglhs = output;
+				big biglhs = output;
 				for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount; i++)
 				{
 					biglhs.isBigPart = false;
@@ -440,32 +458,32 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static BigNumberDS Multiple(BigNumberDS lhs, byte rhs)
+		internal static big Multiple(big lhs, byte rhs)
 		{
 			#region checks
 
 			if ((rhs == 0) || ((lhs.currentValue == 0) && (lhs.previousBlock == null)))
 			{
-				return BigNumberDS.Create("0");
+				return big.Create("0");
 			}
 			if (rhs == -1)
 			{
-				return -((BigNumberDS)lhs.Clone());
+				return -((big)lhs.Clone());
 			}
 
 			if (rhs == 1)
 			{
-				return (BigNumberDS)lhs.Clone();
+				return (big)lhs.Clone();
 			}
 
 			if (lhs.currentValue == -1)
 			{
-				return new BigNumberDS(rhs, true, rhs > 0);
+				return new big(rhs, true, rhs > 0);
 			}
 
 			if (lhs.currentValue == 1)
 			{
-				return new BigNumberDS(rhs, true, rhs > 0);
+				return new big(rhs, true, rhs > 0);
 			}
 
 			#endregion checks
@@ -474,9 +492,9 @@ namespace Algorithms.BigNumber
 
 			int smallBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
 
-			BigNumberDS output = new BigNumberDS();
+			big output = new big();
 
-			BigNumberDS biglhs = BigNumberDSHelper.GetWithoutDot(lhs);
+			big biglhs = BigNumberDSHelper.GetWithoutDot(lhs);
 
 			for (int i = 0; i < Math.Abs(rhs); i++)
 			{
@@ -504,12 +522,12 @@ namespace Algorithms.BigNumber
 			return output;
 		}
 
-		internal static BigNumberDS Subtract(BigNumberDS lhs, BigNumberDS rhs)
+		internal static big Subtract(big lhs, big rhs)
 		{
 			return BigNumberDSMath.Add(lhs, -rhs);
 		}
 
-		internal static BigNumberDS Subtract(BigNumberDS lhs, int rhs)
+		internal static big Subtract(big lhs, int rhs)
 		{
 			return BigNumberDSMath.Add(lhs, -rhs);
 		}
