@@ -380,46 +380,27 @@ namespace Algorithms.BigNumber
 			#endregion checks
 
 			// column addition
+
 			BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
-			BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
+			BigNumberDS rhsrough= BigNumberDSHelper.GetWithoutDot(rhs);
 			BigNumberDS output = new BigNumberDS();
 
-			int k = 0;
-			bool start = false;
-			int count = 0;
-			while (current != null)
+				int k = 0;
+			while (rhsrough != null)
 			{
-				byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+				byte[] a = BigNumberDSHelper.IntArrayParse(rhsrough.currentValue);
+
 				for (int i = 0; i < a.Length; i++)
 				{
-					BigNumberDS tmp = new BigNumberDS();
+					BigNumberDS tmp = lhsrough * a[i];
 
-					if (!start)
-					{
-						if (a[i] != 0)
-						{
-							start = true;
-						}
-						else
-						{
-							count++;
-						}
-					}
+					tmp = BigNumberDSHelper.MoveBy(tmp, k);
 
-					if (start)
-					{
-						tmp = lhsrough * a[i];
-
-						for (int j = 0; j < k; j++)
-						{
-							tmp *= 10;
-						}
-
-						output += tmp;
-						k++;
-					}
+					output += tmp;
+					k++;
 				}
-				current = current.previousBlock;
+
+				rhsrough = rhsrough.previousBlock;
 			}
 
 			if (!rhs.isPositive)
@@ -427,39 +408,102 @@ namespace Algorithms.BigNumber
 				output = output.Invert();
 			}
 
-			for (int i = 0; i < count; i++)
-			{
-				output *= 10;
-			}
-
 			int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
 			int fractionLhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
-			int trashBlocksCount = 0;
-			current = output;
-			while (current.currentValue == 0 && current.previousBlock != null)
-			{
-				//trashBlocksCount++;
-				current = current.previousBlock;
-			}
 
 			if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
 			{
 				// getting copy of output
 				BigNumberDS biglhs = output;
-				for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount + trashBlocksCount; i++)
+				for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount; i++)
 				{
-					if (biglhs == null)
-					{
-						biglhs = BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, true);
-					}
-
-					if (biglhs.previousBlock != null)
-					{
-						biglhs.isBigPart = false;
-						biglhs = biglhs.previousBlock;
-					}
+					biglhs.isBigPart = false;
+					biglhs = biglhs.previousBlock;
 				}
 			}
+
+			if (!output.isBigPart)
+			{
+				BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, output.isPositive);
+			}
+
+			//BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
+			//BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
+			//BigNumberDS output = new BigNumberDS();
+
+			//int k = 0;
+			//bool start = false;
+			//int count = 0;
+			//while (current != null)
+			//{
+			//	byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
+			//	for (int i = 0; i < a.Length; i++)
+			//	{
+			//		BigNumberDS tmp = new BigNumberDS();
+
+			//		if (!start)
+			//		{
+			//			if (a[i] != 0)
+			//			{
+			//				start = true;
+			//			}
+			//			else
+			//			{
+			//				count++;
+			//			}
+			//		}
+
+			//		if (start)
+			//		{
+			//			tmp = lhsrough * a[i];
+
+			//			for (int j = 0; j < k; j++)
+			//			{
+			//				tmp *= 10;
+			//			}
+
+			//			output += tmp;
+			//			k++;
+			//		}
+			//	}
+			//	current = current.previousBlock;
+			//}
+
+			//if (!rhs.isPositive)
+			//{
+			//	output = output.Invert();
+			//}
+
+			//for (int i = 0; i < count - 1; i++)
+			//{
+			//	output *= 10;
+			//}
+
+			//int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
+			//int fractionLhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
+			//int trashBlocksCount = 0;
+			//current = output;
+			//while (current.currentValue == 0 && current.previousBlock != null)
+			//{
+			//	trashBlocksCount++;
+			//	current = current.previousBlock;
+			//}
+
+			//if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
+			//{
+			//	// getting copy of output
+			//	BigNumberDS biglhs = output;
+			//	for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount + trashBlocksCount; i++)
+			//	{
+			//		if (biglhs == null)
+			//		{
+			//			biglhs = BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, true);
+			//		}
+
+			//			biglhs.isBigPart = false;
+			//			biglhs = biglhs.previousBlock;
+			//	}
+			//}
 
 			BigNumberDSHelper.TrimStructure(ref output);
 

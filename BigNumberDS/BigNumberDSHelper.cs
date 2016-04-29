@@ -137,11 +137,11 @@ namespace Algorithms.BigNumber
 
 					while (current.previousBlock != null)
 					{
-                        if (current.previousBlock.currentValue != 0)
-                        {
-                            break;
-                        }
-                        else if (current.previousBlock.previousBlock == null)
+						if (current.previousBlock.currentValue != 0)
+						{
+							break;
+						}
+						else if (current.previousBlock.previousBlock == null)
 						{
 							currentEdge.previousBlock = null;
 							return;
@@ -235,17 +235,17 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-        /// <summary>
-        /// Define, how many zeros must add to block, formed from input number
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// Define, how many zeros must add to block, formed from input number
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
 		internal static int GetNumberOfZeroesPrefix(int input)
 		{
-            if (input == 0)
-            {
-                return 8;
-            }
+			if (input == 0)
+			{
+				return 8;
+			}
 
 			int count = 0;
 
@@ -256,7 +256,6 @@ namespace Algorithms.BigNumber
 			}
 
 			count = 9 - count;
-
 
 			return count;
 		}
@@ -401,6 +400,31 @@ namespace Algorithms.BigNumber
 			}
 
 			return result;
+		}
+
+		internal static BigNumberDS MoveBy(BigNumberDS tmp, int count)
+		{
+			if (count == 0)
+			{
+				return tmp;
+			}
+
+			if (count > 0)
+			{
+				for (int i = 0; i < count; i++)
+				{
+					tmp *= 10;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < -count; i++)
+				{
+					tmp /= 10;
+				}
+			}
+
+			return tmp;
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace Algorithms.Test
 			BigNumberDS num1 = BigNumberDS.Create();
 		}
 
-		[Theory]
+	/*	[Theory]
 		[InlineData("-1")]
 		[InlineData("-1,0")]
 		[InlineData("-1,123")]
@@ -67,7 +67,7 @@ namespace Algorithms.Test
 				Assert.True(!num1.ToString().Contains(","));
 			}
 		}
-
+		*/
 		#endregion ctor
 
 		[Fact]
