@@ -432,71 +432,13 @@ namespace Algorithms.BigNumber
 		{
 			StringBuilder sb = new StringBuilder();
 
-			BigNumberDS currentSbnf = this;
+			BigNumberDS currentSbnf = (BigNumberDS)this.Clone();
 
-			int iterator = 0;
+            BigNumberDSHelper.TrimStructure(ref currentSbnf);
 
-			if (!this.isBigPart)
-			{
-				while ((currentSbnf.previousBlock != null) && (!currentSbnf.isBigPart))
-				{
-					sb.Insert(0, currentSbnf.currentValue);
+            sb = BigNumberDSHelper.MakeTextString(currentSbnf, null, true);
 
-					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(currentSbnf.currentValue);
-
-					for (int i = 0; i < iterator; i++)
-					{
-						sb.Insert(0, "0");
-					}
-
-					currentSbnf = currentSbnf.previousBlock;
-				}
-
-				sb.Insert(0, $"{currentSbnf.currentValue},");
-
-				if (currentSbnf.previousBlock != null)
-				{
-					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(currentSbnf.currentValue);
-
-					for (int i = 0; i < iterator; i++)
-					{
-						sb.Insert(0, "0");
-					}
-				}
-			}
-			else
-			{
-				sb.Insert(0, currentSbnf.currentValue);
-
-				if (currentSbnf.previousBlock != null)
-				{
-					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(currentSbnf.currentValue);
-
-					for (int i = 0; i < iterator; i++)
-					{
-						sb.Insert(0, "0");
-					}
-				}
-			}
-
-			while (currentSbnf.previousBlock != null)
-			{
-				currentSbnf = currentSbnf.previousBlock;
-
-				sb.Insert(0, currentSbnf.currentValue);
-
-				if (currentSbnf.previousBlock != null)
-				{
-					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(currentSbnf.currentValue);
-
-					for (int i = 0; i < iterator; i++)
-					{
-						sb.Insert(0, "0");
-					}
-				}
-			}
-
-			if (!currentSbnf.isPositive)
+			if (!this.isPositive)
 			{
 				sb.Insert(0, "-");
 			}

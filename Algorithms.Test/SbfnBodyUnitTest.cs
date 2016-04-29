@@ -1887,17 +1887,39 @@ namespace Algorithms.Test
 			Assert.Equal(true, lhs < rhs);
 		}
 
-		#endregion operatorless/greater
+        #endregion operatorless/greater
 
-		#endregion operators
+        #endregion operators
 
-		//[TestMethod]
-		//public void TrimStructurePositiveVer1()
-		//{
-		//	BigNumberDS obj = BigNumberDS.Create("21002000000000000000000");
-		//	BigNumberDSHelper.TrimStructure(ref obj);
+        #region Methods
 
-		//	Assert.AreEqual("21002000000000000000000", obj.ToString());
-		//}
-	}
+        #region ToString()
+
+        [Theory]
+        [InlineData("1,1555564684478654", "1,1555564684478654")]
+        [InlineData(",1555564684478654", "0,1555564684478654")]
+        [InlineData(",155556468", "0,155556468")]
+        [InlineData(",155556", "0,155556")]
+        [InlineData("156000", "156000")]
+        [InlineData("00004568", "4568")]
+        public void MethodToStringMustWorkCorrectlyVer0(string one, string two)
+        {
+            BigNumberDS lhs = BigNumberDS.Create(one);
+
+            Assert.Equal(lhs.ToString(), two);
+        }  
+
+        #endregion
+
+        #endregion
+
+        //[TestMethod]
+        //public void TrimStructurePositiveVer1()
+        //{
+        //	BigNumberDS obj = BigNumberDS.Create("21002000000000000000000");
+        //	BigNumberDSHelper.TrimStructure(ref obj);
+
+        //	Assert.AreEqual("21002000000000000000000", obj.ToString());
+        //}
+    }
 }

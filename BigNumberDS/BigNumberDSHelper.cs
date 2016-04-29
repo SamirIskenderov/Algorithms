@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Algorithms.BigNumber
 {
@@ -85,7 +86,7 @@ namespace Algorithms.BigNumber
 		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
 		/// </summary>
 		/// <param name="input"></param>
-		public static void TrimStructure(ref BigNumberDS input)
+		internal static void TrimStructure(ref BigNumberDS input)
 		{
 			BigNumberDS current = input;
 			bool isEdgeBlock = true;
@@ -372,5 +373,87 @@ namespace Algorithms.BigNumber
 
 			return result;
 		}
+
+        internal static StringBuilder MakeTextString(BigNumberDS input, StringBuilder result, bool isEdgeBlock)
+        {
+            if (input == null && result == null)
+            {
+                throw new NullReferenceException();
+            }
+            else if (result == null)
+            {
+                result = new StringBuilder();
+            }
+
+            int postfixZeroesIterator = 0;
+            int iterator = 0;
+
+            if (input != null && !input.isBigPart)
+            {
+                if (isEdgeBlock)
+                {
+                    iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+
+                    while (input.currentValue % 10 == 0)
+                    {
+                        input.currentValue = input.currentValue / 10;
+                        postfixZeroesIterator++;
+                    }
+
+                    iterator = iterator - postfixZeroesIterator;
+
+                    isEdgeBlock = false;
+                }
+                else
+                {
+                    iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+                }
+
+                result.Insert(0, input.currentValue);
+
+                for (int i = 0; i < iterator; i++)
+                {
+                    result.Insert(0, "0");
+                }
+
+                input = input.previousBlock;
+
+                if (input == null)
+                {
+                    result.Insert(0, "0,");
+                }
+                else if (input.isBigPart)
+                {
+                    result.Insert(0, ",");
+                }
+
+                result = BigNumberDSHelper.MakeTextString(input, result, isEdgeBlock);
+            }
+            else if (input != null && input.previousBlock != null)
+            {
+                result.Insert(0, input.currentValue);
+
+                iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+
+                for (int i = 0; i < iterator; i++)
+                {
+                    result.Insert(0, "0");
+                }
+
+                input = input.previousBlock;
+
+                result = BigNumberDSHelper.MakeTextString(input, result, false);
+            }
+            else if (input != null)
+            {
+                result.Insert(0, input.currentValue);
+
+                input = input.previousBlock;
+
+                result = BigNumberDSHelper.MakeTextString(input, result, false);
+            }
+
+            return result;
+        }
 	}
 }
