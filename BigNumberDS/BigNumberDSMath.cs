@@ -173,7 +173,7 @@ namespace Algorithms.BigNumber
 				}
 				else
 				{
-					BigNumberDSHelper.GetHelpFromTitleBlock(ref currentFirst, --secondMemSmallPartBlocksCount);
+					BigNumberDSHelper.GetHelpFromTitleBlock(ref currentFirst, secondMemSmallPartBlocksCount - firstMemSmallPartBlocksCount - 1);
 
 					currentSum = Math.Abs(BigNumberDSMath.MAX_ALLOWED_VALUE + 1 - currentSecond.currentValue);
 
@@ -390,6 +390,8 @@ namespace Algorithms.BigNumber
 			{
 				byte[] a = BigNumberDSHelper.IntArrayParse(rhsrough.currentValue);
 
+				int firstZeros = BigNumberDSHelper.GetNumberOfZeroesPrefix(rhsrough.currentValue);
+
 				for (int i = 0; i < a.Length; i++)
 				{
 					BigNumberDS tmp = lhsrough * a[i];
@@ -398,6 +400,11 @@ namespace Algorithms.BigNumber
 
 					output += tmp;
 					k++;
+				}
+
+				if (firstZeros != 0)
+				{
+					k += firstZeros;
 				}
 
 				rhsrough = rhsrough.previousBlock;
@@ -421,6 +428,11 @@ namespace Algorithms.BigNumber
 					biglhs = biglhs.previousBlock;
 				}
 			}
+
+			//if (BigNumberDSHelper.HasIntegerPart(output))
+			//{
+
+			//}
 
 			if (!output.isBigPart)
 			{

@@ -426,5 +426,20 @@ namespace Algorithms.BigNumber
 
 			return tmp;
 		}
+
+		internal static bool HasIntegerPart(BigNumberDS output)
+		{
+			BigNumberDS tmp = output;
+
+			while (tmp != null)
+			{
+				if (tmp.isBigPart)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
