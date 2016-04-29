@@ -647,7 +647,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS mhs = BigNumberDS.Create(two);
-			BigNumberDS rhs = /*            */ BigNumberDS.Create(three);
+			BigNumberDS rhs = BigNumberDS.Create(three);
 
 			Assert.Equal<BigNumberDS>(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
 		}
@@ -691,13 +691,11 @@ namespace Algorithms.Test
 		}
 
 		[Theory]
-		[InlineData("0", "0", "0")]
 		[InlineData("1", "1", "2")]
 		[InlineData("12", "0", "412")]
 		[InlineData("123456789123456789123", "1", "12345678912345678912124")]
 		[InlineData("12345678", "1234561078", "2445691356")]
 		[InlineData("1212345678", "123456780", "135802458")]
-		[InlineData("0,0", "0,0", "0,0")]
 		[InlineData("1,0", "1,0", "2,0")]
 		[InlineData("12,0", "0,0", "412,0")]
 		[InlineData("123456789123456789123,0", "1,0", "12345678912345678912124,0")]
@@ -731,19 +729,14 @@ namespace Algorithms.Test
 		}
 
 		[Theory]
-		[InlineData("0", "0")]
-		[InlineData("1", "1")]
 		[InlineData("12", "0")]
 		[InlineData("123456789123456789123", "1")]
 		[InlineData("12345678", "1234561078")]
 		[InlineData("1212345678", "123456780")]
-		[InlineData("0,0", "0,0")]
-		[InlineData("1,0", "1,0")]
 		[InlineData("12,0", "0,0")]
 		[InlineData("123456789123456789123,0", "1,0")]
 		[InlineData("12345678,0", "1234561078,0")]
 		[InlineData("1212345678,0", "123456780,0")]
-		[InlineData("0,123", "0,123")]
 		[InlineData("1,123", "1,12013")]
 		[InlineData("12,123", "0,000123")]
 		[InlineData("123456789123456789110123,123", "1,000000123")]
@@ -831,7 +824,7 @@ namespace Algorithms.Test
 		[InlineData("-1234105678", "12345678", "-1524157651204025279684")]
 		[InlineData("-12341205678", "-12320145678", "15241576012015279684")]
 		[InlineData("-12341205678", "12341201256780", "-15240010157652796840")]
-		[InlineData("-1234567450401208", "-123456780", "15241576.12.453252796840")]
+		[InlineData("-1234567450401208", "-123456780", "15241576,12453252796840")]
 		[InlineData("0,0", "0,0", "0,0")]
 		[InlineData("1,0", "1120120,0", "1,0")]
 		[InlineData("12,0", "0,0", "0,0")]
@@ -922,7 +915,7 @@ namespace Algorithms.Test
 		[InlineData("-1234105678", "12345678", "-1524157651204025279684")]
 		[InlineData("-12341205678", "-12320145678", "15241576012015279684")]
 		[InlineData("-12341205678", "12341201256780", "-15240010157652796840")]
-		[InlineData("-1234567450401208", "-123456780", "15241576.12.453252796840")]
+		[InlineData("-1234567450401208", "-123456780", "15241576,12453252796840")]
 		[InlineData("0,0", "0,0", "0,0")]
 		[InlineData("1,0", "1120120,0", "1,0")]
 		[InlineData("12,0", "0,0", "0,0")]
@@ -938,7 +931,7 @@ namespace Algorithms.Test
 		[InlineData("0,12013", "0,3120115", "0,038120120745")]
 		[InlineData("1,121203", "1,315", "1,476745")]
 		[InlineData("12,112023", "0,315436456105", "3,81648745")]
-		[InlineData("12,1120120123", "143,315", "15,94212.451745")]
+		[InlineData("12,1120120123", "143,315", "15,94212,451745")]
 		[InlineData("123456789123456789123,412445345645", "1,315", "16234567769734512677696,90674545564545")]
 		[InlineData("-1,186723", "-1,3144435", "1,47644440422745")]
 		[InlineData("-12,17543423", "0,3434315", "3,818434745")]
@@ -1030,8 +1023,6 @@ namespace Algorithms.Test
 		[InlineData("-123456789112023456789123")]
 		[InlineData("-1234567891234567801049123,0")]
 		[InlineData("-123456789123456789123,123")]
-		[InlineData("0")]
-		[InlineData("0,0")]
 		[InlineData("0,12013")]
 		[InlineData("0,3120115")]
 		[InlineData("0,315436456105")]
@@ -1273,11 +1264,9 @@ namespace Algorithms.Test
 
 		[Theory]
 		[InlineData("-1", "0")]
-		[InlineData("-1,0", "-1")]
 		[InlineData("-1,186723", "-1,0")]
 		[InlineData("-1,3144435", "-1,186723")]
 		[InlineData("-12", "-1,3144435")]
-		[InlineData("-12,0", "-12")]
 		[InlineData("-12,17543423", "-12,0")]
 		[InlineData("-120120345678,0", "-12,17543423")]
 		[InlineData("-1230120145678,0", "-120120345678,0")]
@@ -1300,21 +1289,17 @@ namespace Algorithms.Test
 		[InlineData("-1234567891234567801049123,0", "-123456789112023456789123")]
 		[InlineData("-123456789123456789123,123", "-1234567891234567801049123,0")]
 		[InlineData("0", "-123456789123456789123,123")]
-		[InlineData("0,0", "0")]
 		[InlineData("0,12013", "0,0")]
 		[InlineData("0,3120115", "0,12013")]
 		[InlineData("0,315436456105", "0,3120115")]
 		[InlineData("0,3434315", "0,315436456105")]
 		[InlineData("1", "0,3434315")]
-		[InlineData("1,0", "1")]
 		[InlineData("1,121203", "1,0")]
 		[InlineData("1,3143425", "1,121203")]
 		[InlineData("1,315", "1,3143425")]
-		[InlineData("1,315", "1,315")]
 		[InlineData("1101,0", "1,315")]
 		[InlineData("1120120,0", "1101,0")]
 		[InlineData("12", "1120120,0")]
-		[InlineData("12,0", "12")]
 		[InlineData("12,1120120123", "12,0")]
 		[InlineData("12,112023", "12,1120120123")]
 		[InlineData("1234101256780,0", "12,112023")]

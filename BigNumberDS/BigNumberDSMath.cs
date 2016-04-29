@@ -330,27 +330,27 @@ namespace Algorithms.BigNumber
 		{
 			#region checks
 
-			if ((rhs.currentValue == 0) || (lhs.currentValue == 0))
+			if ((rhs == 0) || (lhs == 0))
 			{
 				return BigNumberDS.Create("0");
 			}
 
-			if (rhs.currentValue == -1)
+			if (rhs == -1)
 			{
 				return -((BigNumberDS)lhs.Clone());
 			}
 
-			if (rhs.currentValue == 1)
+			if (rhs == 1)
 			{
 				return (BigNumberDS)lhs.Clone();
 			}
 
-			if (lhs.currentValue == -1)
+			if (lhs == -1)
 			{
 				return -((BigNumberDS)rhs.Clone());
 			}
 
-			if (lhs.currentValue == 1)
+			if (lhs == 1)
 			{
 				return (BigNumberDS)rhs.Clone();
 			}
@@ -404,6 +404,11 @@ namespace Algorithms.BigNumber
 					k++;
 				}
 				current = current.previousBlock;
+			}
+
+			if (!rhs.isPositive)
+			{
+				output = output.Invert();
 			}
 
 			int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
