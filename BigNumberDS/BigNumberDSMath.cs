@@ -215,7 +215,7 @@ namespace Algorithms.BigNumber
 
 				if (!currentSecond.isPositive)
 				{
-					if (currentFirst.currentValue > currentSecond.currentValue)
+					if (currentFirst.currentValue >= currentSecond.currentValue)
 					{
 						currentSum = currentFirst.currentValue - currentSecond.currentValue;
 
