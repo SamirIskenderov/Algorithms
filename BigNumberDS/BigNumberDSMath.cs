@@ -116,6 +116,11 @@ namespace Algorithms.BigNumber
 			}
 		}
 
+		internal static BigNumberDS Exponentiation(BigNumberDS lhs, BigNumberDS rhs)
+		{
+			throw new NotImplementedException();
+		}
+
 		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
 		    => BigNumberDSMath.Add(secondMem, firstMem);
 
