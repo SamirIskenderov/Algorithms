@@ -129,6 +129,28 @@ namespace Algorithms.BigNumber
 		public static bool operator ==(int lhs, BigNumberDS rhs)
 			=> rhs == lhs;
 
+		public static BigNumberDS operator &(int lhs, BigNumberDS rhs)
+			=> BigNumberDS.Create(lhs.ToString()) & rhs;
+
+		public static BigNumberDS operator &(BigNumberDS lhs, int rhs)
+			=> BigNumberDS.Create(rhs.ToString()) & lhs;
+
+		public static BigNumberDS operator &(BigNumberDS lhs, BigNumberDS rhs)
+		{
+			return BigNumberDSMath.And(lhs, rhs);
+		}
+
+		public static BigNumberDS operator |(int lhs, BigNumberDS rhs)
+			=> BigNumberDS.Create(lhs.ToString()) | rhs;
+
+		public static BigNumberDS operator |(BigNumberDS lhs, int rhs)
+			=> BigNumberDS.Create(rhs.ToString()) | lhs;
+
+		public static BigNumberDS operator |(BigNumberDS lhs, BigNumberDS rhs)
+		{
+			return BigNumberDSMath.Or(lhs, rhs);
+		}
+
 		public static bool operator ==(BigNumberDS lhs, int rhs)
 			=> lhs == BigNumberDS.Create(rhs.ToString());
 
