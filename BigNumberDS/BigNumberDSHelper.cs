@@ -282,15 +282,92 @@ namespace Algorithms.BigNumber
             return result;
         }
 
-        //internal static BigNumberDS Divide(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS )
-        //{
-        //}
+        internal static BigNumberDS DivideService(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS accuracy)
+        {
+            if (firstMem == null || secondMem == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (!firstMem.isPositive || !secondMem.isPositive)
+            {
+                throw new ArgumentException();
+            }
+            else if (firstMem == 0)
+            {
+                throw new Exception("Mathematic is broken.(");
+            }
+            else if (firstMem == secondMem)
+            {
+                return BigNumberDS.Create("1");
+            }
+            else if (secondMem == 0)
+            {
+                return BigNumberDS.Create("0");
+            }
+
+            BigNumberDS currentIntResult, currentLeftOvResult, workingCopy;
+
+            if (firstMem > secondMem)
+            {
+                currentIntResult = BigNumberDSHelper.IntegerDivide(firstMem, secondMem);
+                currentLeftOvResult = BigNumberDSHelper.IntegerDivideLeftover(firstMem, secondMem);
+
+                if (accuracy < BigNumberDS.Create("1") || currentLeftOvResult == 0)
+                {
+                    workingCopy = currentIntResult;
+                }
+                else
+                {
+                    workingCopy = currentIntResult + DivideService(currentLeftOvResult, secondMem, accuracy);
+                }
+            }
+            else
+            {
+                if (accuracy < BigNumberDS.Create("1"))
+                {
+                    workingCopy = BigNumberDS.Create("0");
+                }
+                //else if (BigNumberDSHelper.IntegerDivideLeftover(secondMem, firstMem) == BigNumberDS.Create("0"))
+                //{
+                //    workingCopy = BigNumberDSHelper.IntegerDivide(secondMem, firstMem);
+
+                //    BigNumberDS divider = BigNumberDS.Create("1");
+                //    BigNumberDS multiplier = BigNumberDS.Create("1");
+
+                //    for (BigNumberDS i = BigNumberDS.Create("0"); i < accuracy; i++)
+                //    {
+                //        divider = divider * BigNumberDS.Create("10");
+                //        multiplier = multiplier * BigNumberDS.Create("0,1");
+                //    }
+
+                //    workingCopy = divider / workingCopy * multiplier;
+                //}
+                else
+                {
+                    workingCopy = DivideService(secondMem, firstMem, accuracy - 1);
+
+                    BigNumberDS divider = BigNumberDS.Create("1");
+                    BigNumberDS multiplier = BigNumberDS.Create("1");
+
+                    for (BigNumberDS i = BigNumberDS.Create("0"); i < accuracy; i++)
+                    {
+                        divider = divider * BigNumberDS.Create("10");
+                        multiplier = multiplier * BigNumberDS.Create("0,1");
+                    }
+
+                    workingCopy = DivideService(divider, workingCopy, BigNumberDS.Create("0")) * multiplier;
+                }
+            }
+
+            return workingCopy;
+        }
+
         internal static BigNumberDS IntegerDivideLeftover(BigNumberDS firstMem, BigNumberDS secondMem)
         {
             BigNumberDS result;
             BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
 
-            while (iterator < firstMem)
+            while (iterator + secondMem <= firstMem)
             {
                 iterator += secondMem;
             }
@@ -426,8 +503,6 @@ namespace Algorithms.BigNumber
                         input.currentValue = input.currentValue / 10;
                         postfixZeroesIterator++;
                     }
-
-                    iterator = iterator - postfixZeroesIterator;
 
                     isEdgeBlock = false;
                 }

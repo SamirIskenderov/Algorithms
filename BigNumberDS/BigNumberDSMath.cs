@@ -13,29 +13,31 @@ namespace Algorithms.BigNumber
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
 		{
+            BigNumberDS result = firstMem.Clone() as BigNumberDS;
+
 			if (secondMem == 0)
 			{
-				return firstMem;
+				return result;
 			}
 
-			BigNumberDS big = BigNumberDSHelper.GetIntegerPart(firstMem);
+			BigNumberDS big = BigNumberDSHelper.GetIntegerPart(result);
 
-			if (firstMem.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
+			if (result.currentValue + secondMem > MAX_ALLOWED_VALUE) // TODO overflow fix
 			{
 				int b = secondMem - MAX_ALLOWED_VALUE - 1;
-				firstMem.previousBlock.currentValue += 1; // TODO null ref fix
+				result.previousBlock.currentValue += 1; // TODO null ref fix
 
 				if (b > MAX_ALLOWED_VALUE)
 				{
 					b = b - MAX_ALLOWED_VALUE - 1;
-					firstMem.previousBlock.currentValue += 1;
+					result.previousBlock.currentValue += 1;
 				}
 
-				firstMem.currentValue += b;
+				result.currentValue += b;
 			}
-			firstMem.currentValue += secondMem;
+			result.currentValue += secondMem;
 
-			return firstMem;
+			return result;
 		}
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, BigNumberDS secondMem)
@@ -316,14 +318,19 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs)
+		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
 		{
-			return null;
+            if (accuracy == null)
+            {
+                accuracy = BigNumberDS.DivisionAccuracy;
+            }
+
+			return BigNumberDSHelper.DivideService(lhs, rhs, accuracy);
 		}
 
 		internal static BigNumberDS Divide(BigNumberDS lhs, int rhs)
 		{
-			return null;
+			return BigNumberDSMath.Divide(lhs, BigNumberDS.Create(rhs.ToString()));
 		}
 
 		internal static BigNumberDS Multiple(BigNumberDS lhs, BigNumberDS rhs)
@@ -410,7 +417,7 @@ namespace Algorithms.BigNumber
 				rhsrough = rhsrough.previousBlock;
 			}
 
-			if (!rhs.isPositive)
+            if (!rhs.isPositive)
 			{
 				output = output.Invert();
 			}

@@ -7,6 +7,8 @@ namespace Algorithms.BigNumber
 {
 	public class BigNumberDS : IComparable<BigNumberDS>, ICloneable
 	{
+        public static BigNumberDS DivisionAccuracy { get; set; } = BigNumberDS.Create("5");
+
 		internal int currentValue;
 
 		internal bool isBigPart;
@@ -460,5 +462,10 @@ namespace Algorithms.BigNumber
 
 			return sb.ToString();
 		}
+
+        public BigNumberDS Divide(BigNumberDS divider, BigNumberDS accuracy)
+        {
+            return BigNumberDSMath.Divide(this, divider, accuracy);
+        }
 	}
 }

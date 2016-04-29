@@ -946,7 +946,9 @@ namespace Algorithms.Test
 		[InlineData("-123456789123456789123,0", "1,0", "-123456789123456789123,0")]
 		[InlineData("-123456789123456789123,123", "1,315", "-162345677697345677696,906745")]
 		[InlineData("0", "0", "0")]
-		[InlineData("0,0", "0,0", "0,0")]
+        [InlineData("0,1", "1", "0,1")]
+        [InlineData("0,1", "0,1", "0,01")]
+        [InlineData("0,0", "0,0", "0,0")]
 		[InlineData("0,123", "0,315", "0,038745")]
 		[InlineData("1", "1", "1")]
 		[InlineData("1,0", "1,0", "1,0")]
@@ -965,7 +967,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS added = BigNumberDS.Create(two);
 			BigNumberDS rhs = BigNumberDS.Create(free);
-
+            
 			Assert.Equal<BigNumberDS>(rhs, lhs * added);
 		}
 
@@ -1159,15 +1161,17 @@ namespace Algorithms.Test
 			Assert.Equal<BigNumberDS>(lhs, lhs * 1);
 		}
 
-		#endregion binary*
+        #endregion binary*
 
-		#region binary/
+        #region binary/
 
-		#endregion binary/
+        
 
-		#region operator==
+        #endregion binary/
 
-		[Theory]
+        #region operator==
+
+        [Theory]
 		[InlineData("-1")]
 		[InlineData("-1,0")]
 		[InlineData("-1,186723")]
@@ -1860,7 +1864,24 @@ namespace Algorithms.Test
             BigNumberDS lhs = BigNumberDS.Create(one);
 
             Assert.Equal(lhs.ToString(), two);
-        }  
+        }
+
+        #endregion
+
+        #region Division()
+
+        [Theory]
+        [InlineData("5", "10", "3", "3,33333")]
+        [InlineData("10", "10", "3", "3,3333333333")]
+        public void MethodDivisionMustWorkCorrectly(string one, string two, string three, string four)
+        {
+            BigNumberDS acc = BigNumberDS.Create(one);
+            BigNumberDS lhs = BigNumberDS.Create(two);
+            BigNumberDS rhs = BigNumberDS.Create(three);
+            BigNumberDS exp = BigNumberDS.Create(four);
+
+            Assert.Equal<BigNumberDS>(exp, lhs.Divide(rhs, acc));
+        } 
 
         #endregion
 
