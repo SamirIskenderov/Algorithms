@@ -64,20 +64,45 @@ namespace Algorithms.BigNumber
 
 					return true;
 				}
+				else if (current.currentValue == 0)
+				{
+					current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
+				}
 			}
 
 			return false;
 		}
 
-		public static bool GetHelpFromTitleBlock(BigNumberDS input)
+		public static bool GetHelpFromTitleBlock(ref BigNumberDS input, int countOfAttachingBlocks)
 		{
-			if (input.currentValue > 0)
+			BigNumberDS current = input;
+
+			while (current != null && current.currentValue == 0)
 			{
-				input.currentValue--;
+				current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
+
+				current = current.previousBlock;
+			}
+
+			if (current != null && current.currentValue > 0)
+			{
+				current.currentValue--;
+
+				for (int i = 0; i < countOfAttachingBlocks; i++)
+				{
+					current = input;
+
+					input = new BigNumberDS(BigNumberDSMath.MAX_ALLOWED_VALUE, false, current.isPositive);
+
+					input.previousBlock = current;
+				}
 
 				return true;
 			}
-			return false;
+			else
+			{
+				throw new NullReferenceException();
+			}
 		}
 
 		/// <summary>
@@ -135,6 +160,11 @@ namespace Algorithms.BigNumber
 			BigNumberDS current = input;
 
 			BigNumberDS addingBlock = new BigNumberDS(value, isBigPart, isPositive);
+
+			if (current == null)
+			{
+				return addingBlock;
+			}
 
 			while (current.previousBlock != null)
 			{
