@@ -37,6 +37,12 @@ namespace Algorithms.BigNumber
 		public static bool operator !=(BigNumberDS lhs, BigNumberDS rhs)
 		 => !(lhs == rhs);
 
+		public static bool operator !=(int lhs, BigNumberDS rhs)
+			=> rhs != lhs;
+
+		public static bool operator !=(BigNumberDS lhs, int rhs)
+			=> lhs != BigNumberDS.Create(rhs.ToString());
+
 		public static BigNumberDS operator *(BigNumberDS lhs, BigNumberDS rhs)
 		{
 			return BigNumberDSMath.Multiple(lhs, rhs);
@@ -75,6 +81,15 @@ namespace Algorithms.BigNumber
 		public static BigNumberDS operator /(int lhs, BigNumberDS rhs)
 		    => rhs / lhs;
 
+		public static BigNumberDS operator ^(int lhs, BigNumberDS rhs)
+			=> (BigNumberDS.Create(lhs.ToString())) ^ rhs;
+
+		public static BigNumberDS operator ^(BigNumberDS lhs, int rhs)
+			=> (rhs ^ BigNumberDS.Create(rhs.ToString()));
+
+		public static BigNumberDS operator ^(BigNumberDS lhs, BigNumberDS rhs)
+			=> BigNumberDSMath.Exponentiation(lhs, rhs);
+
 		public static BigNumberDS operator +(BigNumberDS value)
 		{
 			value.isPositive = true;
@@ -90,34 +105,32 @@ namespace Algorithms.BigNumber
 		public static BigNumberDS operator +(int lhs, BigNumberDS rhs)
 		 => BigNumberDSMath.Add(rhs, lhs);
 
-		public static BigNumberDS operator ^(int lhs, BigNumberDS rhs)
-			=> (BigNumberDS.Create(lhs.ToString()))^rhs;
-		public static BigNumberDS operator ^(BigNumberDS lhs, int rhs)
-			=> (rhs ^ BigNumberDS.Create(rhs.ToString()));
-
-		public static BigNumberDS operator ^(BigNumberDS lhs, BigNumberDS rhs)
-			=> BigNumberDSMath.Exponentiation(lhs, rhs);
-
 		public static BigNumberDS operator ++(BigNumberDS value)
 		 => BigNumberDSMath.Add(value, BigNumberDS.Create("1"));
 
 		public static bool operator <(BigNumberDS lhs, BigNumberDS rhs)
 		 => lhs.CompareTo(rhs) < 0;
 
+		public static bool operator <(BigNumberDS lhs, int rhs)
+		 => lhs.CompareTo(BigNumberDS.Create(rhs.ToString())) < 0;
+
+		public static bool operator <(int lhs, BigNumberDS rhs)
+		 => !(rhs.CompareTo(BigNumberDS.Create(lhs.ToString())) >= 0);
+
 		public static bool operator <=(BigNumberDS lhs, BigNumberDS rhs)
-		 => lhs.CompareTo(rhs) <= 0;
+						 => lhs.CompareTo(rhs) <= 0;
+
+		public static bool operator <=(BigNumberDS lhs, int rhs)
+						 => lhs.CompareTo(BigNumberDS.Create(rhs.ToString())) <= 0;
+
+		public static bool operator <=(int lhs, BigNumberDS rhs)
+						 => !(rhs.CompareTo(BigNumberDS.Create(lhs.ToString())) > 0);
 
 		public static bool operator ==(int lhs, BigNumberDS rhs)
 			=> rhs == lhs;
 
-		public static bool operator !=(int lhs, BigNumberDS rhs)
-			=> rhs != lhs;
-
 		public static bool operator ==(BigNumberDS lhs, int rhs)
 			=> lhs == BigNumberDS.Create(rhs.ToString());
-
-		public static bool operator !=(BigNumberDS lhs, int rhs)
-			=> lhs != BigNumberDS.Create(rhs.ToString());
 
 		public static bool operator ==(BigNumberDS lhs, BigNumberDS rhs)
 		{
@@ -135,6 +148,18 @@ namespace Algorithms.BigNumber
 
 		public static bool operator >(BigNumberDS lhs, BigNumberDS rhs)
 		 => lhs.CompareTo(rhs) > 0;
+
+		public static bool operator >(BigNumberDS lhs, int rhs)
+		 => lhs.CompareTo(BigNumberDS.Create(rhs.ToString())) > 0;
+
+		public static bool operator >(int lhs, BigNumberDS rhs)
+		 => !(rhs.CompareTo(BigNumberDS.Create(lhs.ToString())) <= 0);
+
+		public static bool operator >=(BigNumberDS lhs, int rhs)
+																				 => lhs.CompareTo(BigNumberDS.Create(rhs.ToString())) >= 0;
+
+		public static bool operator >=(int lhs, BigNumberDS rhs)
+						 => !(rhs.CompareTo(BigNumberDS.Create(lhs.ToString())) < 0);
 
 		public static bool operator >=(BigNumberDS lhs, BigNumberDS rhs)
 				 => lhs.CompareTo(rhs) >= 0;
@@ -192,22 +217,6 @@ namespace Algorithms.BigNumber
 			this.isPositive = true;
 			this.previousBlock = null;
 		}
-
-        public static BigNumberDS Create(string input = "")
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return new BigNumberDS();
-            }
-            else
-            {
-                BigNumberDS result = new BigNumberDS(input[0] == '-' ? input.Substring(1) : input, input[0] != '-');
-
-                BigNumberDSHelper.TrimStructure(ref result);
-
-                return result;
-            }
-        }
 
 		internal BigNumberDS(string inputString, bool isPositive)
 		{
@@ -307,6 +316,22 @@ namespace Algorithms.BigNumber
 			this.isBigPart = isBigPart;
 
 			this.isPositive = isPositive;
+		}
+
+		public static BigNumberDS Create(string input = "")
+		{
+			if (string.IsNullOrWhiteSpace(input))
+			{
+				return new BigNumberDS();
+			}
+			else
+			{
+				BigNumberDS result = new BigNumberDS(input[0] == '-' ? input.Substring(1) : input, input[0] != '-');
+
+				BigNumberDSHelper.TrimStructure(ref result);
+
+				return result;
+			}
 		}
 
 		#endregion ctor
@@ -457,9 +482,9 @@ namespace Algorithms.BigNumber
 
 			BigNumberDS currentSbnf = (BigNumberDS)this.Clone();
 
-            BigNumberDSHelper.TrimStructure(ref currentSbnf);
+			BigNumberDSHelper.TrimStructure(ref currentSbnf);
 
-            sb = BigNumberDSHelper.MakeTextString(currentSbnf, null, true);
+			sb = BigNumberDSHelper.MakeTextString(currentSbnf, null, true);
 
 			if (!this.isPositive)
 			{

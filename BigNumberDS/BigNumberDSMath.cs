@@ -118,7 +118,12 @@ namespace Algorithms.BigNumber
 
 		internal static BigNumberDS Exponentiation(BigNumberDS lhs, BigNumberDS rhs)
 		{
-			throw new NotImplementedException();
+			if ((lhs == 0) && (rhs <= 0))
+			{
+				throw new ArgumentException($"Can't up zero to the power {rhs}: power has to be less zero.");
+			}
+
+			return null;
 		}
 
 		internal static BigNumberDS Add(int firstMem, BigNumberDS secondMem)
