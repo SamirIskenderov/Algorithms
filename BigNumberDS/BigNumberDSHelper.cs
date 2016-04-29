@@ -65,20 +65,45 @@ namespace Algorithms.BigNumber
 
 					return true;
 				}
+				else if (current.currentValue == 0)
+				{
+					current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
+				}
 			}
 
 			return false;
 		}
 
-		public static bool GetHelpFromTitleBlock(BigNumberDS input)
+		public static bool GetHelpFromTitleBlock(ref BigNumberDS input, int countOfAttachingBlocks)
 		{
-			if (input.currentValue > 0)
+			BigNumberDS current = input;
+
+			while (current != null && current.currentValue == 0)
 			{
-				input.currentValue--;
+				current.currentValue = BigNumberDSMath.MAX_ALLOWED_VALUE;
+
+				current = current.previousBlock;
+			}
+
+			if (current != null && current.currentValue > 0)
+			{
+				current.currentValue--;
+
+				for (int i = 0; i < countOfAttachingBlocks; i++)
+				{
+					current = input;
+
+					input = new BigNumberDS(BigNumberDSMath.MAX_ALLOWED_VALUE, false, current.isPositive);
+
+					input.previousBlock = current;
+				}
 
 				return true;
 			}
-			return false;
+			else
+			{
+				throw new NullReferenceException();
+			}
 		}
 
 		/// <summary>
@@ -113,11 +138,11 @@ namespace Algorithms.BigNumber
 
 					while (current.previousBlock != null)
 					{
-                        if (current.previousBlock.currentValue != 0)
-                        {
-                            break;
-                        }
-                        else if (current.previousBlock.previousBlock == null)
+						if (current.previousBlock.currentValue != 0)
+						{
+							break;
+						}
+						else if (current.previousBlock.previousBlock == null)
 						{
 							currentEdge.previousBlock = null;
 							return;
@@ -136,6 +161,11 @@ namespace Algorithms.BigNumber
 			BigNumberDS current = input;
 
 			BigNumberDS addingBlock = new BigNumberDS(value, isBigPart, isPositive);
+
+			if (current == null)
+			{
+				return addingBlock;
+			}
 
 			while (current.previousBlock != null)
 			{
@@ -206,17 +236,17 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-        /// <summary>
-        /// Define, how many zeros must add to block, formed from input number
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// Define, how many zeros must add to block, formed from input number
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
 		internal static int GetNumberOfZeroesPrefix(int input)
 		{
-            if (input == 0)
-            {
-                return 8;
-            }
+			if (input == 0)
+			{
+				return 8;
+			}
 
 			int count = 0;
 
@@ -227,7 +257,6 @@ namespace Algorithms.BigNumber
 			}
 
 			count = 9 - count;
-
 
 			return count;
 		}
@@ -374,86 +403,126 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-        internal static StringBuilder MakeTextString(BigNumberDS input, StringBuilder result, bool isEdgeBlock)
-        {
-            if (input == null && result == null)
-            {
-                throw new NullReferenceException();
-            }
-            else if (result == null)
-            {
-                result = new StringBuilder();
-            }
+		internal static StringBuilder MakeTextString(BigNumberDS input, StringBuilder result, bool isEdgeBlock)
+		{
+			if (input == null && result == null)
+			{
+				throw new NullReferenceException();
+			}
+			else if (result == null)
+			{
+				result = new StringBuilder();
+			}
 
-            int postfixZeroesIterator = 0;
-            int iterator = 0;
+			int postfixZeroesIterator = 0;
+			int iterator = 0;
 
-            if (input != null && !input.isBigPart)
-            {
-                if (isEdgeBlock)
-                {
-                    iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+			if (input != null && !input.isBigPart)
+			{
+				if (isEdgeBlock)
+				{
+					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
 
-                    while (input.currentValue % 10 == 0)
-                    {
-                        input.currentValue = input.currentValue / 10;
-                        postfixZeroesIterator++;
-                    }
+					while (input.currentValue % 10 == 0)
+					{
+						input.currentValue = input.currentValue / 10;
+						postfixZeroesIterator++;
+					}
 
-                    iterator = iterator - postfixZeroesIterator;
+					iterator = iterator - postfixZeroesIterator;
 
-                    isEdgeBlock = false;
-                }
-                else
-                {
-                    iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
-                }
+					isEdgeBlock = false;
+				}
+				else
+				{
+					iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+				}
 
-                result.Insert(0, input.currentValue);
+				result.Insert(0, input.currentValue);
 
-                for (int i = 0; i < iterator; i++)
-                {
-                    result.Insert(0, "0");
-                }
+				for (int i = 0; i < iterator; i++)
+				{
+					result.Insert(0, "0");
+				}
 
-                input = input.previousBlock;
+				input = input.previousBlock;
 
-                if (input == null)
-                {
-                    result.Insert(0, "0,");
-                }
-                else if (input.isBigPart)
-                {
-                    result.Insert(0, ",");
-                }
+				if (input == null)
+				{
+					result.Insert(0, "0,");
+				}
+				else if (input.isBigPart)
+				{
+					result.Insert(0, ",");
+				}
 
-                result = BigNumberDSHelper.MakeTextString(input, result, isEdgeBlock);
-            }
-            else if (input != null && input.previousBlock != null)
-            {
-                result.Insert(0, input.currentValue);
+				result = BigNumberDSHelper.MakeTextString(input, result, isEdgeBlock);
+			}
+			else if (input != null && input.previousBlock != null)
+			{
+				result.Insert(0, input.currentValue);
 
-                iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
+				iterator = BigNumberDSHelper.GetNumberOfZeroesPrefix(input.currentValue);
 
-                for (int i = 0; i < iterator; i++)
-                {
-                    result.Insert(0, "0");
-                }
+				for (int i = 0; i < iterator; i++)
+				{
+					result.Insert(0, "0");
+				}
 
-                input = input.previousBlock;
+				input = input.previousBlock;
 
-                result = BigNumberDSHelper.MakeTextString(input, result, false);
-            }
-            else if (input != null)
-            {
-                result.Insert(0, input.currentValue);
+				result = BigNumberDSHelper.MakeTextString(input, result, false);
+			}
+			else if (input != null)
+			{
+				result.Insert(0, input.currentValue);
 
-                input = input.previousBlock;
+				input = input.previousBlock;
 
-                result = BigNumberDSHelper.MakeTextString(input, result, false);
-            }
+				result = BigNumberDSHelper.MakeTextString(input, result, false);
+			}
 
-            return result;
-        }
+			return result;
+		}
+
+		internal static BigNumberDS MoveBy(BigNumberDS tmp, int count)
+		{
+			if (count == 0)
+			{
+				return tmp;
+			}
+
+			if (count > 0)
+			{
+				for (int i = 0; i < count; i++)
+				{
+					tmp *= 10;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < -count; i++)
+				{
+					tmp /= 10;
+				}
+			}
+
+			return tmp;
+		}
+
+		internal static bool HasIntegerPart(BigNumberDS output)
+		{
+			BigNumberDS tmp = output;
+
+			while (tmp != null)
+			{
+				if (tmp.isBigPart)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
