@@ -165,7 +165,7 @@ namespace Algorithms.BigNumber
 			while ((block != null))
 			{
 				hash ^= block.currentValue;
-				hash ^= block.isPositive ? 1 : 0;
+				hash ^= block.isPositive ? 3 : 7;
 
 				block = block.previousBlock;
 			}
@@ -357,32 +357,36 @@ namespace Algorithms.BigNumber
 
 		public int CompareTo(BigNumberDS other)
 		{
+			BigNumberDS tmp = this;
+			BigNumberDSHelper.TrimStructure(ref tmp);
+			BigNumberDSHelper.TrimStructure(ref other);
+
 			if ((object)other == null)
 			{
 				return 1;
 			}
 
-			if (this.isPositive ^ other.isPositive)
+			if (tmp.isPositive ^ other.isPositive)
 			{
-				if (this.isPositive)
+				if (tmp.isPositive)
 				{
 					return 1;
 				}
 
 				return -1;
 			}
-			else if (this.isPositive)
+			else if (tmp.isPositive)
 			{
-				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(tmp) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
-				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(tmp) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
 
-				int[] comparisionMap = BigNumberDSHelper.MakeComparisionMap(this, other);
+				int[] comparisionMap = BigNumberDSHelper.MakeComparisionMap(tmp, other);
 
 				for (int i = 0; i < comparisionMap.Length; i++)
 				{
@@ -396,16 +400,16 @@ namespace Algorithms.BigNumber
 			}
 			else
 			{
-				if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
+				if (BigNumberDSHelper.GetIntegerPartBlocksCount(tmp) > BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return -1;
 				}
-				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(this) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
+				else if (BigNumberDSHelper.GetIntegerPartBlocksCount(tmp) < BigNumberDSHelper.GetIntegerPartBlocksCount(other))
 				{
 					return 1;
 				}
 
-				int[] comparisionMap = BigNumberDSHelper.MakeComparisionMap(this, other);
+				int[] comparisionMap = BigNumberDSHelper.MakeComparisionMap(tmp, other);
 
 				for (int i = 0; i < comparisionMap.Length; i++)
 				{

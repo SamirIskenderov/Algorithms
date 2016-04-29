@@ -621,6 +621,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS mhs = BigNumberDS.Create(two);
 			BigNumberDS rhs = BigNumberDS.Create(three);
+			var a = mhs * lhs - mhs * rhs;
 
 			Assert.Equal<BigNumberDS>(mhs * (lhs - rhs), mhs * lhs - mhs * rhs);
 		}
@@ -750,7 +751,7 @@ namespace Algorithms.Test
 		[InlineData("-12345678,0", "123456780,0", "-135802458,0")]
 		[InlineData("-12345678,123", "12345678,135", "-24691356,258")]
 		[InlineData("-12345678,123", "123456780,135", "-135802458,258")]
-		[InlineData("-12345678,123456789", "12345678,301235412", "-24691356.424692201")]
+		[InlineData("-12345678,123456789", "12345678,301235412", "-24691356,424692201")]
 		[InlineData("-12345678,123456789", "123456780,301235412", "-135802458,424692201")]
 		[InlineData("-123456789123456789123", "1", "-123456789123456789124")]
 		[InlineData("-123456789123456789123,0", "1,0", "-123456789123456789124,0")]

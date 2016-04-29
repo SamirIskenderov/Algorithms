@@ -429,93 +429,11 @@ namespace Algorithms.BigNumber
 				}
 			}
 
-			//if (BigNumberDSHelper.HasIntegerPart(output))
-			//{
-
-			//}
-
 			if (!output.isBigPart)
 			{
 				BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, output.isPositive);
 			}
 
-			//BigNumberDS lhsrough = BigNumberDSHelper.GetWithoutDot(lhs);
-			//BigNumberDS current = BigNumberDSHelper.GetWithoutDot(rhs);
-			//BigNumberDS output = new BigNumberDS();
-
-			//int k = 0;
-			//bool start = false;
-			//int count = 0;
-			//while (current != null)
-			//{
-			//	byte[] a = BigNumberDSHelper.IntArrayParse(current.currentValue);
-			//	for (int i = 0; i < a.Length; i++)
-			//	{
-			//		BigNumberDS tmp = new BigNumberDS();
-
-			//		if (!start)
-			//		{
-			//			if (a[i] != 0)
-			//			{
-			//				start = true;
-			//			}
-			//			else
-			//			{
-			//				count++;
-			//			}
-			//		}
-
-			//		if (start)
-			//		{
-			//			tmp = lhsrough * a[i];
-
-			//			for (int j = 0; j < k; j++)
-			//			{
-			//				tmp *= 10;
-			//			}
-
-			//			output += tmp;
-			//			k++;
-			//		}
-			//	}
-			//	current = current.previousBlock;
-			//}
-
-			//if (!rhs.isPositive)
-			//{
-			//	output = output.Invert();
-			//}
-
-			//for (int i = 0; i < count - 1; i++)
-			//{
-			//	output *= 10;
-			//}
-
-			//int fractionRhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(rhs);
-			//int fractionLhsBlocksCount = BigNumberDSHelper.GetFractionPartBlocksCount(lhs);
-			//int trashBlocksCount = 0;
-			//current = output;
-			//while (current.currentValue == 0 && current.previousBlock != null)
-			//{
-			//	trashBlocksCount++;
-			//	current = current.previousBlock;
-			//}
-
-			//if ((fractionRhsBlocksCount != 0) || (fractionLhsBlocksCount != 0))
-			//{
-			//	// getting copy of output
-			//	BigNumberDS biglhs = output;
-			//	for (int i = 0; i < fractionRhsBlocksCount + fractionLhsBlocksCount + trashBlocksCount; i++)
-			//	{
-			//		if (biglhs == null)
-			//		{
-			//			biglhs = BigNumberDSHelper.AddNewPreviousBlock(output, 0, true, true);
-			//		}
-
-			//			biglhs.isBigPart = false;
-			//			biglhs = biglhs.previousBlock;
-			//	}
-			//}
 
 			BigNumberDSHelper.TrimStructure(ref output);
 
