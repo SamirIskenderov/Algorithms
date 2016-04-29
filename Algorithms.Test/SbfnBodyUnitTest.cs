@@ -1,6 +1,4 @@
 ﻿using Algorithms.BigNumber;
-
-using System;
 using Xunit;
 
 namespace Algorithms.Test
@@ -16,58 +14,59 @@ namespace Algorithms.Test
 			BigNumberDS num1 = BigNumberDS.Create();
 		}
 
-	/*	[Theory]
-		[InlineData("-1")]
-		[InlineData("-1,0")]
-		[InlineData("-1,123")]
-		[InlineData("-1,123123456789")]
-		[InlineData("-12")]
-		[InlineData("-12,0")]
-		[InlineData("-12,123")]
-		[InlineData("-12,123123456789")]
-		[InlineData("-123456789123456789123")]
-		[InlineData("-123456789123456789123,0")]
-		[InlineData("-123456789123456789123,123")]
-		[InlineData("-123456789123456789123,123123456789")]
-		[InlineData("0")]
-		[InlineData("0,0")]
-		[InlineData("0,123")]
-		[InlineData("0,123123456789")]
-		[InlineData("1")]
-		[InlineData("1,0")]
-		[InlineData("1,123")]
-		[InlineData("1,123123456789")]
-		[InlineData("12")]
-		[InlineData("12,0")]
-		[InlineData("12,123")]
-		[InlineData("12,123123456789")]
-		[InlineData("123456789123456789123")]
-		[InlineData("123456789123456789123,0")]
-		[InlineData("123456789123456789123,123")]
-		[InlineData("123456789123456789123,123123456789")]
-		public void CorrectCtorMustNotThrowExc(string str)
-		{
-			BigNumberDS num1 = BigNumberDS.Create(str);
+		/*	[Theory]
+			[InlineData("-1")]
+			[InlineData("-1,0")]
+			[InlineData("-1,123")]
+			[InlineData("-1,123123456789")]
+			[InlineData("-12")]
+			[InlineData("-12,0")]
+			[InlineData("-12,123")]
+			[InlineData("-12,123123456789")]
+			[InlineData("-123456789123456789123")]
+			[InlineData("-123456789123456789123,0")]
+			[InlineData("-123456789123456789123,123")]
+			[InlineData("-123456789123456789123,123123456789")]
+			[InlineData("0")]
+			[InlineData("0,0")]
+			[InlineData("0,123")]
+			[InlineData("0,123123456789")]
+			[InlineData("1")]
+			[InlineData("1,0")]
+			[InlineData("1,123")]
+			[InlineData("1,123123456789")]
+			[InlineData("12")]
+			[InlineData("12,0")]
+			[InlineData("12,123")]
+			[InlineData("12,123123456789")]
+			[InlineData("123456789123456789123")]
+			[InlineData("123456789123456789123,0")]
+			[InlineData("123456789123456789123,123")]
+			[InlineData("123456789123456789123,123123456789")]
+			public void CorrectCtorMustNotThrowExc(string str)
+			{
+				BigNumberDS num1 = BigNumberDS.Create(str);
 
-			if (str.Contains("-"))
-			{
-				Assert.True(num1 < zero);
-			}
-			else
-			{
-				Assert.True(num1 > zero);
-			}
+				if (str.Contains("-"))
+				{
+					Assert.True(num1 < zero);
+				}
+				else
+				{
+					Assert.True(num1 > zero);
+				}
 
-			if (str.Contains(","))
-			{
-				Assert.True(num1.ToString().Contains(","));
+				if (str.Contains(","))
+				{
+					Assert.True(num1.ToString().Contains(","));
+				}
+				else
+				{
+					Assert.True(!num1.ToString().Contains(","));
+				}
 			}
-			else
-			{
-				Assert.True(!num1.ToString().Contains(","));
-			}
-		}
-		*/
+			*/
+
 		#endregion ctor
 
 		[Fact]
@@ -207,7 +206,6 @@ namespace Algorithms.Test
 			Assert.Equal<BigNumberDS>(rhs, lhs);
 		}
 
-
 		[Theory]
 		[InlineData("0", "1")]
 		[InlineData("0,0", "1,0")]
@@ -250,7 +248,6 @@ namespace Algorithms.Test
 		#endregion pre/postfix+
 
 		#region pre/postfix-
-
 
 		public void OperatorPostfixMinusMustWorkCorrectlyVer0(string one, string two)
 		{
@@ -578,7 +575,7 @@ namespace Algorithms.Test
 		public void OperatorMultiplicativeMinusMustBeAbsCommutative(string one, string two)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
-			BigNumberDS rhs = /*            */ BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(two);
 
 			Assert.Equal<BigNumberDS>((lhs - rhs).Abs(), (rhs - lhs).Abs());
 		}
@@ -592,9 +589,7 @@ namespace Algorithms.Test
 		[InlineData("1", "1", "2")]
 		[InlineData("1,0", "1,0", "2,0")]
 		[InlineData("1,123", "1,12013", "2,246")]
-
 		[InlineData("1,12345612121789", "1,924210100000000", "3,023456789")]
-
 		[InlineData("1,123456789101001123456789", "1,123456789123456789", "2,246913010578246913578")]
 		[InlineData("12", "0", "412")]
 		[InlineData("12,0", "0,0", "412,0")]
@@ -731,7 +726,7 @@ namespace Algorithms.Test
 		public void OperatorMultiplicativeMinusMustBeNonCommutative(string one, string two)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
-			BigNumberDS rhs = /*            */ BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(two);
 
 			Assert.NotEqual<BigNumberDS>(lhs - rhs, rhs - lhs);
 		}
@@ -825,9 +820,9 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789123,412445345645", "1,315", "16234567769734512677696,90674545564545")]
 		public void OperatorMultiplicativeMultipleMustBeAssociative(string one, string two, string three)
 		{
-			BigNumberDS /* */ lhs = BigNumberDS.Create(one);
-			BigNumberDS /*      */ mhs = BigNumberDS.Create(two);
-			BigNumberDS /*          */ rhs = BigNumberDS.Create(three);
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS mhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
 
 			Assert.Equal<BigNumberDS>((lhs * mhs) * rhs, rhs * (mhs * lhs));
 		}
@@ -871,8 +866,8 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789123,412445345645", "1,315")]
 		public void OperatorMultiplicativeMultipleMustBeCommutative(string one, string two)
 		{
-			BigNumberDS lhs = /* */ BigNumberDS.Create(one);
-			BigNumberDS rhs = /*            */ BigNumberDS.Create(two);
+			BigNumberDS lhs = BigNumberDS.Create(one);
+			BigNumberDS rhs = BigNumberDS.Create(two);
 
 			Assert.Equal<BigNumberDS>(lhs * rhs, rhs * lhs);
 		}
@@ -918,7 +913,7 @@ namespace Algorithms.Test
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS mhs = BigNumberDS.Create(two);
-			BigNumberDS rhs = /*            */ BigNumberDS.Create(three);
+			BigNumberDS rhs = BigNumberDS.Create(three);
 
 			Assert.Equal<BigNumberDS>(mhs * (lhs + rhs), mhs * lhs + mhs * rhs);
 		}
@@ -946,9 +941,9 @@ namespace Algorithms.Test
 		[InlineData("-123456789123456789123,0", "1,0", "-123456789123456789123,0")]
 		[InlineData("-123456789123456789123,123", "1,315", "-162345677697345677696,906745")]
 		[InlineData("0", "0", "0")]
-        [InlineData("0,1", "1", "0,1")]
-        [InlineData("0,1", "0,1", "0,01")]
-        [InlineData("0,0", "0,0", "0,0")]
+		[InlineData("0,1", "1", "0,1")]
+		[InlineData("0,1", "0,1", "0,01")]
+		[InlineData("0,0", "0,0", "0,0")]
 		[InlineData("0,123", "0,315", "0,038745")]
 		[InlineData("1", "1", "1")]
 		[InlineData("1,0", "1,0", "1,0")]
@@ -967,7 +962,7 @@ namespace Algorithms.Test
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS added = BigNumberDS.Create(two);
 			BigNumberDS rhs = BigNumberDS.Create(free);
-            
+
 			Assert.Equal<BigNumberDS>(rhs, lhs * added);
 		}
 
@@ -1025,7 +1020,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-
 		public void OperatorMultiplicativeMultipleMustWorkWithMinusOneCorrectly(string one)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1089,7 +1083,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-
 		public void OperatorMultiplicativeMultipleMustWorkWithNullCorrectly(string one)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1153,7 +1146,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-
 		public void OperatorMultiplicativeMultipleMustWorkWithOneCorrectly(string one)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1161,14 +1153,13 @@ namespace Algorithms.Test
 			Assert.Equal<BigNumberDS>(lhs, lhs * 1);
 		}
 
-        #endregion multiplicative*
+		#endregion multiplicative*
 
-        #region multiplicative/
 
-        #endregion multiplicative/
 
-        #region multiplicative^
-        public void ExpVer0(string one, string two, string three)
+		#region multiplicative^
+
+		public void ExpVer0(string one, string two, string three)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
 			BigNumberDS mhs = BigNumberDS.Create(two);
@@ -1211,12 +1202,12 @@ namespace Algorithms.Test
 
 			Assert.NotEqual<BigNumberDS>((lhs ^ rhs), rhs ^ lhs);
 		}
+
 		#endregion multiplicative^
 
+		#region operator==
 
-        #region operator==
-
-        [Theory]
+		[Theory]
 		[InlineData("-1")]
 		[InlineData("-1,0")]
 		[InlineData("-1,186723")]
@@ -1272,7 +1263,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-
 		public void OperatorEqualatyMustWorkCorrectlyVer0(string one)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1335,7 +1325,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0", "12345678912345612120789123")]
 		[InlineData("123456789123456789123,412445345645", "12345678912345678120109123,0")]
 		[InlineData("143,315", "123456789123456789123,412445345645")]
-
 		public void OperatorNonEqualatyMustWorkCorrectlyVer0(string one, string two)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1398,7 +1387,6 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0", "12345678912345612120789123")]
 		[InlineData("123456789123456789123,412445345645", "12345678912345678120109123,0")]
 		[InlineData("143,315", "123456789123456789123,412445345645")]
-
 		public void HashCodesFromDifferentObjectMustNotBeSame(string one, string two)
 		{
 			BigNumberDS lhs = BigNumberDS.Create(one);
@@ -1603,7 +1591,6 @@ namespace Algorithms.Test
 			Assert.Equal(lhs.Equals(mhs) && mhs.Equals(rhs), lhs.Equals(rhs));
 		}
 
-
 		[Theory]
 		[InlineData("-1")]
 		[InlineData("-1,0")]
@@ -1669,8 +1656,6 @@ namespace Algorithms.Test
 			Assert.Equal(lhs.Equals(mhs) && mhs.Equals(rhs), lhs.Equals(rhs));
 		}
 
-
-
 		[Theory]
 		[InlineData("-1")]
 		[InlineData("-1,0")]
@@ -1734,7 +1719,6 @@ namespace Algorithms.Test
 
 			Assert.Equal(lhs.Equals(rhs), rhs.Equals(lhs));
 		}
-
 
 		[Theory]
 		[InlineData("-1")]
@@ -1889,56 +1873,56 @@ namespace Algorithms.Test
 			Assert.Equal(true, lhs < rhs);
 		}
 
-        #endregion operatorless/greater
+		#endregion operatorless/greater
 
-        #endregion operators
+		#endregion operators
 
-        #region Methods
+		#region Methods
 
-        #region ToString()
+		#region ToString()
 
-        [Theory]
-        [InlineData("1,1555564684478654", "1,1555564684478654")]
-        [InlineData(",1555564684478654", "0,1555564684478654")]
-        [InlineData(",155556468", "0,155556468")]
-        [InlineData(",155556", "0,155556")]
-        [InlineData("156000", "156000")]
-        [InlineData("00004568", "4568")]
-        public void MethodToStringMustWorkCorrectlyVer0(string one, string two)
-        {
-            BigNumberDS lhs = BigNumberDS.Create(one);
+		[Theory]
+		[InlineData("1,1555564684478654", "1,1555564684478654")]
+		[InlineData(",1555564684478654", "0,1555564684478654")]
+		[InlineData(",155556468", "0,155556468")]
+		[InlineData(",155556", "0,155556")]
+		[InlineData("156000", "156000")]
+		[InlineData("00004568", "4568")]
+		public void MethodToStringMustWorkCorrectlyVer0(string one, string two)
+		{
+			BigNumberDS lhs = BigNumberDS.Create(one);
 
-            Assert.Equal(lhs.ToString(), two);
-        }
+			Assert.Equal(lhs.ToString(), two);
+		}
 
-        #endregion
+		#endregion ToString()
 
-        #region Division()
+		#region Division()
 
-        [Theory]
-        [InlineData("5", "10", "3", "3,33333")]
-        [InlineData("10", "10", "3", "3,3333333333")]
-        public void MethodDivisionMustWorkCorrectly(string one, string two, string three, string four)
-        {
-            BigNumberDS acc = BigNumberDS.Create(one);
-            BigNumberDS lhs = BigNumberDS.Create(two);
-            BigNumberDS rhs = BigNumberDS.Create(three);
-            BigNumberDS exp = BigNumberDS.Create(four);
+		[Theory]
+		[InlineData("5", "10", "3", "3,33333")]
+		[InlineData("10", "10", "3", "3,3333333333")]
+		public void MethodDivisionMustWorkCorrectly(string one, string two, string three, string four)
+		{
+			BigNumberDS acc = BigNumberDS.Create(one);
+			BigNumberDS lhs = BigNumberDS.Create(two);
+			BigNumberDS rhs = BigNumberDS.Create(three);
+			BigNumberDS exp = BigNumberDS.Create(four);
 
-            Assert.Equal<BigNumberDS>(exp, lhs.Divide(rhs, acc));
-        } 
+			Assert.Equal<BigNumberDS>(exp, lhs.Divide(rhs, acc));
+		}
 
-        #endregion
+		#endregion Division()
 
-        #endregion
+		#endregion Methods
 
-        //[TestMethod]
-        //public void TrimStructurePositiveVer1()
-        //{
-        //	BigNumberDS obj = BigNumberDS.Create("21002000000000000000000");
-        //	BigNumberDSHelper.TrimStructure(ref obj);
+		//[TestMethod]
+		//public void TrimStructurePositiveVer1()
+		//{
+		//	BigNumberDS obj = BigNumberDS.Create("21002000000000000000000");
+		//	BigNumberDSHelper.TrimStructure(ref obj);
 
-        //	Assert.AreEqual("21002000000000000000000", obj.ToString());
-        //}
-    }
+		//	Assert.AreEqual("21002000000000000000000", obj.ToString());
+		//}
+	}
 }

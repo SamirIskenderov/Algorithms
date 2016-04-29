@@ -13,7 +13,7 @@ namespace Algorithms.BigNumber
 
 		internal static BigNumberDS Add(BigNumberDS firstMem, int secondMem)
 		{
-            BigNumberDS result = firstMem.Clone() as BigNumberDS;
+			BigNumberDS result = firstMem.Clone() as BigNumberDS;
 
 			if (secondMem == 0)
 			{
@@ -327,7 +327,7 @@ namespace Algorithms.BigNumber
 
 			return result;
 		}
-        
+
 		internal static BigNumberDS Or(BigNumberDS lhs, BigNumberDS rhs)
 		{
 			return null;
@@ -337,12 +337,13 @@ namespace Algorithms.BigNumber
 		{
 			return null;
 		}
-            internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
-        {
-            if (accuracy == null)
-            {
-                accuracy = BigNumberDS.DivisionAccuracy;
-            }
+
+		internal static BigNumberDS Divide(BigNumberDS lhs, BigNumberDS rhs, BigNumberDS accuracy = null)
+		{
+			if (accuracy == null)
+			{
+				accuracy = BigNumberDS.DivisionAccuracy;
+			}
 
 			return BigNumberDSHelper.DivideService(lhs, rhs, accuracy);
 		}
@@ -436,7 +437,7 @@ namespace Algorithms.BigNumber
 				rhsrough = rhsrough.previousBlock;
 			}
 
-            if (!rhs.isPositive)
+			if (!rhs.isPositive)
 			{
 				output = output.Invert();
 			}
