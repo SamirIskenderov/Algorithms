@@ -455,5 +455,40 @@ namespace Algorithms.BigNumber
 
             return result;
         }
-	}
+
+        //internal static BigNumberDS Divide(BigNumberDS firstMem, BigNumberDS secondMem, BigNumberDS )
+        //{
+
+        //}
+
+        internal static BigNumberDS IntegerDivide(BigNumberDS firstMem, BigNumberDS secondMem)
+        {
+            BigNumberDS result = new BigNumberDS();
+            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
+
+            while (iterator <= firstMem)
+            {
+                iterator += secondMem;
+
+                result++;
+            }
+
+            return result;
+        }
+
+        internal static BigNumberDS IntegerDivideLeftover(BigNumberDS firstMem, BigNumberDS secondMem)
+        {
+            BigNumberDS result;
+            BigNumberDS iterator = (BigNumberDS)secondMem.Clone();
+
+            while (iterator < firstMem)
+            {
+                iterator += secondMem;
+            }
+
+            result = firstMem - iterator;
+
+            return result;
+        }
+    }
 }
