@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -377,6 +379,46 @@ namespace Algorithms.BigNumber
 			}
 		}
 
+		public static bool GetNextBit(ulong num)
+		{
+			ulong div = NextPowerOfTwo(num);
+			bool bit;
+
+			num++;
+
+			while ((div > 0) || (num > 1))
+			{
+				if (num > div)
+				{
+					num -= div;
+					bit = true;
+				}
+				else
+				{
+					bit = false;
+				}
+
+				div /= 2;
+			}
+
+			return false; // temporary, to shut c# up
+		}
+
+		public static ulong NextPowerOfTwo(ulong v)
+		{
+			// compute the next highest power of 2 of 32-bit v
+
+			v--;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			v |= v >> 16;
+			v++;
+
+			return v;
+		}
+
 		public object Clone()
 		{
 			big current = this;
@@ -512,5 +554,7 @@ namespace Algorithms.BigNumber
 		{
 			return BigNumberDSMath.Divide(this, divider, accuracy);
 		}
+
+		
 	}
 }
