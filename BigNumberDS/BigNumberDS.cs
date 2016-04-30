@@ -25,6 +25,11 @@ namespace Algorithms.BigNumber
 
 		public static big operator -(big value)
 		{
+			if (value == null)
+			{
+				throw new ArgumentNullException("Value is null");
+			}
+
 			return value.Invert();
 		}
 
@@ -79,7 +84,7 @@ namespace Algorithms.BigNumber
 			=> (BigNumberDS.Create(lhs.ToString())) ^ rhs;
 
 		public static big operator ^(big lhs, int rhs)
-			=> (rhs ^ BigNumberDS.Create(rhs.ToString()));
+			=> (lhs ^ BigNumberDS.Create(rhs.ToString()));
 
 		public static big operator ^(big lhs, big rhs)
 			=> BigNumberDSMath.Exponentiation(lhs, rhs);
@@ -256,7 +261,7 @@ namespace Algorithms.BigNumber
 					this.isBigPart = false;
 					this.isPositive = isPositive;
 
-					if (inputString.Split(',')[0] != string.Empty)
+					if (!string.IsNullOrWhiteSpace(inputString.Split(',')[0]))
 					{
 						this.previousBlock = new BigNumberDS(inputString.Split(',')[0], isPositive);
 					}
@@ -274,7 +279,7 @@ namespace Algorithms.BigNumber
 					this.isBigPart = false;
 					this.isPositive = isPositive;
 
-					if (inputString.Split(',')[0] != string.Empty)
+					if (!string.IsNullOrWhiteSpace(inputString.Split(',')[0]))
 					{
 						this.previousBlock = new BigNumberDS(inputString.Split(',')[0], isPositive);
 					}
@@ -377,45 +382,6 @@ namespace Algorithms.BigNumber
 
 				return result;
 			}
-		}
-
-		public static IEnumerable<bool> GetNextBit(ulong num)
-		{
-			ulong div = NextPowerOfTwo(num);
-			bool bit;
-
-			num++;
-
-			while ((div > 0) || (num > 1))
-			{
-				if (num > div)
-				{
-					num -= div;
-					bit = true;
-				}
-				else
-				{
-					bit = false;
-				}
-
-				div /= 2;
-				yield return bit;
-			}
-		}
-
-		public static ulong NextPowerOfTwo(ulong v)
-		{
-			// compute the next highest power of 2 of 32-bit v
-
-			v--;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			v |= v >> 16;
-			v++;
-
-			return v;
 		}
 
 		public object Clone()

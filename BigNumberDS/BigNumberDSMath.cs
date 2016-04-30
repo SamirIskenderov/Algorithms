@@ -111,14 +111,14 @@ namespace Algorithms.BigNumber
 		{
 			if (firstMem == null && secondMem == null && result == null)
 			{
-				throw new NullReferenceException();
+				throw new ArgumentNullException("Can't add two numbers");
 			}
 			else if (firstMem != null &&
 			    secondMem != null &&
 			    (!firstMem.isPositive ||
 			    firstMem < secondMem))
 			{
-				throw new ArgumentException();
+				throw new ArgumentException("4ot ne srabotalo");
 			}
 
 			big currentFirst;
@@ -312,7 +312,6 @@ namespace Algorithms.BigNumber
 		internal static big And(big lhs, big rhs)
 		{
 			big current = rhs;
-			big lhss = lhs;
 			big result = new big();
 			big tmp = result;
 
@@ -466,20 +465,23 @@ namespace Algorithms.BigNumber
 			{
 				return big.Create("0");
 			}
-			if (rhs == -1)
-			{
-				return -((big)lhs.Clone());
-			}
+
+			// TODO
+			//if (rhs == -1)
+			//{
+			//	return -((big)lhs.Clone());
+			//}
 
 			if (rhs == 1)
 			{
 				return (big)lhs.Clone();
 			}
 
-			if (lhs.currentValue == -1)
-			{
-				return new big(rhs, true, rhs > 0);
-			}
+			// TODO
+			//if (lhs.currentValue == -1)
+			//{
+			//	return new big(rhs, true, rhs > 0);
+			//}
 
 			if (lhs.currentValue == 1)
 			{
@@ -501,11 +503,12 @@ namespace Algorithms.BigNumber
 				output += biglhs;
 			}
 
-			bool isRhsNegative = rhs < 0;
-			if (isRhsNegative)
-			{
-				output = output.Invert();
-			}
+			// TODO
+			//bool isRhsNegative = rhs < 0;
+			//if (isRhsNegative)
+			//{
+			//	output = output.Invert();
+			//}
 
 			// move dot to the right position
 			if (smallBlocksCount != 0)

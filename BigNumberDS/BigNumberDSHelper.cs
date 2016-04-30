@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 using big = Algorithms.BigNumber.BigNumberDS;
@@ -58,8 +59,59 @@ namespace Algorithms.BigNumber
 			}
 			else
 			{
-				throw new NullReferenceException();
+				throw new ArgumentNullException("Can't get help from title block.");
 			}
+		}
+
+		/// <summary>
+		/// Return number as a bit collection, starting from low order.
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
+		public static IEnumerable<bool> GetNextBit(ulong num)
+		{
+			ulong div = NextPowerOfTwo(num);
+			bool bit;
+
+			num++; // )
+
+			while ((div > 0) || (num > 1))
+			{
+				if (num > div)
+				{
+					num -= div;
+					bit = true;
+				}
+				else
+				{
+					bit = false;
+				}
+
+				div /= 2;
+
+				yield return bit;
+			}
+		}
+
+		public static bool IsPowerOfTwo(ulong num)
+								=> (num & (num - 1)) == 0;
+
+		/// <summary>
+		/// Compute next highest power of 2
+		/// </summary>
+		/// <param name="v"></param>
+		/// <returns></returns>
+		public static ulong NextPowerOfTwo(ulong v)
+		{
+			v--;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			v |= v >> 16;
+			v++;
+
+			return v;
 		}
 
 		internal static big AddNewPreviousBlock(big input, uint value, bool isBigPart, bool isPositive)
@@ -98,6 +150,86 @@ namespace Algorithms.BigNumber
 			} while (current.previousBlock != null);
 
 			return count;
+		}
+
+		internal static big DivideService(big firstMem, big secondMem, big accuracy)
+		{
+			if (firstMem == null || secondMem == null)
+			{
+				throw new ArgumentNullException("Can't divide numbers");
+			}
+			else if (!firstMem.isPositive || !secondMem.isPositive)
+			{
+				throw new ArgumentException();
+			}
+			else if (firstMem == 0)
+			{
+				throw new ArgumentException("Mathematic is broken.(");
+			}
+			else if (firstMem == secondMem)
+			{
+				return BigNumberDS.Create("1");
+			}
+			else if (secondMem == 0)
+			{
+				return BigNumberDS.Create("0");
+			}
+
+			big currentIntResult, currentLeftOvResult, workingCopy;
+
+			if (firstMem > secondMem)
+			{
+				currentIntResult = BigNumberDSHelper.IntegerDivide(firstMem, secondMem);
+				currentLeftOvResult = BigNumberDSHelper.IntegerDivideLeftover(firstMem, secondMem);
+
+				if (accuracy < BigNumberDS.Create("1") || currentLeftOvResult == 0)
+				{
+					workingCopy = currentIntResult;
+				}
+				else
+				{
+					workingCopy = currentIntResult + DivideService(currentLeftOvResult, secondMem, accuracy);
+				}
+			}
+			else
+			{
+				if (accuracy < BigNumberDS.Create("1"))
+				{
+					workingCopy = BigNumberDS.Create("0");
+				}
+				//else if (BigNumberDSHelper.IntegerDivideLeftover(secondMem, firstMem) == BigNumberDS.Create("0"))
+				//{
+				//    workingCopy = BigNumberDSHelper.IntegerDivide(secondMem, firstMem);
+
+				//    big divider = BigNumberDS.Create("1");
+				//    big multiplier = BigNumberDS.Create("1");
+
+				//    for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
+				//    {
+				//        divider = divider * BigNumberDS.Create("10");
+				//        multiplier = multiplier * BigNumberDS.Create("0,1");
+				//    }
+
+				//    workingCopy = divider / workingCopy * multiplier;
+				//}
+				else
+				{
+					workingCopy = DivideService(secondMem, firstMem, accuracy - 1);
+
+					big divider = BigNumberDS.Create("1");
+					big multiplier = BigNumberDS.Create("1");
+
+					for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
+					{
+						divider = divider * BigNumberDS.Create("10");
+						multiplier = multiplier * BigNumberDS.Create("0,1");
+					}
+
+					workingCopy = DivideService(divider, workingCopy, BigNumberDS.Create("0")) * multiplier;
+				}
+			}
+
+			return workingCopy;
 		}
 
 		internal static big GetFractionPart(big input)
@@ -284,86 +416,6 @@ namespace Algorithms.BigNumber
 			return result;
 		}
 
-		internal static big DivideService(big firstMem, big secondMem, big accuracy)
-		{
-			if (firstMem == null || secondMem == null)
-			{
-				throw new ArgumentNullException();
-			}
-			else if (!firstMem.isPositive || !secondMem.isPositive)
-			{
-				throw new ArgumentException();
-			}
-			else if (firstMem == 0)
-			{
-				throw new Exception("Mathematic is broken.(");
-			}
-			else if (firstMem == secondMem)
-			{
-				return BigNumberDS.Create("1");
-			}
-			else if (secondMem == 0)
-			{
-				return BigNumberDS.Create("0");
-			}
-
-			big currentIntResult, currentLeftOvResult, workingCopy;
-
-			if (firstMem > secondMem)
-			{
-				currentIntResult = BigNumberDSHelper.IntegerDivide(firstMem, secondMem);
-				currentLeftOvResult = BigNumberDSHelper.IntegerDivideLeftover(firstMem, secondMem);
-
-				if (accuracy < BigNumberDS.Create("1") || currentLeftOvResult == 0)
-				{
-					workingCopy = currentIntResult;
-				}
-				else
-				{
-					workingCopy = currentIntResult + DivideService(currentLeftOvResult, secondMem, accuracy);
-				}
-			}
-			else
-			{
-				if (accuracy < BigNumberDS.Create("1"))
-				{
-					workingCopy = BigNumberDS.Create("0");
-				}
-				//else if (BigNumberDSHelper.IntegerDivideLeftover(secondMem, firstMem) == BigNumberDS.Create("0"))
-				//{
-				//    workingCopy = BigNumberDSHelper.IntegerDivide(secondMem, firstMem);
-
-				//    big divider = BigNumberDS.Create("1");
-				//    big multiplier = BigNumberDS.Create("1");
-
-				//    for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
-				//    {
-				//        divider = divider * BigNumberDS.Create("10");
-				//        multiplier = multiplier * BigNumberDS.Create("0,1");
-				//    }
-
-				//    workingCopy = divider / workingCopy * multiplier;
-				//}
-				else
-				{
-					workingCopy = DivideService(secondMem, firstMem, accuracy - 1);
-
-					big divider = BigNumberDS.Create("1");
-					big multiplier = BigNumberDS.Create("1");
-
-					for (big i = BigNumberDS.Create("0"); i < accuracy; i++)
-					{
-						divider = divider * BigNumberDS.Create("10");
-						multiplier = multiplier * BigNumberDS.Create("0,1");
-					}
-
-					workingCopy = DivideService(divider, workingCopy, BigNumberDS.Create("0")) * multiplier;
-				}
-			}
-
-			return workingCopy;
-		}
-
 		internal static big IntegerDivideLeftover(big firstMem, big secondMem)
 		{
 			big result;
@@ -484,7 +536,7 @@ namespace Algorithms.BigNumber
 		{
 			if (input == null && result == null)
 			{
-				throw new NullReferenceException();
+				throw new ArgumentNullException("Can't make text string");
 			}
 			else if (result == null)
 			{
