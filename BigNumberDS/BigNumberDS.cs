@@ -379,7 +379,7 @@ namespace Algorithms.BigNumber
 			}
 		}
 
-		public static bool GetNextBit(ulong num)
+		public static IEnumerable<bool> GetNextBit(ulong num)
 		{
 			ulong div = NextPowerOfTwo(num);
 			bool bit;
@@ -399,9 +399,8 @@ namespace Algorithms.BigNumber
 				}
 
 				div /= 2;
+				yield return bit;
 			}
-
-			return false; // temporary, to shut c# up
 		}
 
 		public static ulong NextPowerOfTwo(ulong v)
