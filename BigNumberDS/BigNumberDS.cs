@@ -339,7 +339,7 @@ namespace Algorithms.BigNumber
 			this.isPositive = isPositive;
 		}
 
-		public static big Create(string input = "")
+		public static big Create(string input = null)
 		{
 			if (string.IsNullOrWhiteSpace(input))
 			{
@@ -347,7 +347,7 @@ namespace Algorithms.BigNumber
 			}
 			else
 			{
-				big result = new BigNumberDS(input[0] == '-' ? input.Substring(1) : input, input[0] != '-');
+				big result = new BigNumberDS(input[0] == '-' ? input.Substring(1) : input, true);
 
 				BigNumberDSHelper.TrimStructure(ref result);
 
