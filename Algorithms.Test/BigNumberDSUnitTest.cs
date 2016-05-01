@@ -157,7 +157,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789110123,123")]
 		[InlineData("123456789123456789123")]
 		[InlineData("123456789123456789123,0")]
-		public void OperatorUnapyMinusMustWorkCorrectlyVer1(string one)
+		public void OperatorUnapyMinusMustWorkCorrectly(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create("-" + one);
@@ -250,8 +250,38 @@ namespace Algorithms.Test
 		#endregion pre/postfix+
 
 		#region pre/postfix-
-
-		public void OperatorPostfixMinusMustWorkCorrectlyVer0(string one, string two)
+		[Theory]
+		[InlineData("0", "-1")]
+		[InlineData("0,0", "-1,0")]
+		[InlineData("0,123", "-0,877")]
+		[InlineData("0,123456212789", "-0,876543787211")]
+		[InlineData("0,123456789123456789", "-0,876543210876543211")]
+		[InlineData("1", "0")]
+		[InlineData("1,0", "0")]
+		[InlineData("1,123", "0,123")]
+		[InlineData("1,12345612121789", "0,12345612121789")]
+		[InlineData("1,123456789101001123456789", "0,123456789101001123456789")]
+		[InlineData("12", "11")]
+		[InlineData("12,0", "11,0")]
+		[InlineData("12,123", "11,123")]
+		[InlineData("12,123450425476789", "11,123450425476789")]
+		[InlineData("12,123456789123456789", "11,123456789123456789")]
+		[InlineData("1212345678", "1212345677")]
+		[InlineData("1212345678,0", "1212345677,0")]
+		[InlineData("1230145678,123", "1230145677,123")]
+		[InlineData("123456078,123", "123456077,123")]
+		[InlineData("12345678", "12345677")]
+		[InlineData("12345678,0", "12345677,0")]
+		[InlineData("12345678,12344010156789", "12345677,12344010156789")]
+		[InlineData("12345678,1234560424789", "12345677,1234560424789")]
+		[InlineData("12345678,1234567891101023456789", "12345677,1234567891101023456789")]
+		[InlineData("12345678,123456789123456789", "12345677,123456789123456789")]
+		[InlineData("1234567891200103456789123,123456101789123456789", "1234567891200103456789122,123456101789123456789")]
+		[InlineData("1234567891234501010426789123,123456789", "1234567891234501010426789122,123456789")]
+		[InlineData("123456789123456789110123,123", "123456789123456789110122,123")]
+		[InlineData("123456789123456789123", "123456789123456789122")]
+		[InlineData("123456789123456789123,0", "123456789123456789122,0")]
+		public void OperatorPostfixMinusMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(two);
@@ -290,7 +320,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789110123,123", "123456789123456789110122,123")]
 		[InlineData("123456789123456789123", "123456789123456789122")]
 		[InlineData("123456789123456789123,0", "123456789123456789122,0")]
-		public void OperatorPrefixMinusMustWorkCorrectlyVer0(string one, string two)
+		public void OperatorPrefixMinusMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(two);
@@ -452,7 +482,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789123,123", "1,123", "123456789123456789124,246")]
 		[InlineData("123456789123456789123,123456789", "1,900000000", "123456789123456789125,023456789")]
 		[InlineData("123456789123456789123,123456789123456789", "1,123456789123456789", "123456789123456789124,246913578246913578")]
-		public void OperatorMultiplicativePlusMustWorkCorrectlyVer0(string one, string two, string three)
+		public void OperatorMultiplicativePlusMustWorkCorrectly(string one, string two, string three)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big added = BigNumberDS.Create(two);
@@ -492,7 +522,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789123,123")]
 		[InlineData("123456789123456789123,123456789")]
 		[InlineData("123456789123456789123,123456789123456789")]
-		public void OperatorMultiplicativePlusMustWorkWithNullCorrectly(string one)
+		public void OperatorMultiplicativePlusMustBeIdempotence(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 
@@ -779,6 +809,45 @@ namespace Algorithms.Test
 			Assert.Equal<BigNumberDS>(rhs, lhs - added);
 		}
 
+
+		[Theory]
+		[InlineData("0")]
+		[InlineData("0,0")]
+		[InlineData("0,123")]
+		[InlineData("0,123456789")]
+		[InlineData("0,123456789123456789")]
+		[InlineData("1")]
+		[InlineData("1,0")]
+		[InlineData("1,123")]
+		[InlineData("1,123456789")]
+		[InlineData("1,123456789123456789")]
+		[InlineData("12")]
+		[InlineData("12,0")]
+		[InlineData("12,123")]
+		[InlineData("12,123456789")]
+		[InlineData("12,123456789123456789")]
+		[InlineData("12345678")]
+		[InlineData("12345678")]
+		[InlineData("12345678,0")]
+		[InlineData("12345678,0")]
+		[InlineData("12345678,123")]
+		[InlineData("12345678,123")]
+		[InlineData("12345678,123456789")]
+		[InlineData("12345678,123456789")]
+		[InlineData("12345678,123456789123456789")]
+		[InlineData("12345678,123456789123456789")]
+		[InlineData("123456789123456789123")]
+		[InlineData("123456789123456789123,0")]
+		[InlineData("123456789123456789123,123")]
+		[InlineData("123456789123456789123,123456789")]
+		[InlineData("123456789123456789123,123456789123456789")]
+		public void OperatorMultiplicativeMinusMustBeIdempotence(string one)
+		{
+			big lhs = BigNumberDS.Create(one);
+
+			Assert.Equal<BigNumberDS>(lhs, lhs - 0);
+		}
+
 		#endregion multiplicative-
 
 		#region multiplicative*
@@ -959,7 +1028,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789123", "1", "123456789123456789123")]
 		[InlineData("123456789123456789123,0", "1,0", "123456789123456789123,0")]
 		[InlineData("123456789123456789123,123", "1,315", "162345677697345677696,906745")]
-		public void OperatorMultiplicativeMultipleMustWorkCorrectlyVer0(string one, string two, string free)
+		public void OperatorMultiplicativeMultipleMustWorkCorrectly(string one, string two, string free)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big added = BigNumberDS.Create(two);
@@ -1022,11 +1091,72 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void OperatorMultiplicativeMultipleMustWorkWithMinusOneCorrectly(string one)
+		public void OperatorMultiplicativeMultipleMustBeNonIdempotence(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 
 			Assert.Equal<BigNumberDS>(-lhs, lhs * BigNumberDS.Create("-1"));
+		}
+
+		[Theory]
+		[InlineData("-1")]
+		[InlineData("-1,0")]
+		[InlineData("-1,186723")]
+		[InlineData("-1,3144435")]
+		[InlineData("-12")]
+		[InlineData("-12,0")]
+		[InlineData("-12,17543423")]
+		[InlineData("-120120345678,0")]
+		[InlineData("-1230120145678,0")]
+		[InlineData("-123012045678,0")]
+		[InlineData("-123045456780,315")]
+		[InlineData("-1231201245678,0")]
+		[InlineData("-12320145678")]
+		[InlineData("-1234105678")]
+		[InlineData("-12341205678")]
+		[InlineData("-12345045678,14523")]
+		[InlineData("-123454245678,12043")]
+		[InlineData("-1234545678,12043")]
+		[InlineData("-1234545678,123")]
+		[InlineData("-12345583106780,0")]
+		[InlineData("-123456134578,315")]
+		[InlineData("-1234567450401208")]
+		[InlineData("-12345678,0")]
+		[InlineData("-123456780")]
+		[InlineData("-123456789112023456789123")]
+		[InlineData("-1234567891234567801049123,0")]
+		[InlineData("-123456789123456789123,123")]
+		[InlineData("0,12013")]
+		[InlineData("0,3120115")]
+		[InlineData("0,315436456105")]
+		[InlineData("0,3434315")]
+		[InlineData("1")]
+		[InlineData("1,0")]
+		[InlineData("1,121203")]
+		[InlineData("1,3143425")]
+		[InlineData("1,315")]
+		[InlineData("1,315")]
+		[InlineData("1101,0")]
+		[InlineData("1120120,0")]
+		[InlineData("12")]
+		[InlineData("12,0")]
+		[InlineData("12,1120120123")]
+		[InlineData("12,112023")]
+		[InlineData("1234101256780,0")]
+		[InlineData("12341201256780")]
+		[InlineData("123412047525678,0")]
+		[InlineData("123456422045378,315")]
+		[InlineData("1234566784560,345645615")]
+		[InlineData("12345678")]
+		[InlineData("12345678912345612120789123")]
+		[InlineData("12345678912345678120109123,0")]
+		[InlineData("123456789123456789123,412445345645")]
+		[InlineData("143,315")]
+		public void OperatorMultiplicativeMultipleMustBeNonIdempotenceDouble(string one)
+		{
+			big lhs = BigNumberDS.Create(one);
+
+			Assert.Equal<BigNumberDS>(lhs, lhs * BigNumberDS.Create("-1") * BigNumberDS.Create("-1"));
 		}
 
 		[Theory]
@@ -1148,16 +1278,74 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void OperatorMultiplicativeMultipleMustWorkWithOneCorrectly(string one)
+		public void OperatorMultiplicativeMultipleMustBeIdempotence(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 
 			Assert.Equal<BigNumberDS>(lhs, lhs * BigNumberDS.Create("1"));
 		}
-
+		
 		#endregion multiplicative*
 
+		#region bitwise^
 
+		[Theory]
+		[InlineData("0", "0", "0")]
+		[InlineData("0", "1", "1")]
+		[InlineData("1", "0", "1")]
+		[InlineData("1", "1", "0")]
+		[InlineData("0000000000", "0000000000", "0000000000")]
+		[InlineData("0000000000", "1111111111", "1111111111")]
+		[InlineData("1111111111", "0000000000", "1111111111")]
+		[InlineData("1111111111", "1111111111", "0000000000")]
+		[InlineData("12", "17", "29")]
+		[InlineData("-12", "17", "-27")]
+		[InlineData("12", "-17", "-29")]
+		[InlineData("-12", "-17", "27")]
+		[InlineData("123456789123", "176543219865", "230390159898")]
+		[InlineData("-123456789123", "176543219865", "-230390159900")]
+		[InlineData("123456789123", "-176543219865", "-230390159900")]
+		[InlineData("-123456789123", "-176543219865", "230390159898")]
+		public void MethodXorMustWorkCorrectly(string one, string two, string three)
+		{
+			big lhs = BigNumberDS.Create(one);
+			big rhs = BigNumberDS.Create(two);
+			big result = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>(result, lhs.Xor(rhs));
+		}
+
+		[Theory]
+		[InlineData("0")]
+		[InlineData("0")]
+		[InlineData("1")]
+		[InlineData("1")]
+		[InlineData("0000000000")]
+		[InlineData("0000000000")]
+		[InlineData("1111111111")]
+		[InlineData("1111111111")]
+		[InlineData("12")]
+		[InlineData("-12")]
+		[InlineData("12")]
+		[InlineData("-12")]
+		[InlineData("123456789123")]
+		[InlineData("-123456789123")]
+		[InlineData("123456789123")]
+		[InlineData("-123456789123")]
+		public void MethodXorMustWorkBeIdempotence(string one)
+		{
+			big lhs = BigNumberDS.Create(one);
+
+			Assert.Equal<BigNumberDS>(lhs, lhs.Xor(0));
+		}
+
+		#endregion bitwise^
+
+		#region bitwise&
+		#endregion bitwise&
+
+		#region bitwise|
+		#endregion bitwise|
 
 		#region multiplicative^
 
@@ -1265,7 +1453,7 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void OperatorEqualatyMustWorkCorrectlyVer0(string one)
+		public void OperatorEqualatyMustWorkCorrectly(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(one);
@@ -1327,7 +1515,7 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0", "12345678912345612120789123")]
 		[InlineData("123456789123456789123,412445345645", "12345678912345678120109123,0")]
 		[InlineData("143,315", "123456789123456789123,412445345645")]
-		public void OperatorNonEqualatyMustWorkCorrectlyVer0(string one, string two)
+		public void OperatorNonEqualatyMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(two);
@@ -1584,7 +1772,7 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void EqualsMustBeAssociativeVer0(string one)
+		public void EqualsMustBeAssociative(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big mhs = BigNumberDS.Create(one);
@@ -1649,72 +1837,7 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void EqualsMustBeAssociativeVer1(string one)
-		{
-			big lhs = BigNumberDS.Create(one);
-			big mhs = BigNumberDS.Create(one);
-			big rhs = BigNumberDS.Create(one);
-
-			Assert.Equal(lhs.Equals(mhs) && mhs.Equals(rhs), lhs.Equals(rhs));
-		}
-
-		[Theory]
-		[InlineData("-1")]
-		[InlineData("-1,0")]
-		[InlineData("-1,186723")]
-		[InlineData("-1,3144435")]
-		[InlineData("-12")]
-		[InlineData("-12,0")]
-		[InlineData("-12,17543423")]
-		[InlineData("-120120345678,0")]
-		[InlineData("-1230120145678,0")]
-		[InlineData("-123012045678,0")]
-		[InlineData("-123045456780,315")]
-		[InlineData("-1231201245678,0")]
-		[InlineData("-12320145678")]
-		[InlineData("-1234105678")]
-		[InlineData("-12341205678")]
-		[InlineData("-12345045678,14523")]
-		[InlineData("-123454245678,12043")]
-		[InlineData("-1234545678,12043")]
-		[InlineData("-1234545678,123")]
-		[InlineData("-12345583106780,0")]
-		[InlineData("-123456134578,315")]
-		[InlineData("-1234567450401208")]
-		[InlineData("-12345678,0")]
-		[InlineData("-123456780")]
-		[InlineData("-123456789112023456789123")]
-		[InlineData("-1234567891234567801049123,0")]
-		[InlineData("-123456789123456789123,123")]
-		[InlineData("0")]
-		[InlineData("0,0")]
-		[InlineData("0,12013")]
-		[InlineData("0,3120115")]
-		[InlineData("0,315436456105")]
-		[InlineData("0,3434315")]
-		[InlineData("1")]
-		[InlineData("1,0")]
-		[InlineData("1,121203")]
-		[InlineData("1,3143425")]
-		[InlineData("1,315")]
-		[InlineData("1,315")]
-		[InlineData("1101,0")]
-		[InlineData("1120120,0")]
-		[InlineData("12")]
-		[InlineData("12,0")]
-		[InlineData("12,1120120123")]
-		[InlineData("12,112023")]
-		[InlineData("1234101256780,0")]
-		[InlineData("12341201256780")]
-		[InlineData("123412047525678,0")]
-		[InlineData("123456422045378,315")]
-		[InlineData("1234566784560,345645615")]
-		[InlineData("12345678")]
-		[InlineData("12345678912345612120789123")]
-		[InlineData("12345678912345678120109123,0")]
-		[InlineData("123456789123456789123,412445345645")]
-		[InlineData("143,315")]
-		public void EqualsMustBeCommutativeVer0(string one)
+		public void EqualsMustBeCommutative(string one)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(one);
@@ -1778,7 +1901,7 @@ namespace Algorithms.Test
 		[InlineData("12345678912345678120109123,0")]
 		[InlineData("123456789123456789123,412445345645")]
 		[InlineData("143,315")]
-		public void EqualsToItselfMustReturnTrueVer0(string one)
+		public void EqualsToItselfMustReturnTrue(string one)
 		{
 			big obj = BigNumberDS.Create(one);
 
@@ -1828,7 +1951,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789110123,123", "123456789123456789110122,123")]
 		[InlineData("123456789123456789123", "123456789123456789122")]
 		[InlineData("123456789123456789123,0", "123456789123456789122,0")]
-		public void OperatorGreaterMustWorkCorrectlyVer0(string one, string two)
+		public void OperatorGreaterMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(two);
@@ -1867,7 +1990,7 @@ namespace Algorithms.Test
 		[InlineData("123456789123456789110123,123", "123456789123456789110124,123")]
 		[InlineData("123456789123456789123", "123456789123456789124")]
 		[InlineData("123456789123456789123,0", "123456789123456789124,0")]
-		public void OperatorLessMustWorkCorrectlyVer0(string one, string two)
+		public void OperatorLessMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 			big rhs = BigNumberDS.Create(two);
@@ -1890,7 +2013,7 @@ namespace Algorithms.Test
 		[InlineData(",155556", "0,155556")]
 		[InlineData("156000", "156000")]
 		[InlineData("00004568", "4568")]
-		public void MethodToStringMustWorkCorrectlyVer0(string one, string two)
+		public void MethodToStringMustWorkCorrectly(string one, string two)
 		{
 			big lhs = BigNumberDS.Create(one);
 

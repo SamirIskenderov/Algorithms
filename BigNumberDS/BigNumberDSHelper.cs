@@ -94,7 +94,7 @@ namespace Algorithms.BigNumber
 		}
 
 		public static bool IsPowerOfTwo(ulong num)
-								=> (num & (num - 1)) == 0;
+			=> (num & (num - 1)) == 0;
 
 		/// <summary>
 		/// Compute next highest power of 2

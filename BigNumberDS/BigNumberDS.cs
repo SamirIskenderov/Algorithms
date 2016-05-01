@@ -139,6 +139,22 @@ namespace Algorithms.BigNumber
 			return BigNumberDSMath.And(lhs, rhs);
 		}
 
+		public big Not(big lhs)
+		{
+			return null;
+		}
+
+		public big Not(int lhs)
+			=> this.Not(BigNumberDS.Create(lhs.ToString()));
+
+		public big Xor(big lhs)
+		{
+			return null;
+		}
+
+		public big Xor(int lhs)
+			=> this.Xor(BigNumberDS.Create(lhs.ToString()));
+
 		public static big operator |(int lhs, big rhs)
 			=> BigNumberDS.Create(lhs.ToString()) | rhs;
 
