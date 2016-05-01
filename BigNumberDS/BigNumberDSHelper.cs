@@ -76,7 +76,9 @@ namespace Algorithms.BigNumber
 
 			while (tmp != null)
 			{
-				foreach (var item in GetNextBit(tmp.currentValue).Reverse())
+				long val = tmp.isPositive ? tmp.currentValue : -tmp.currentValue;
+
+				foreach (var item in GetNextBit(val).Reverse())
 				{
 					yield return item;
 				}
@@ -90,12 +92,16 @@ namespace Algorithms.BigNumber
 		/// </summary>
 		/// <param name="num"></param>
 		/// <returns></returns>
-		private static IEnumerable<bool> GetNextBit(ulong num)
+		private static IEnumerable<bool> GetNextBit(long num)
 		{
-			ulong div = NextPowerOfTwo(num);
+			long div = NextPowerOfTwo(num);
 			bool bit;
 
+			if (num > 0)
+			{
+
 			num++; // quick fix
+			}
 
 			while ((div > 0) || (num > 1))
 			{
@@ -115,13 +121,13 @@ namespace Algorithms.BigNumber
 			}
 		}
 
-		public static bool IsPowerOfTwo(ulong num)
+		public static bool IsPowerOfTwo(long num)
 			=> (num & (num - 1)) == 0;
 
-		public static ulong BitsToNumber(bool[] bits)
+		public static long BitsToNumber(bool[] bits)
 		{
-			ulong div = 1;
-			ulong result = 0;
+			long div = 1;
+			long result = 0;
 
 			for (int i = 0; i < bits.Length; i++)
 			{
@@ -141,8 +147,13 @@ namespace Algorithms.BigNumber
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns></returns>
-		public static ulong NextPowerOfTwo(ulong v)
+		public static long NextPowerOfTwo(long v)
 		{
+			if (v == 1)
+			{
+				return 2;
+			}
+
 			v--;
 			v |= v >> 1;
 			v |= v >> 2;
@@ -152,6 +163,51 @@ namespace Algorithms.BigNumber
 			v++;
 
 			return v;
+		}
+
+		internal static big BitwiseOperation(big lhs, big rhs, Func<bool, bool, bool> func)
+		{
+			big result = new big();
+
+			big tmplhs; // always must be longer
+			big tmprhs;
+
+			if (BigNumberDSHelper.GetBlocksCount(lhs) > BigNumberDSHelper.GetBlocksCount(rhs))
+			{
+				tmplhs = lhs;
+				tmprhs = rhs;
+			}
+			else
+			{
+				tmplhs = rhs;
+				tmprhs = lhs;
+			}
+
+			while (tmplhs != null)
+			{
+				bool[] bits = new bool[32];
+
+				IEnumerator<bool> l = BigNumberDSHelper.GetNextBit(tmplhs).GetEnumerator();
+				IEnumerator<bool> r = BigNumberDSHelper.GetNextBit(tmprhs).GetEnumerator();
+
+				l.MoveNext();
+				r.MoveNext();
+
+				for (int i = 0; i < 32; i++)
+				{
+					bits[i] = func(l.Current, r.Current);
+					l.MoveNext();
+					r.MoveNext();
+				}
+
+				result.currentValue = (uint)BigNumberDSHelper.BitsToNumber(bits);
+
+				result = BigNumberDSHelper.AddNewPreviousBlock(result, 0, true, true);
+
+				tmplhs = tmplhs.previousBlock;
+			}
+
+			return result;
 		}
 
 		internal static big AddNewPreviousBlock(big input, uint value, bool isBigPart, bool isPositive)

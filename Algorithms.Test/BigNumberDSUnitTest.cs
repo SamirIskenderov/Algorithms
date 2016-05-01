@@ -1342,9 +1342,61 @@ namespace Algorithms.Test
 		#endregion bitwise^
 
 		#region bitwise&
+		[Theory]
+		[InlineData("0", "0", "0")]
+		[InlineData("0", "1", "0")]
+		[InlineData("1", "0", "0")]
+		[InlineData("1", "1", "1")]
+		[InlineData("0", "0", "0")]
+		[InlineData("0", "-1", "0")]
+		[InlineData("-1", "0", "0")]
+		[InlineData("-1", "1", "1")]
+		[InlineData("1", "-1", "1")]
+		[InlineData("-1", "-1", "-1")]
+		[InlineData("123", "987", "91")]
+		[InlineData("-654", "321", "320")]
+		[InlineData("78954", "321", "64")]
+		[InlineData("5646512", "1", "0")]
+		[InlineData("5646512", "-1", "5646512")]
+		[InlineData("9875161", "32168465131", "164553")]
+		[InlineData("5468484321", "46516543215", "1150423777")]
+		public void OperatorAndMustWorkCorrectly(string one, string two, string three)
+		{
+			big lhs = BigNumberDS.Create(one);
+			big rhs = BigNumberDS.Create(two);
+			big result = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>(result, lhs & rhs);
+		}
 		#endregion bitwise&
 
 		#region bitwise|
+		[Theory]
+		[InlineData("0", "0", "0")]
+		[InlineData("0", "1", "1")]
+		[InlineData("1", "0", "1")]
+		[InlineData("1", "1", "1")]
+		[InlineData("0", "0", "0")]
+		[InlineData("0", "-1", "-1")]
+		[InlineData("-1", "0", "-1")]
+		[InlineData("-1", "1", "-1")]
+		[InlineData("1", "-1", "-1")]
+		[InlineData("-1", "-1", "-1")]
+		[InlineData("123", "987", "1019")]
+		[InlineData("-654", "321", "-653")]
+		[InlineData("78954", "321", "79211")]
+		[InlineData("5646512", "1", "5646513")]
+		[InlineData("5646512", "-1", "-1")]
+		[InlineData("9875161", "32168465131", "32178175739")]
+		[InlineData("5468484321", "46516543215", "50834603759")]
+		public void OperatorOrMustWorkCorrectly(string one, string two, string three)
+		{
+			big lhs = BigNumberDS.Create(one);
+			big rhs = BigNumberDS.Create(two);
+			big result = BigNumberDS.Create(three);
+
+			Assert.Equal<BigNumberDS>(result, lhs | rhs);
+		}
 		#endregion bitwise|
 
 		#region multiplicative^

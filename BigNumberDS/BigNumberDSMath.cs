@@ -306,52 +306,14 @@ namespace Algorithms.BigNumber
 
 		internal static big Or(big lhs, big rhs)
 		{
-			return null;
+			return BigNumberDSHelper.BitwiseOperation(lhs, rhs, (l, r) => l | r);
 		}
+
+		
 
 		internal static big And(big lhs, big rhs)
 		{
-			big result = new big();
-
-			big tmplhs; // always must be longer
-			big tmprhs;
-
-			if (BigNumberDSHelper.GetBlocksCount(lhs) > BigNumberDSHelper.GetBlocksCount(rhs))
-			{
-				tmplhs = lhs;
-				tmprhs =  rhs;
-			}
-			else
-			{
-				tmplhs = rhs;
-				tmprhs = lhs;
-			}
-
-			while (tmplhs != null)
-			{
-				bool[] bits = new bool[32];
-
-				IEnumerator<bool> l = BigNumberDSHelper.GetNextBit(tmplhs).GetEnumerator();
-				IEnumerator<bool> r = BigNumberDSHelper.GetNextBit(tmprhs).GetEnumerator();
-
-				l.MoveNext();
-				r.MoveNext();
-
-				for (int i = 0; i < 32; i++)
-				{
-					bits[i] = l.Current & r.Current;
-					l.MoveNext();
-					r.MoveNext();
-				}
-
-				result.currentValue = (uint)BigNumberDSHelper.BitsToNumber(bits);
-
-				result = BigNumberDSHelper.AddNewPreviousBlock(result, 0, true, true);
-
-				tmplhs = tmplhs.previousBlock;
-			}
-
-			return result;
+			return BigNumberDSHelper.BitwiseOperation(lhs, rhs, (l, r) => l & r);
 		}
 
 		internal static big Divide(big lhs, big rhs, big accuracy = null)
