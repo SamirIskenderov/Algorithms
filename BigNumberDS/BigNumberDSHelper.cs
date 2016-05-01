@@ -68,12 +68,31 @@ namespace Algorithms.BigNumber
 		/// </summary>
 		/// <param name="num"></param>
 		/// <returns></returns>
+		public static IEnumerable<bool> GetNextBit(big num)
+		{
+			big tmp = num;
+
+			while (tmp != null)
+			{
+				foreach (var item in GetNextBit(tmp.currentValue))
+				{
+					yield return item;
+				}
+
+				tmp = tmp.previousBlock;
+			}
+		}
+		/// <summary>
+		/// Return number as a bit collection, starting from low order.
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
 		public static IEnumerable<bool> GetNextBit(ulong num)
 		{
 			ulong div = NextPowerOfTwo(num);
 			bool bit;
 
-			num++; // )
+			num++; // quick fix
 
 			while ((div > 0) || (num > 1))
 			{
@@ -97,7 +116,7 @@ namespace Algorithms.BigNumber
 			=> (num & (num - 1)) == 0;
 
 		/// <summary>
-		/// Compute next highest power of 2
+		/// Compute next highest power of 2, f.e. for 114 it returns 128
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns></returns>
