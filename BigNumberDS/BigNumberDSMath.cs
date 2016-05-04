@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using big = Algorithms.BigNumber.BigNumberDS;
 
 namespace Algorithms.BigNumber
@@ -311,19 +311,44 @@ namespace Algorithms.BigNumber
 
 		internal static big And(big lhs, big rhs)
 		{
-			big current = rhs;
 			big result = new big();
-			big tmp = result;
 
-			tmp.currentValue = current.currentValue;
+			big tmplhs; // always must be longer
+			big tmprhs;
 
-			while (current != null)
+			if (BigNumberDSHelper.GetBlocksCount(lhs) > BigNumberDSHelper.GetBlocksCount(rhs))
 			{
-				tmp.currentValue &= current.currentValue;
+				tmplhs = lhs;
+				tmprhs =  rhs;
+			}
+			else
+			{
+				tmplhs = rhs;
+				tmprhs = lhs;
+			}
 
-				tmp = BigNumberDSHelper.AddNewPreviousBlock(tmp, 0, true, true);
-				current = current.previousBlock;
-				tmp = tmp.previousBlock;
+			while (tmplhs != null)
+			{
+				bool[] bits = new bool[32];
+
+				IEnumerator<bool> l = BigNumberDSHelper.GetNextBit(tmplhs).GetEnumerator();
+				IEnumerator<bool> r = BigNumberDSHelper.GetNextBit(tmprhs).GetEnumerator();
+
+				l.MoveNext();
+				r.MoveNext();
+
+				for (int i = 0; i < 32; i++)
+				{
+					bits[i] = l.Current & r.Current;
+					l.MoveNext();
+					r.MoveNext();
+				}
+
+				result.currentValue = (uint)BigNumberDSHelper.BitsToNumber(bits);
+
+				result = BigNumberDSHelper.AddNewPreviousBlock(result, 0, true, true);
+
+				tmplhs = tmplhs.previousBlock;
 			}
 
 			return result;

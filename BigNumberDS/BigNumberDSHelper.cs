@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using big = Algorithms.BigNumber.BigNumberDS;
@@ -64,16 +65,37 @@ namespace Algorithms.BigNumber
 		}
 
 		/// <summary>
-		/// Return number as a bit collection, starting from low order.
+		/// Return number as a bit collection.
+		/// Collection starts from low order bit.
 		/// </summary>
 		/// <param name="num"></param>
 		/// <returns></returns>
-		public static IEnumerable<bool> GetNextBit(ulong num)
+		public static IEnumerable<bool> GetNextBit(big num)
+		{
+			big tmp = num;
+
+			while (tmp != null)
+			{
+				foreach (var item in GetNextBit(tmp.currentValue).Reverse())
+				{
+					yield return item;
+				}
+
+				tmp = tmp.previousBlock;
+			}
+		}
+		/// <summary>
+		/// Return number as a bit collection.
+		/// Collection starts from top order bit.
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
+		private static IEnumerable<bool> GetNextBit(ulong num)
 		{
 			ulong div = NextPowerOfTwo(num);
 			bool bit;
 
-			num++; // )
+			num++; // quick fix
 
 			while ((div > 0) || (num > 1))
 			{
@@ -94,10 +116,28 @@ namespace Algorithms.BigNumber
 		}
 
 		public static bool IsPowerOfTwo(ulong num)
-								=> (num & (num - 1)) == 0;
+			=> (num & (num - 1)) == 0;
+
+		public static ulong BitsToNumber(bool[] bits)
+		{
+			ulong div = 1;
+			ulong result = 0;
+
+			for (int i = 0; i < bits.Length; i++)
+			{
+				if (bits[i])
+				{
+					result += div;
+				}
+
+				div *= 2;
+			}
+
+			return result;
+		}
 
 		/// <summary>
-		/// Compute next highest power of 2
+		/// Compute next highest power of 2, f.e. for 114 it returns 128
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns></returns>
@@ -353,6 +393,21 @@ namespace Algorithms.BigNumber
 			}
 
 			return false;
+		}
+
+		internal static int GetBlocksCount(big input)
+		{
+			int result = 0;
+			big current = input;
+
+			while (current != null)
+			{
+				result++;
+
+				current = current.previousBlock;
+			}
+
+			return result;
 		}
 
 		/// <summary>
