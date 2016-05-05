@@ -21,12 +21,35 @@ namespace OurBigRat
 				currentSecond = lhs.Clone();
 			}
 
-			//return Add(currentFirst, currentSecond, null, false);
-
-			throw new NotImplementedException();
+			return Add(currentFirst, currentSecond, null, false);
 		}
 
-		internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
+        internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, OurBigInt result, bool addBit)
+        {
+            if (lhs < rhs)
+            {
+                throw new ArgumentException("Left memder of addition must be bigger than right one.");
+            }
+            else if ((lhs == null || rhs == null) && 
+                result == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (lhs != null && rhs != null)
+            {
+                if (result == null)
+                {
+                    result = new OurBigInt();
+
+                    // STOPED HERE
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
+        internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
 		{
 			if (lhs < rhs)
 			{
@@ -117,7 +140,7 @@ namespace OurBigRat
 		/// <returns></returns>
 		internal static bool Equally(OurBigInt lhs, OurBigInt rhs)
 		{
-			if (OurBigIntMathHelper.GetIntegerPartBlocksCount(lhs) != OurBigIntMathHelper.GetIntegerPartBlocksCount(rhs))
+			if (OurBigIntMathHelper.GetBlocksCount(lhs) != OurBigIntMathHelper.GetBlocksCount(rhs))
 			{
 				return false;
 			}
@@ -141,8 +164,8 @@ namespace OurBigRat
 
 		internal static bool IsLess(OurBigInt lhs, OurBigInt rhs)
 		{
-			int lhsBlockCount = OurBigIntMathHelper.GetIntegerPartBlocksCount(lhs);
-			int rhsBlockCount = OurBigIntMathHelper.GetIntegerPartBlocksCount(rhs);
+			int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(lhs);
+			int rhsBlockCount = OurBigIntMathHelper.GetBlocksCount(rhs);
 
 			if (lhsBlockCount < rhsBlockCount)
 			{

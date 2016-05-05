@@ -69,19 +69,44 @@ namespace OurBigRat
 			return result;
 		}
 
+        public OurBigInt Parse(string input)
+        {
+            // TODO
+
+            return new OurBigInt();
+        }
+
 		public OurBigInt(ulong v) : this()
 		{
 			int i = 0;
-			if (v != 1)
-			{
-				v--;
-			}
 
-			foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
-			{
-				this.value[i] = item;
-				i++;
-			}
+            OurBigInt current = this;
+
+            //if (v != 1)
+            //{
+            //	v--;
+            //}
+
+            foreach (var item in OurBigIntMathHelper.GetNextBit(v))
+            {
+                current.value[i] = item;
+                i++;
+
+                if (i == 32)
+                {
+                    i = 0;
+
+                    current.previousBlock = new OurBigInt();
+
+                    current = current.previousBlock;
+                }
+            }
+
+   //         foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
+			//{
+			//	this.value[i] = item;
+			//	i++;
+			//}
 		}
 
 		#endregion ctor

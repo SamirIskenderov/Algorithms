@@ -13,28 +13,93 @@ namespace OurBigRat
 		/// <returns></returns>
 		internal static IEnumerable<bool> GetNextBit(ulong num)
 		{
-			ulong div = NextPowerOfTwo(num);
-			bool bit;
+            if (num == 0)
+            {
+                yield return false;
+            }
 
-				num++; // quick fix
+            while (num != 0)
+            {
+                if (num % 2 == 1)
+                {
+                    num = (num - 1) / 2;
 
-			while ((div > 0) || (num > 1))
-			{
-				if (num >= div)
-				{
-					num -= div;
-					bit = true;
-				}
-				else
-				{
-					bit = false;
-				}
+                    yield return true;
+                }
+                else
+                {
+                    num = num / 2;
 
-				div /= 2;
+                    yield return false;
+                }
+            }
 
-				yield return bit;
-			}
+			//ulong div = NextPowerOfTwo(num);
+			//bool bit;
+
+			//	num++; // quick fix
+
+			//while ((div > 0) || (num > 1))
+			//{
+			//	if (num >= div)
+			//	{
+			//		num -= div;
+			//		bit = true;
+			//	}
+			//	else
+			//	{
+			//		bit = false;
+			//	}
+
+			//	div /= 2;
+
+			//	yield return bit;
+			//}
 		}
+
+        internal static void BitArraySum(bool[] lhs, bool[] rhs, bool[] result, out bool bitOverflow)
+        {
+            if (lhs == null ||
+                rhs == null ||
+                result == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (lhs.Length != rhs.Length ||
+                rhs.Length != result.Length)
+            {
+                throw new ArgumentException("Input arrays length must be equal.");
+            }
+
+            bitOverflow = false;
+            bool addBit = false;
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = lhs[i] ^ rhs[i] ^ addBit;
+                addBit = (lhs[i] && rhs[i]) || ((lhs[i] || rhs[i]) && addBit);
+
+                //if (lhs[i] && rhs[i])
+                //{
+                //    result[i] = false || addBit;
+                //    addBit = true;
+                //}
+                //else if (lhs[i] ^ rhs[i])
+                //{
+                //    result[i] = true && !addBit;
+                //}
+                //else
+                //{
+                //    result[i] = addBit;
+                //    addBit = false;
+                //}
+
+                if (i == OurBigInt.BOOL_ARRAY_SIZE - 1)
+                {
+                    bitOverflow = addBit;
+                }
+            }
+        }
 
 		internal static bool IsPowerOfTwo(ulong num)
 			=> (num & (num - 1)) == 0;
@@ -75,7 +140,7 @@ namespace OurBigRat
 			return v;
 		}
 
-		internal static int GetIntegerPartBlocksCount(OurBigInt input)
+		internal static int GetBlocksCount(OurBigInt input)
 		{
 			int result = 0;
 			OurBigInt current = input;

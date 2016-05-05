@@ -19,7 +19,8 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-		public void OperatorEquallyMustWork(uint l, uint r)
+        [InlineData(18446744073709551615, 0)]
+		public void OperatorEquallyMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
