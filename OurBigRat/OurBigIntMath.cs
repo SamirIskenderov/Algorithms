@@ -186,18 +186,25 @@ namespace OurBigRat
 
 		internal static OurBigInt RightShift(OurBigInt lhs, int rhs)
 		{
-			OurBigInt result = lhs.Clone();
+			OurBigInt lhscopy = lhs;
+
+			OurBigInt result = new OurBigInt();
 			OurBigInt tmp = result;
 
 			for (int j = 0; j < rhs; j++)
 			{
-				while (tmp != null)
+				while (lhscopy != null)
 				{
-					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 2; i >= 0; i--)
+					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i > 0; i--)
 					{
-						tmp.value[i] = tmp.value[i - 1];
+						tmp.value[i - 1] = lhscopy.value[i];
 					}
 
+					lhscopy = lhscopy.previousBlock;
+					if (tmp.previousBlock == null)
+					{
+						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					}
 					tmp = tmp.previousBlock;
 				}
 			}
