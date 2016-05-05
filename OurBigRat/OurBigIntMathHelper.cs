@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OurBigRat
 {
@@ -15,11 +16,11 @@ namespace OurBigRat
 			ulong div = NextPowerOfTwo(num);
 			bool bit;
 
-			num++; // quick fix
+				num++; // quick fix
 
 			while ((div > 0) || (num > 1))
 			{
-				if (num > div)
+				if (num >= div)
 				{
 					num -= div;
 					bit = true;
@@ -72,6 +73,42 @@ namespace OurBigRat
 			v++;
 
 			return v;
+		}
+
+		internal static int GetIntegerPartBlocksCount(OurBigInt input)
+		{
+			int result = 0;
+			OurBigInt current = input;
+
+			while ((object)current != null)
+			{
+				result++;
+
+				current = current.previousBlock;
+			}
+
+			return result;
+		}
+
+		internal static OurBigInt AddNewPreviousBlock(OurBigInt result, bool[] currentSum)
+		{
+			OurBigInt current = result;
+
+			OurBigInt addingBlock = new OurBigInt(currentSum);
+
+			if (current == null)
+			{
+				return addingBlock;
+			}
+
+			while (current.previousBlock != null)
+			{
+				current = current.previousBlock;
+			}
+
+			current.previousBlock = addingBlock;
+
+			return result;
 		}
 	}
 }

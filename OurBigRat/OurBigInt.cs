@@ -1,23 +1,83 @@
-﻿namespace OurBigRat
+﻿using System.Linq;
+
+namespace OurBigRat
 {
 	public class OurBigInt
 	{
-		private bool[] value;
+		internal const int BOOL_ARRAY_SIZE = 32;
 
-		private OurBigInt previousBlock;
+		internal bool[] value;
+
+		internal OurBigInt previousBlock;
 
 		#region ctor
 
 		public OurBigInt()
 		{
-			this.value = new bool[32];
+			this.value = new bool[BOOL_ARRAY_SIZE];
+		}
+
+		internal OurBigInt(bool[] v)
+		{
+			if (v == null)
+			{
+				this.value = new bool[BOOL_ARRAY_SIZE];
+			}
+			this.value = v;
+		}
+
+		internal OurBigInt Clone()
+		{
+			OurBigInt result = new OurBigInt
+			{
+				previousBlock = this.previousBlock,
+			};
+
+			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
+			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+			{
+				arr[i] = this.value[i];
+			}
+
+			result.value = arr;
+
+			return result;
+		}
+
+		internal OurBigInt DeepClone()
+		{
+			OurBigInt result = new OurBigInt();
+
+			OurBigInt tmp = result;
+
+			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
+			while (tmp != null)
+			{
+				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+				{
+					arr[i] = this.value[i];
+				}
+
+				result.value = arr;
+
+				tmp = tmp.previousBlock;
+				result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+			}
+
+			return result;
 		}
 
 		public OurBigInt(ulong v) : this()
 		{
 			int i = 0;
+			if (v != 1)
+			{
+				v--;
+			}
 
-			foreach (var item in OurBigIntMathHelper.GetNextBit(v))
+			foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
 			{
 				this.value[i] = item;
 				i++;
@@ -29,12 +89,6 @@
 		#region operators
 
 		#region unary
-
-		public static OurBigInt operator +(OurBigInt lhs)
-			=> OurBigIntMath.Abs(lhs);
-
-		public static OurBigInt operator -(OurBigInt lhs)
-			=> OurBigIntMath.Invert(lhs);
 
 		public static OurBigInt operator --(OurBigInt lhs)
 			=> OurBigIntMath.Subtract(lhs, new OurBigInt(1));
@@ -120,13 +174,13 @@
 			=> OurBigIntMath.IsLess(lhs, new OurBigInt(rhs));
 
 		public static bool operator >(OurBigInt lhs, OurBigInt rhs)
-			=> !(lhs < rhs);
+			=> !(lhs <= rhs);
 
 		public static bool operator >(ulong lhs, OurBigInt rhs)
-			=> !(lhs < rhs);
+			=> !(lhs <= rhs);
 
 		public static bool operator >(OurBigInt lhs, ulong rhs)
-			=> !(lhs < rhs);
+			=> !(lhs <= rhs);
 
 		public static bool operator <=(OurBigInt lhs, OurBigInt rhs)
 			=> lhs == rhs || lhs < rhs;
@@ -148,12 +202,37 @@
 
 		public override bool Equals(object obj)
 		{
-			return base.Equals(obj);
+			// If parameter is null return false.
+			if (obj == null)
+			{
+				return false;
+			}
+
+			// If parameter cannot be cast to Point return false.
+			OurBigInt p = obj as OurBigInt;
+			if ((object)p == null)
+			{
+				return false;
+			}
+
+			// Return true if the fields match:
+			return this == p;
+		}
+
+		public bool Equals(OurBigInt obj)
+		{
+			if ((object)obj == null)
+			{
+				return false;
+			}
+
+			// Return true if the fields match:
+			return this == obj;
 		}
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+			return 0;
 		}
 
 		#endregion eq
@@ -162,6 +241,12 @@
 
 		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
 			=> OurBigIntMath.And(lhs, rhs);
+
+		public static OurBigInt operator >>(OurBigInt lhs, int rhs)
+			=> OurBigIntMath.RightShift(lhs, rhs);
+
+		public static OurBigInt operator <<(OurBigInt lhs, int rhs)
+			=> OurBigIntMath.LeftShift(lhs, rhs);
 
 		public static OurBigInt operator &(ulong lhs, OurBigInt rhs)
 			=> OurBigIntMath.And(new OurBigInt(lhs), rhs);
