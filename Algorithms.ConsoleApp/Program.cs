@@ -1,4 +1,5 @@
 ﻿using Algorithms.BigNumber;
+using OurBigRat;
 
 namespace Algorithms.ConsoleApp
 {
@@ -6,10 +7,6 @@ namespace Algorithms.ConsoleApp
 	{
 		private static void Main()
 		{
-			BigNumberDS b1 = BigNumberDS.Create("123456789123");
-			BigNumberDS b2 = BigNumberDS.Create("987654321987");
-
-			System.Console.WriteLine(b1 & b2);
 		}
 	}
 }
