@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace OurBigRat
 {
@@ -211,8 +210,6 @@ namespace OurBigRat
 					{
 						tmp.value[i + shift] = numcopy.value[i];
 					}
-
-
 				}
 
 				numcopy = numcopy.previousBlock;

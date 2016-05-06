@@ -47,25 +47,6 @@ namespace OurBigRat
 			}
 		}
 
-		internal OurBigInt Clone()
-		{
-			OurBigInt result = new OurBigInt
-			{
-				previousBlock = this.previousBlock,
-			};
-
-			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
-
-			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
-			{
-				arr[i] = this.value[i];
-			}
-
-			result.value = arr;
-
-			return result;
-		}
-
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -75,7 +56,7 @@ namespace OurBigRat
 			{
 				sb.Append(item ? '1' : '0');
 
-				if ( a == 3)
+				if (a == 3)
 				{
 					sb.Append(' ');
 					a = 0;
@@ -87,37 +68,6 @@ namespace OurBigRat
 			}
 
 			return sb.ToString();
-		}
-
-		internal OurBigInt DeepClone()
-		{
-			OurBigInt result = new OurBigInt();
-
-			OurBigInt tmp = result;
-
-			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
-
-			while (tmp != null)
-			{
-				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
-				{
-					arr[i] = this.value[i];
-				}
-
-				result.value = arr;
-
-				tmp = tmp.previousBlock;
-				result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
-			}
-
-			return result;
-		}
-
-		public static OurBigInt Parse(string input)
-		{
-			// TODO
-
-			return new OurBigInt();
 		}
 
 		public OurBigInt(ulong v) : this()
@@ -420,5 +370,55 @@ namespace OurBigRat
 		#endregion bitwise
 
 		#endregion operators
+
+		internal OurBigInt Clone()
+		{
+			OurBigInt result = new OurBigInt
+			{
+				previousBlock = this.previousBlock,
+			};
+
+			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
+			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+			{
+				arr[i] = this.value[i];
+			}
+
+			result.value = arr;
+
+			return result;
+		}
+
+		internal OurBigInt DeepClone()
+		{
+			OurBigInt result = new OurBigInt();
+
+			OurBigInt tmp = result;
+
+			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
+			while (tmp != null)
+			{
+				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+				{
+					arr[i] = this.value[i];
+				}
+
+				result.value = arr;
+
+				tmp = tmp.previousBlock;
+				result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+			}
+
+			return result;
+		}
+
+		public static OurBigInt Parse(string input)
+		{
+			// TODO
+
+			return new OurBigInt();
+		}
 	}
 }
