@@ -9,7 +9,7 @@ namespace OurBigRat
 	{
 		internal const int BOOL_ARRAY_SIZE = 32;
 
-		public bool[] value;
+		internal bool[] value;
 
 		internal OurBigInt previousBlock;
 
@@ -376,7 +376,7 @@ namespace OurBigRat
 
 		#endregion operators
 
-		internal OurBigInt Clone()
+		public OurBigInt Clone()
 		{
 			OurBigInt result = new OurBigInt
 			{
@@ -395,7 +395,7 @@ namespace OurBigRat
 			return result;
 		}
 
-		internal OurBigInt DeepClone()
+		public OurBigInt DeepClone()
 		{
 			OurBigInt result = new OurBigInt();
 
@@ -413,8 +413,14 @@ namespace OurBigRat
 				result.value = arr;
 
 				tmp = tmp.previousBlock;
-				result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+
+				if ((tmp != null) && (result.previousBlock == null))
+				{
+					result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+				}
 			}
+
+			OurBigIntMathHelper.TrimStructure(ref result);
 
 			return result;
 		}

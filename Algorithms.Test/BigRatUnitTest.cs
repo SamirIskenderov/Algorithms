@@ -248,5 +248,19 @@ namespace Algorithms.Test
 
 		#endregion operators
 
+		#region funcs
+		[Theory]
+		[InlineData(0)]
+		[InlineData(123)]
+		[InlineData(9875)]
+		[InlineData(123456789123)]
+		[InlineData(4045432065982464)]
+		public void MethodDeepCloneMustWork(ulong v)
+		{
+			OurBigInt num = new OurBigInt(v);
+
+			Assert.Equal<OurBigInt>(num, num.DeepClone());
+		}
+		#endregion funcs
 	}
 }
