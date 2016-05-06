@@ -52,19 +52,30 @@ namespace OurBigRat
 			StringBuilder sb = new StringBuilder();
 			byte a = 0;
 
-			foreach (var item in this.value.Reverse())
-			{
-				sb.Append(item ? '1' : '0');
+			OurBigInt tmp = this;
 
-				if (a == 3)
+			while (tmp != null)
+			{
+				sb.Append(" [");
+
+				foreach (var item in tmp.value.Reverse())
 				{
-					sb.Append(' ');
-					a = 0;
+					sb.Append(item ? '1' : '0');
+
+					if (a == 3)
+					{
+						sb.Append(' ');
+						a = 0;
+					}
+					else
+					{
+						a++;
+					}
 				}
-				else
-				{
-					a++;
-				}
+
+				sb.Append("] ");
+
+				tmp = tmp.previousBlock;
 			}
 
 			return sb.ToString();

@@ -163,30 +163,25 @@ namespace OurBigRat
 			return result;
 		}
 
-		internal static OurBigInt RightShift(OurBigInt lhs, int rhs)
+		internal static OurBigInt RightShift(OurBigInt num, int shift)
 		{
 			OurBigInt result = new OurBigInt();
 			OurBigInt tmp = result;
-			OurBigInt lhscopy = lhs;
+			OurBigInt numcopy = num;
 
-			while (lhscopy != null)
+			while (numcopy != null)
 			{
-				for (int j = 0; j < rhs; j++)
+				for (int j = 0; j < shift; j++)
 				{
-					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= rhs; i--)
+					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= shift; i--)
 					{
-						tmp.value[i - rhs] = lhscopy.value[i];
-					}
-
-					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i < OurBigInt.BOOL_ARRAY_SIZE - 1 - rhs; i--)
-					{
-						tmp.value[i] = false;
+						tmp.value[i - shift] = numcopy.value[i];
 					}
 				}
 
-				lhscopy = lhscopy.previousBlock;
+				numcopy = numcopy.previousBlock;
 
-				if (lhscopy != null && tmp.previousBlock == null)
+				if (numcopy != null && tmp.previousBlock == null)
 				{
 					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
@@ -207,11 +202,6 @@ namespace OurBigRat
 			{
 				for (int j = 0; j < shift; j++)
 				{
-					for (int i = 0; i < shift; i++)
-					{
-						tmp.value[i] = false;
-					}
-
 					for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - shift; i++)
 					{
 						tmp.value[i + shift] = numcopy.value[i];
