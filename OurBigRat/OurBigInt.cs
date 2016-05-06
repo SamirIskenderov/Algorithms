@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace OurBigRat
 {
-	public class OurBigInt : IComparable
-	{
+	public class OurBigInt : IComparable, IEnumerable<bool>
+    {
 		internal const int BOOL_ARRAY_SIZE = 32;
 
 		public bool[] value;
@@ -344,11 +345,36 @@ namespace OurBigRat
 			return 0;
 		}
 
-		#endregion eq
+        public IEnumerator<bool> GetEnumerator()
+        {
+            if (this == null)
+            {
+                throw new NullReferenceException();
+            }
 
-		#region bitwise
+            OurBigInt current = this;
 
-		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
+            while (current != null)
+            {
+                for (int i = 0; i < current.value.Length; i++)
+                {
+                    yield return current.value[i];
+                }
+
+                current = current.previousBlock;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion eq
+
+        #region bitwise
+
+        public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
 				=> OurBigIntMath.And(lhs, rhs);
 
 		public static OurBigInt operator >>(OurBigInt lhs, int rhs)

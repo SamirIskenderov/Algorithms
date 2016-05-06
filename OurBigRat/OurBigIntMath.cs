@@ -80,6 +80,16 @@ namespace OurBigRat
 
 		internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
 		{
+            OurBigInt currentLeft = lhs;
+            OurBigInt currentRight = rhs;
+
+            OurBigInt result = new OurBigInt();
+
+            foreach (var curRightBit in currentRight)
+            {
+
+            }
+
 			throw new NotImplementedException();
 		}
 
@@ -249,5 +259,5 @@ namespace OurBigRat
 
 			return result;
 		}
-	}
+    }
 }
