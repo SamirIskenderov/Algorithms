@@ -199,28 +199,18 @@ namespace OurBigRat
 
 		internal static OurBigInt RightShift(OurBigInt lhs, int rhs)
 		{
-			OurBigInt lhscopy = lhs;
-
 			OurBigInt result = new OurBigInt();
-			OurBigInt tmp = result;
 
 			for (int j = 0; j < rhs; j++)
 			{
-				while (lhscopy != null)
+				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= rhs; i--)
 				{
-					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i > 0; i--)
-					{
-						tmp.value[i - 1] = lhscopy.value[i];
-					}
+					result.value[i - rhs] = lhs.value[i];
+				}
 
-					tmp.value[OurBigInt.BOOL_ARRAY_SIZE - 1] = false;
-
-					lhscopy = lhscopy.previousBlock;
-					if (tmp.previousBlock == null)
-					{
-						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
-					}
-					tmp = tmp.previousBlock;
+				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i < OurBigInt.BOOL_ARRAY_SIZE - 1 - rhs; i--)
+				{
+					result.value[i] = false;
 				}
 			}
 
@@ -229,7 +219,22 @@ namespace OurBigRat
 
 		internal static OurBigInt LeftShift(OurBigInt lhs, int rhs)
 		{
-			throw new NotImplementedException();
+			OurBigInt result = new OurBigInt();
+
+			for (int j = 0; j < rhs; j++)
+			{
+				for (int i = 0; i < rhs; i++)
+				{
+					result.value[i] = false;
+				}
+
+				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - rhs; i++)
+				{
+					result.value[i + rhs] = lhs.value[i];
+				}
+			}
+
+			return result;
 		}
 	}
 }

@@ -1,10 +1,13 @@
-﻿namespace OurBigRat
+﻿using System.Linq;
+using System.Text;
+
+namespace OurBigRat
 {
 	public class OurBigInt
 	{
 		internal const int BOOL_ARRAY_SIZE = 32;
 
-		internal bool[] value;
+		public bool[] value;
 
 		internal OurBigInt previousBlock;
 
@@ -41,6 +44,18 @@
 			result.value = arr;
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+
+			foreach (var item in this.value.Reverse())
+			{
+				sb.Append(item ? '1' : '0');
+			}
+
+			return sb.ToString();
 		}
 
 		internal OurBigInt DeepClone()

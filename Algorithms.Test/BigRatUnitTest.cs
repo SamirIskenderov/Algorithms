@@ -19,13 +19,45 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-        [InlineData(18446744073709551615, 0)]
+		[InlineData(18446744073709551615, 0)]
 		public void OperatorEquallyMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
 
 			Assert.Equal(l == r, lhs == rhs);
+		}
+
+		[Theory]
+		[InlineData(0, 0, 0)]
+		[InlineData(0, 5, 0)]
+		[InlineData(1, 2, 0)]
+		[InlineData(7, 5, 0)]
+		[InlineData(7, 1, 3)]
+		[InlineData(12358, 4, 772)]
+		[InlineData(987654321, 11, 482253)]
+		public void OperatorRightShiftMustWork(ulong l, int r, ulong result)
+		{
+			OurBigInt lhs = new OurBigInt(l);
+			OurBigInt or = new OurBigInt(result);
+
+			Assert.Equal<OurBigInt>(or, lhs >> r);
+		}
+
+		[Theory]
+		[InlineData(0, 0, 0)]
+		[InlineData(0, 5, 0)]
+		[InlineData(1, 2, 4)]
+		[InlineData(7, 5, 224)]
+		[InlineData(7, 1, 14)]
+		[InlineData(12358, 4, 197728)]
+		[InlineData(987654321, 11, 2022716049408)]
+		public void OperatorLeftShiftMustWork(ulong l, int r, ulong result)
+		{
+			OurBigInt lhs = new OurBigInt(l);
+			OurBigInt or = new OurBigInt(result);
+
+			Assert.Equal<OurBigInt>(or, lhs << r);
 		}
 
 		[Theory]
