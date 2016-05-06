@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OurBigRat
 {
-	public static class OurBigIntMathHelper
+	internal static class OurBigIntMathHelper
 	{
 		/// <summary>
 		/// Return number as a bit collection.
@@ -32,6 +33,42 @@ namespace OurBigRat
 
 					yield return false;
 				}
+			}
+		}
+
+		/// <summary>
+		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
+		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
+		/// </summary>
+		/// <param name="input"></param>
+		internal static void TrimStructure(ref OurBigInt input)
+		{
+			OurBigInt current = input;
+			OurBigInt currentEdge;
+
+			while (current != null && current.previousBlock != null)
+			{
+				if (current.previousBlock.value.All(x => x == false)) // if all elements of collection are zeros.
+				{
+					currentEdge = current;
+
+					while (current.previousBlock != null)
+					{
+						if (current.previousBlock.value.Any(x => x == true))
+						{
+							break;
+						}
+						else if (current.previousBlock.previousBlock == null)
+						{
+							currentEdge.previousBlock = null;
+							return;
+						}
+
+						current = current.previousBlock;
+					}
+				}
+
+				current = current.previousBlock;
 			}
 		}
 
@@ -90,7 +127,7 @@ namespace OurBigRat
 		internal static bool IsPowerOfTwo(ulong num)
 			=> (num & (num - 1)) == 0;
 
-		public static ulong BitsToNumber(bool[] bits)
+		internal static ulong BitsToNumber(bool[] bits)
 		{
 			ulong div = 1;
 			ulong result = 0;

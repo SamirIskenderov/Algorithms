@@ -170,8 +170,7 @@ namespace Algorithms.Test
 			OurBigInt rhs = new OurBigInt(r);
 			OurBigInt res = new OurBigInt(result);
 
-			OurBigInt output = lhs & rhs;
-			Assert.Equal<OurBigInt>(res, output);
+			Assert.Equal<OurBigInt>(res, lhs & rhs);
 		}
 
 		[Theory]

@@ -35,7 +35,11 @@ namespace OurBigRat
 				currentSecond = lhs.Clone();
 			}
 
-			return Add(currentFirst, currentSecond, false);
+			OurBigInt result = Add(currentFirst, currentSecond, false);
+
+			OurBigIntMathHelper.TrimStructure(ref result);
+
+			return result;
 		}
 
 		private static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
@@ -188,6 +192,8 @@ namespace OurBigRat
 				}
 			}
 
+			OurBigIntMathHelper.TrimStructure(ref result);
+
 			return result;
 		}
 
@@ -219,6 +225,8 @@ namespace OurBigRat
 					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
 			}
+
+			OurBigIntMathHelper.TrimStructure(ref result);
 
 			return result;
 		}

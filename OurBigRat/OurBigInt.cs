@@ -292,6 +292,11 @@ namespace OurBigRat
 				return 1;
 			}
 
+			OurBigInt thiscopy = this;
+
+			OurBigIntMathHelper.TrimStructure(ref thiscopy);
+			OurBigIntMathHelper.TrimStructure(ref input);
+
 			int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(this);
 			int rhsBlockCount = OurBigIntMathHelper.GetBlocksCount(input);
 
