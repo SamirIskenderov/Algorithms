@@ -1,6 +1,8 @@
-﻿namespace OurBigRat
+﻿using System;
+
+namespace OurBigRat
 {
-	public class OurBigInt
+	public class OurBigInt : IComparable
 	{
 		internal const int BOOL_ARRAY_SIZE = 32;
 
@@ -244,11 +246,65 @@
 			return 0;
 		}
 
-		#endregion eq
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
 
-		#region bitwise
+        public int CompareTo(OurBigInt input)
+        {
+            if (this == null)
+            {
+                throw new NullReferenceException();
+            }
+            else if (input == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
+            int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(this);
+            int rhsBlockCount = OurBigIntMathHelper.GetBlocksCount(input);
+
+            if (lhsBlockCount < rhsBlockCount)
+            {
+                return -1;
+            }
+            else if (lhsBlockCount > rhsBlockCount)
+            {
+                return 1;
+            }
+
+            OurBigInt lhscopy = this;
+            OurBigInt rhscopy = input;
+
+            OurBigInt tmp = new OurBigInt();
+
+            while (lhscopy != null)
+            {
+                for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+                {
+                    if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
+                    {
+                        return 1;
+                    }
+                    else if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
+                    {
+                        return -1;
+                    }
+                }
+
+                lhscopy = lhscopy.previousBlock;
+                rhscopy = rhscopy.previousBlock;
+            }
+
+            return 0;
+        }
+
+        #endregion eq
+
+        #region bitwise
+
+        public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
 			=> OurBigIntMath.And(lhs, rhs);
 
 		public static OurBigInt operator >>(OurBigInt lhs, int rhs)
