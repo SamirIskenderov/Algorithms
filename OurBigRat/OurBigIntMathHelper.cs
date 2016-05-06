@@ -57,46 +57,54 @@ namespace OurBigRat
 			//}
 		}
 
-        internal static void BitArraySum(bool[] lhs, bool[] rhs, bool[] result, out bool bitOverflow)
+        /// <summary>
+        /// Modifies result aray as sum of two arrays or sum of one bit and array.
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <param name="result"></param>
+        /// <param name="bitOverflow"></param>
+        internal static void BitArraySum(bool[] lhs, bool[] rhs, bool[] result, ref bool bitOverflow)
         {
             if (lhs == null ||
-                rhs == null ||
                 result == null)
             {
                 throw new ArgumentNullException();
             }
-            else if (lhs.Length != rhs.Length ||
-                rhs.Length != result.Length)
+            else if ( (rhs != null && (lhs.Length != rhs.Length || rhs.Length != result.Length)) ||
+                (lhs.Length != result.Length) )
             {
                 throw new ArgumentException("Input arrays length must be equal.");
             }
-
-            bitOverflow = false;
-            bool addBit = false;
-
-            for (int i = 0; i < result.Length; i++)
+            if (rhs != null)
             {
-                result[i] = lhs[i] ^ rhs[i] ^ addBit;
-                addBit = (lhs[i] && rhs[i]) || ((lhs[i] || rhs[i]) && addBit);
-
-                //if (lhs[i] && rhs[i])
-                //{
-                //    result[i] = false || addBit;
-                //    addBit = true;
-                //}
-                //else if (lhs[i] ^ rhs[i])
-                //{
-                //    result[i] = true && !addBit;
-                //}
-                //else
-                //{
-                //    result[i] = addBit;
-                //    addBit = false;
-                //}
-
-                if (i == OurBigInt.BOOL_ARRAY_SIZE - 1)
+                for (int i = 0; i < result.Length; i++)
                 {
-                    bitOverflow = addBit;
+                    result[i] = lhs[i] ^ rhs[i] ^ bitOverflow;
+                    bitOverflow = (lhs[i] && rhs[i]) || ((lhs[i] || rhs[i]) && bitOverflow);
+
+                    //if (lhs[i] && rhs[i])
+                    //{
+                    //    result[i] = false || addBit;
+                    //    addBit = true;
+                    //}
+                    //else if (lhs[i] ^ rhs[i])
+                    //{
+                    //    result[i] = true && !addBit;
+                    //}
+                    //else
+                    //{
+                    //    result[i] = addBit;
+                    //    addBit = false;
+                    //}
+                }
+            }
+            else
+            {
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = lhs[i] ^ bitOverflow;
+                    bitOverflow = lhs[i] && bitOverflow;
                 }
             }
         }

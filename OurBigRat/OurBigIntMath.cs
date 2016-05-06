@@ -21,32 +21,40 @@ namespace OurBigRat
 				currentSecond = lhs.Clone();
 			}
 
-			return Add(currentFirst, currentSecond, null, false);
+			return Add(currentFirst, currentSecond, false);
 		}
 
-        internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, OurBigInt result, bool addBit)
+        internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
         {
-            if (lhs < rhs)
-            {
-                throw new ArgumentException("Left memder of addition must be bigger than right one.");
-            }
-            else if ((lhs == null || rhs == null) && 
-                result == null)
+            if (lhs == null)
             {
                 throw new ArgumentNullException();
             }
+            else if (lhs < rhs)
+            {
+                throw new ArgumentException("Left memder of addition must be bigger than right one.");
+            }
+
+            OurBigInt result = new OurBigInt();
 
             if (lhs != null && rhs != null)
             {
-                if (result == null)
-                {
-                    result = new OurBigInt();
+                OurBigIntMathHelper.BitArraySum(lhs.value, rhs.value, result.value, ref addBit);
 
-                    // STOPED HERE
-                }
+                result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, rhs.previousBlock, addBit);
+            }
+            else if (lhs != null)
+            {
+                OurBigIntMathHelper.BitArraySum(lhs.value, null, result.value, ref addBit);
+
+                result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, null, addBit);
+            }
+            else if (addBit)
+            {
+                result = new OurBigInt(1);
             }
 
-            throw new NotImplementedException();
+            return result;
         }
 
         internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
@@ -186,19 +194,24 @@ namespace OurBigRat
 			{
 				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
 				{
-					int l = lhscopy.value[i] ? 1 : 0;
-					int r = rhscopy.value[i] ? 1 : 0;
+                    //int l = lhscopy.value[i] ? 1 : 0;
+                    //int r = rhscopy.value[i] ? 1 : 0;
 
-					if (l < r)
-					{
-						return true;
-					}
+                    //if (l < r)
+                    //{
+                    //	return true;
+                    //}
 
-					if (l > r)
-					{
-						return false;
-					}
-				}
+                    //if (l > r)
+                    //{
+                    //	return false;
+                    //}
+
+                    if (lhscopy.value[i] ^ rhscopy.value[i])
+                    {
+                        return rhscopy.value[i];
+                    }
+                }
 
 				lhscopy = lhscopy.previousBlock;
 				rhscopy = rhscopy.previousBlock;

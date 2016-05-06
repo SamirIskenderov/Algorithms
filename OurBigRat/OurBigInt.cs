@@ -92,7 +92,7 @@ namespace OurBigRat
                 current.value[i] = item;
                 i++;
 
-                if (i == 32)
+                if (i == OurBigInt.BOOL_ARRAY_SIZE)
                 {
                     i = 0;
 
@@ -102,7 +102,7 @@ namespace OurBigRat
                 }
             }
 
-   //         foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
+            //foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
 			//{
 			//	this.value[i] = item;
 			//	i++;
