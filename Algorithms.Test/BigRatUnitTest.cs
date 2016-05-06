@@ -20,6 +20,7 @@ namespace Algorithms.Test
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
 		[InlineData(18446744073709551615, 0)]
+		[InlineData(18446744073709551615, 12355121578451)]
 		public void OperatorEquallyMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -36,6 +37,8 @@ namespace Algorithms.Test
 		[InlineData(7, 1, 3)]
 		[InlineData(12358, 4, 772)]
 		[InlineData(987654321, 11, 482253)]
+		[InlineData(123456789123, 12345, 0)]
+		[InlineData(123456789123456789, 50, 109)]
 		public void OperatorRightShiftMustWork(ulong l, int r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -52,6 +55,7 @@ namespace Algorithms.Test
 		[InlineData(7, 1, 14)]
 		[InlineData(12358, 4, 197728)]
 		[InlineData(987654321, 11, 2022716049408)]
+		[InlineData(123456789123, 15, 4045432065982464)]
 		public void OperatorLeftShiftMustWork(ulong l, int r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -71,6 +75,9 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
+		[InlineData(123456789123, 4045432065982464)]
+		[InlineData(4045432065982464, 123456789123)]
+		[InlineData(4045432065982464, 4045432065982464)]
 		public void OperatorLessMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -90,6 +97,9 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
+		[InlineData(123456789123, 4045432065982464)]
+		[InlineData(4045432065982464, 123456789123)]
+		[InlineData(4045432065982464, 4045432065982464)]
 		public void OperatorLessOrEquallMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -109,6 +119,9 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
+		[InlineData(123456789123, 4045432065982464)]
+		[InlineData(4045432065982464, 123456789123)]
+		[InlineData(4045432065982464, 4045432065982464)]
 		public void OperatorGreaterMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -128,6 +141,9 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
+		[InlineData(123456789123, 4045432065982464)]
+		[InlineData(4045432065982464, 123456789123)]
+		[InlineData(4045432065982464, 4045432065982464)]
 		public void OperatorGreaterOrEquallMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -147,6 +163,7 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 0)]
 		[InlineData(85231, 589742, 19630)]
 		[InlineData(10001, 5452, 1280)]
+		[InlineData(123456789123, 4045432065982464, 53888483328)]
 		public void OperatorAndMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -168,6 +185,7 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 87455)]
 		[InlineData(85231, 589742, 655343)]
 		[InlineData(10001, 5452, 14173)]
+		[InlineData(123456789123, 4045432065982464, 4045501634288259)]
 		public void OperatorOrMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -187,6 +205,8 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 87455)]
 		[InlineData(85231, 589742, 635713)]
 		[InlineData(10001, 5452, 12893)]
+		[InlineData(123456789123, 4045432065982464, 4045447745804931)]
+
 		public void OperatorXorMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -200,6 +220,8 @@ namespace Algorithms.Test
 		[InlineData(1, 0)]
 		[InlineData(123, 4)]
 		[InlineData(123456789, 10760938)]
+		[InlineData(123456789123, 13982164348)]
+		[InlineData(4045432065982464, 458167561388031)]
 		public void OperatorNotMustWork(ulong l, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
@@ -214,6 +236,8 @@ namespace Algorithms.Test
 		[InlineData(123, 123, 246)]
 		[InlineData(9875, 622210, 632085)]
 		[InlineData(123456789123, 987654321987, 1111111111110)]
+		[InlineData(123456789123, 13982164348, 137438953471)]
+		[InlineData(4045432065982464, 458167561388031, 4503599627370495)]
 		public void OperatorMultiplicativePlusMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);

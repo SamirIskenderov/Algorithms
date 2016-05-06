@@ -69,10 +69,21 @@ namespace OurBigRat
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
+			byte a = 0;
 
 			foreach (var item in this.value.Reverse())
 			{
 				sb.Append(item ? '1' : '0');
+
+				if ( a == 3)
+				{
+					sb.Append(' ');
+					a = 0;
+				}
+				else
+				{
+					a++;
+				}
 			}
 
 			return sb.ToString();
@@ -191,13 +202,28 @@ namespace OurBigRat
 		#region eq
 
 		public static bool operator ==(OurBigInt lhs, OurBigInt rhs)
-			=> OurBigIntMath.Equally(lhs, rhs);
+		{
+			object olhs = (object)lhs;
+			object orhs = (object)rhs;
+
+			if ((olhs == null) && (orhs == null))
+			{
+				return true;
+			}
+
+			if ((olhs == null) ^ (olhs == null))
+			{
+				return false;
+			}
+
+			return lhs.CompareTo(rhs) == 0;
+		}
 
 		public static bool operator ==(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Equally(new OurBigInt(lhs), rhs);
+			=> new OurBigInt(lhs) == rhs;
 
 		public static bool operator ==(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Equally(lhs, new OurBigInt(rhs));
+			=> lhs == new OurBigInt(rhs);
 
 		public static bool operator !=(OurBigInt lhs, OurBigInt rhs)
 			=> !(lhs == rhs);
@@ -209,22 +235,36 @@ namespace OurBigRat
 			=> !(lhs == rhs);
 
 		public static bool operator <(OurBigInt lhs, OurBigInt rhs)
-			=> OurBigIntMath.IsLess(lhs, rhs);
+		{
+			if ((object)lhs == null)
+			{
+				return false;
+			}
+
+			return lhs.CompareTo(rhs) < 0;
+		}
 
 		public static bool operator <(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.IsLess(new OurBigInt(lhs), rhs);
+			=> new OurBigInt(lhs) < rhs;
 
 		public static bool operator <(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.IsLess(lhs, new OurBigInt(rhs));
+			=> lhs < new OurBigInt(rhs);
 
 		public static bool operator >(OurBigInt lhs, OurBigInt rhs)
-			=> !(lhs <= rhs);
+		{
+			if ((object)lhs == null)
+			{
+				return false;
+			}
+
+			return lhs.CompareTo(rhs) > 0;
+		}
 
 		public static bool operator >(ulong lhs, OurBigInt rhs)
-			=> !(lhs <= rhs);
+			=> new OurBigInt(lhs) > rhs;
 
 		public static bool operator >(OurBigInt lhs, ulong rhs)
-			=> !(lhs <= rhs);
+			=> lhs > new OurBigInt(rhs);
 
 		public static bool operator <=(OurBigInt lhs, OurBigInt rhs)
 			=> lhs == rhs || lhs < rhs;
@@ -297,13 +337,9 @@ namespace OurBigRat
 
 		public int CompareTo(OurBigInt input)
 		{
-			if (this == null) // srly?
+			if ((object)input == null)
 			{
-				throw new NullReferenceException();
-			}
-			else if (input == null)
-			{
-				throw new ArgumentNullException();
+				return 1;
 			}
 
 			int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(this);
@@ -331,7 +367,7 @@ namespace OurBigRat
 					{
 						return 1;
 					}
-					else if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
+					else if ((lhscopy.value[i] ^ rhscopy.value[i]) && rhscopy.value[i])
 					{
 						return -1;
 					}

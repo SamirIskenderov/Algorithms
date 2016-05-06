@@ -91,10 +91,25 @@ namespace OurBigRat
 		internal static OurBigInt Not(OurBigInt lhs)
 		{
 			OurBigInt result = new OurBigInt();
+			OurBigInt tmp = result;
 
-			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+			OurBigInt lhscopy = lhs;
+
+			while (lhscopy != null)
 			{
-				lhs.value[i] = !lhs.value[i];
+				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+				{
+					tmp.value[i] = !lhscopy.value[i];
+				}
+
+				lhscopy = lhscopy.previousBlock;
+
+				if ((lhscopy != null) && (tmp.previousBlock == null))
+				{
+					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+				}
+
+				tmp = tmp.previousBlock;
 			}
 
 			return result;
@@ -138,112 +153,73 @@ namespace OurBigRat
 				{
 					resultcopy = OurBigIntMathHelper.AddNewPreviousBlock(resultcopy, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
+
+				resultcopy = resultcopy.previousBlock;
 			}
 
 			return result;
-		}
-
-		/// <summary>
-		/// ==
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <param name="rhs"></param>
-		/// <returns></returns>
-		internal static bool Equally(OurBigInt lhs, OurBigInt rhs)
-		{
-			if (OurBigIntMathHelper.GetBlocksCount(lhs) != OurBigIntMathHelper.GetBlocksCount(rhs))
-			{
-				return false;
-			}
-
-			OurBigInt lhscopy = lhs;
-			OurBigInt rhscopy = rhs;
-
-			while ((object)lhscopy != null)
-			{
-				if (!lhscopy.value.SequenceEqual(rhscopy.value))
-				{
-					return false;
-				}
-
-				lhscopy = lhscopy.previousBlock;
-				rhscopy = rhscopy.previousBlock;
-			}
-
-			return true;
-		}
-
-		internal static bool IsLess(OurBigInt lhs, OurBigInt rhs)
-		{
-			int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(lhs);
-			int rhsBlockCount = OurBigIntMathHelper.GetBlocksCount(rhs);
-
-			if (lhsBlockCount < rhsBlockCount)
-			{
-				return true;
-			}
-
-			if (lhsBlockCount > rhsBlockCount)
-			{
-				return false;
-			}
-
-			OurBigInt lhscopy = lhs;
-			OurBigInt rhscopy = rhs;
-
-			OurBigInt tmp = new OurBigInt();
-
-			while (lhscopy != null)
-			{
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
-				{
-					if (lhscopy.value[i] ^ rhscopy.value[i])
-					{
-						return rhscopy.value[i];
-					}
-				}
-
-				lhscopy = lhscopy.previousBlock;
-				rhscopy = rhscopy.previousBlock;
-			}
-
-			return false;
 		}
 
 		internal static OurBigInt RightShift(OurBigInt lhs, int rhs)
 		{
 			OurBigInt result = new OurBigInt();
+			OurBigInt tmp = result;
+			OurBigInt lhscopy = lhs;
 
-			for (int j = 0; j < rhs; j++)
+			while (lhscopy != null)
 			{
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= rhs; i--)
+				for (int j = 0; j < rhs; j++)
 				{
-					result.value[i - rhs] = lhs.value[i];
+					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= rhs; i--)
+					{
+						tmp.value[i - rhs] = lhscopy.value[i];
+					}
+
+					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i < OurBigInt.BOOL_ARRAY_SIZE - 1 - rhs; i--)
+					{
+						tmp.value[i] = false;
+					}
 				}
 
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i < OurBigInt.BOOL_ARRAY_SIZE - 1 - rhs; i--)
+				lhscopy = lhscopy.previousBlock;
+
+				if (lhscopy != null && tmp.previousBlock == null)
 				{
-					result.value[i] = false;
+					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
 			}
 
 			return result;
 		}
 
-		internal static OurBigInt LeftShift(OurBigInt lhs, int rhs)
+		internal static OurBigInt LeftShift(OurBigInt num, int shift)
 		{
 			OurBigInt result = new OurBigInt();
+			OurBigInt tmp = result;
+			OurBigInt numcopy = num;
 
-			for (int j = 0; j < rhs; j++)
+			while (numcopy != null)
 			{
-				for (int i = 0; i < rhs; i++)
+				for (int j = 0; j < shift; j++)
 				{
-					result.value[i] = false;
+					for (int i = 0; i < shift; i++)
+					{
+						tmp.value[i] = false;
+					}
+
+					for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - shift; i++)
+					{
+						tmp.value[i + shift] = numcopy.value[i];
+					}
+
+
 				}
 
-				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - rhs; i++)
+				numcopy = numcopy.previousBlock;
+
+				if (numcopy != null && tmp.previousBlock == null)
 				{
-					result.value[i + rhs] = lhs.value[i];
+					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
 			}
 
