@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -19,13 +20,14 @@ namespace OurBigRat
 			this.value = new bool[BOOL_ARRAY_SIZE];
 		}
 
-		internal OurBigInt(bool[] v)
+		internal OurBigInt(IEnumerable<bool> v)
 		{
 			if (v == null)
 			{
 				this.value = new bool[BOOL_ARRAY_SIZE];
 			}
-			this.value = v;
+
+			this.value = v.ToArray();
 		}
 
 		internal OurBigInt Clone()
@@ -278,7 +280,7 @@ namespace OurBigRat
 
 		public int CompareTo(OurBigInt input)
 		{
-			if (this == null)
+			if (this == null) // srly?
 			{
 				throw new NullReferenceException();
 			}

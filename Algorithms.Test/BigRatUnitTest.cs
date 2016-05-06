@@ -71,7 +71,7 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-		public void OperatorLessMustWork(uint l, uint r)
+		public void OperatorLessMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -90,7 +90,7 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-		public void OperatorLessOrEquallMustWork(uint l, uint r)
+		public void OperatorLessOrEquallMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -109,7 +109,7 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-		public void OperatorGreaterMustWork(uint l, uint r)
+		public void OperatorGreaterMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -128,7 +128,7 @@ namespace Algorithms.Test
 		[InlineData(0, 123456)]
 		[InlineData(654231, 987)]
 		[InlineData(695451, 6512)]
-		public void OperatorGreaterOrEquallMustWork(uint l, uint r)
+		public void OperatorGreaterOrEquallMustWork(ulong l, ulong r)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -147,7 +147,7 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 0)]
 		[InlineData(85231, 589742, 19630)]
 		[InlineData(10001, 5452, 1280)]
-		public void OperatorAndMustWork(uint l, uint r, uint result)
+		public void OperatorAndMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -168,13 +168,13 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 87455)]
 		[InlineData(85231, 589742, 655343)]
 		[InlineData(10001, 5452, 14173)]
-		public void OperatorOrMustWork(uint l, uint r, uint result)
+		public void OperatorOrMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
 			OurBigInt res = new OurBigInt(result);
 
-			Assert.Equal< OurBigInt>(res, lhs | rhs);
+			Assert.Equal<OurBigInt>(res, lhs | rhs);
 		}
 		[Theory]
 		[InlineData(0, 0, 0)]
@@ -187,7 +187,7 @@ namespace Algorithms.Test
 		[InlineData(0, 87455, 87455)]
 		[InlineData(85231, 589742, 635713)]
 		[InlineData(10001, 5452, 12893)]
-		public void OperatorXorMustWork(uint l, uint r, uint result)
+		public void OperatorXorMustWork(ulong l, ulong r, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt rhs = new OurBigInt(r);
@@ -196,7 +196,11 @@ namespace Algorithms.Test
 			Assert.Equal<OurBigInt>(res, lhs ^ rhs);
 		}
 
-		public void OperatorNotMustWork(uint l, uint result)
+		[InlineData(0, 1)]
+		[InlineData(1, 0)]
+		[InlineData(123, 4)]
+		[InlineData(123456789, 10760938)]
+		public void OperatorNotMustWork(ulong l, ulong result)
 		{
 			OurBigInt lhs = new OurBigInt(l);
 			OurBigInt res = new OurBigInt(result);

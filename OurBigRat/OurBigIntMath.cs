@@ -88,14 +88,16 @@ namespace OurBigRat
 			throw new NotImplementedException();
 		}
 
-		/// <summary>
-		/// Bit !
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <returns></returns>
 		internal static OurBigInt Not(OurBigInt lhs)
 		{
-			throw new NotImplementedException();
+			OurBigInt result = new OurBigInt();
+
+			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+			{
+				lhs.value[i] = !lhs.value[i];
+			}
+
+			return result;
 		}
 
 		internal static OurBigInt Xor(OurBigInt lhs, OurBigInt rhs)
