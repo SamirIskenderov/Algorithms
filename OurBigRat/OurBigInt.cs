@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace OurBigRat
 {
-	public class OurBigInt : IComparable
+	public class OurBigInt : IComparable, IEnumerable<bool>
 	{
 		internal const int BOOL_ARRAY_SIZE = 32;
 
@@ -56,7 +57,7 @@ namespace OurBigRat
 
 			while (tmp != null)
 			{
-				sb.Append(" [");
+				sb.Append("[ ");
 
 				foreach (var item in tmp.value.Reverse())
 				{
@@ -320,12 +321,40 @@ namespace OurBigRat
 				return 1;
 			}
 
-			OurBigInt lhscopy = this;
-			OurBigInt rhscopy = input;
+			OurBigInt lhscopy = this.Clone();
+			OurBigInt rhscopy = input.Clone();
+
+			OurBigInt lhscopyParent = lhscopy;
+			OurBigInt rhscopyParent = rhscopy;
 
 			OurBigInt tmp = new OurBigInt();
 
-			while (lhscopy != null)
+			if (lhsBlockCount != 1)
+			{
+				while (lhscopy.previousBlock.previousBlock != null)
+				{
+					lhscopy = lhscopy.previousBlock;
+					rhscopy = rhscopy.previousBlock;
+				}
+
+				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+				{
+					if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && lhscopy.previousBlock.value[i])
+					{
+						return 1;
+					}
+					else if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && rhscopy.previousBlock.value[i])
+					{
+						return -1;
+					}
+				}
+
+				lhscopy.previousBlock = null;
+				rhscopy.previousBlock = null;
+
+				return lhscopyParent.CompareTo(rhscopyParent);
+			}
+			else
 			{
 				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
 				{
@@ -338,12 +367,34 @@ namespace OurBigRat
 						return -1;
 					}
 				}
-
-				lhscopy = lhscopy.previousBlock;
-				rhscopy = rhscopy.previousBlock;
 			}
 
 			return 0;
+		}
+
+		public IEnumerator<bool> GetEnumerator()
+		{
+			if (this == null)
+			{
+				throw new NullReferenceException();
+			}
+
+			OurBigInt current = this;
+
+			while (current != null)
+			{
+				for (int i = 0; i < current.value.Length; i++)
+				{
+					yield return current.value[i];
+				}
+
+				current = current.previousBlock;
+			}
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
 		}
 
 		#endregion eq
@@ -351,7 +402,7 @@ namespace OurBigRat
 		#region bitwise
 
 		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
-				=> OurBigIntMath.And(lhs, rhs);
+					=> OurBigIntMath.And(lhs, rhs);
 
 		public static OurBigInt operator >>(OurBigInt lhs, int rhs)
 			=> OurBigIntMath.RightShift(lhs, rhs);
@@ -409,26 +460,29 @@ namespace OurBigRat
 		public OurBigInt DeepClone()
 		{
 			OurBigInt result = new OurBigInt();
-
+			OurBigInt thiscopy = this;
 			OurBigInt tmp = result;
 
-			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
 
-			while (tmp != null)
+			while (thiscopy != null)
 			{
+				bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
 				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
 				{
-					arr[i] = this.value[i];
+					arr[i] = thiscopy.value[i];
 				}
 
-				result.value = arr;
+				tmp.value = arr;
 
-				tmp = tmp.previousBlock;
+				thiscopy = thiscopy.previousBlock;
 
-				if ((tmp != null) && (result.previousBlock == null))
+				if ((thiscopy != null) && (result.previousBlock == null))
 				{
 					result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 				}
+
+				tmp = tmp.previousBlock;
 			}
 
 			OurBigIntMathHelper.TrimStructure(ref result);
