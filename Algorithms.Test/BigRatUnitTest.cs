@@ -196,6 +196,29 @@ namespace Algorithms.Test
 			Assert.Equal<OurBigInt>(res, lhs ^ rhs);
 		}
 
+		public void OperatorNotMustWork(uint l, uint result)
+		{
+			OurBigInt lhs = new OurBigInt(l);
+			OurBigInt res = new OurBigInt(result);
+
+			Assert.Equal<OurBigInt>(res, !lhs);
+		}
+
+		[Theory]
+		[InlineData(0, 0, 0)]
+		[InlineData(0, 1, 1)]
+		[InlineData(123, 123, 246)]
+		[InlineData(9875, 622210, 632085)]
+		[InlineData(123456789123, 987654321987, 1111111111110)]
+		public void OperatorMultiplicativePlusMustWork(ulong l, ulong r, ulong result)
+		{
+			OurBigInt lhs = new OurBigInt(l);
+			OurBigInt rhs = new OurBigInt(r);
+			OurBigInt res = new OurBigInt(result);
+
+			Assert.Equal<OurBigInt>(res, lhs + rhs);
+		}
+
 		#endregion operators
 
 	}

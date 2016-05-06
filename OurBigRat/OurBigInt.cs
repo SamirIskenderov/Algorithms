@@ -83,7 +83,7 @@ namespace OurBigRat
 			return result;
 		}
 
-		public OurBigInt Parse(string input)
+		public static OurBigInt Parse(string input)
 		{
 			// TODO
 

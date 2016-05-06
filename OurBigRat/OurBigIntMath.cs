@@ -7,6 +7,21 @@ namespace OurBigRat
 	{
 		internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs)
 		{
+			if ((lhs == null) || (rhs == null))
+			{
+				return null;
+			}
+
+			if (lhs == 0)
+			{
+				return rhs;
+			}
+
+			if (rhs == 0)
+			{
+				return lhs;
+			}
+
 			OurBigInt currentFirst;
 			OurBigInt currentSecond;
 
@@ -24,13 +39,9 @@ namespace OurBigRat
 			return Add(currentFirst, currentSecond, false);
 		}
 
-		internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
+		private static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
 		{
-			if (lhs == null)
-			{
-				throw new ArgumentNullException();
-			}
-			else if (lhs < rhs)
+			if (lhs < rhs)
 			{
 				throw new ArgumentException("Left memder of addition must be bigger than right one.");
 			}
