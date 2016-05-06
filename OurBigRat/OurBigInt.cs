@@ -309,7 +309,7 @@ namespace OurBigRat
 
 			int lhsBlockCount = OurBigIntMathHelper.GetBlocksCount(this);
 			int rhsBlockCount = OurBigIntMathHelper.GetBlocksCount(input);
-
+            
 			if (lhsBlockCount < rhsBlockCount)
 			{
 				return -1;
@@ -319,30 +319,55 @@ namespace OurBigRat
 				return 1;
 			}
 
-			OurBigInt lhscopy = this;
-			OurBigInt rhscopy = input;
+			OurBigInt lhscopy = this.Clone();
+			OurBigInt rhscopy = input.Clone();
 
-			OurBigInt tmp = new OurBigInt();
+            OurBigInt lhscopyParent = lhscopy;
+            OurBigInt rhscopyParent = rhscopy;
 
-			while (lhscopy != null)
-			{
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
-				{
-					if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
-					{
-						return 1;
-					}
-					else if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
-					{
-						return -1;
-					}
-				}
+            OurBigInt tmp = new OurBigInt();
 
-				lhscopy = lhscopy.previousBlock;
-				rhscopy = rhscopy.previousBlock;
-			}
+            if (lhsBlockCount != 1)
+            {
+                while (lhscopy.previousBlock.previousBlock != null)
+                {
+                    lhscopy = lhscopy.previousBlock;
+                    rhscopy = rhscopy.previousBlock;
+                }
 
-			return 0;
+                for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+                {
+                    if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && lhscopy.previousBlock.value[i])
+                    {
+                        return 1;
+                    }
+                    else if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && rhscopy.previousBlock.value[i])
+                    {
+                        return -1;
+                    }
+                }
+
+                lhscopy.previousBlock = null;
+                rhscopy.previousBlock = null;
+
+                return lhscopyParent.CompareTo(rhscopyParent);
+            }
+            else
+            {
+                for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+                {
+                    if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
+                    {
+                        return 1;
+                    }
+                    else if ((lhscopy.value[i] ^ rhscopy.value[i]) && rhscopy.value[i])
+                    {
+                        return -1;
+                    }
+                }
+            }
+
+            return 0;
 		}
 
         public IEnumerator<bool> GetEnumerator()
