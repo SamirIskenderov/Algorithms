@@ -20,14 +20,31 @@ namespace OurBigRat
 			this.value = new bool[BOOL_ARRAY_SIZE];
 		}
 
-		internal OurBigInt(IEnumerable<bool> v)
+		internal OurBigInt(IEnumerable<bool> v) : this()
 		{
 			if (v == null)
 			{
-				this.value = new bool[BOOL_ARRAY_SIZE];
+				throw new ArgumentNullException();
 			}
 
-			this.value = v.ToArray();
+			int i = 0;
+
+			OurBigInt current = this;
+
+			foreach (var item in v)
+			{
+				current.value[i] = item;
+				i++;
+
+				if (i == OurBigInt.BOOL_ARRAY_SIZE)
+				{
+					i = 0;
+
+					current.previousBlock = new OurBigInt();
+
+					current = current.previousBlock;
+				}
+			}
 		}
 
 		internal OurBigInt Clone()
