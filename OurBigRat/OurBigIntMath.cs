@@ -24,40 +24,40 @@ namespace OurBigRat
 			return Add(currentFirst, currentSecond, false);
 		}
 
-        internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
-        {
-            if (lhs == null)
-            {
-                throw new ArgumentNullException();
-            }
-            else if (lhs < rhs)
-            {
-                throw new ArgumentException("Left memder of addition must be bigger than right one.");
-            }
+		internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs, bool addBit)
+		{
+			if (lhs == null)
+			{
+				throw new ArgumentNullException();
+			}
+			else if (lhs < rhs)
+			{
+				throw new ArgumentException("Left memder of addition must be bigger than right one.");
+			}
 
-            OurBigInt result = new OurBigInt();
+			OurBigInt result = new OurBigInt();
 
-            if (lhs != null && rhs != null)
-            {
-                OurBigIntMathHelper.BitArraySum(lhs.value, rhs.value, result.value, ref addBit);
+			if (lhs != null && rhs != null)
+			{
+				OurBigIntMathHelper.BitArraySum(lhs.value, rhs.value, result.value, ref addBit);
 
-                result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, rhs.previousBlock, addBit);
-            }
-            else if (lhs != null)
-            {
-                OurBigIntMathHelper.BitArraySum(lhs.value, null, result.value, ref addBit);
+				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, rhs.previousBlock, addBit);
+			}
+			else if (lhs != null)
+			{
+				OurBigIntMathHelper.BitArraySum(lhs.value, null, result.value, ref addBit);
 
-                result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, null, addBit);
-            }
-            else if (addBit)
-            {
-                result = new OurBigInt(1);
-            }
+				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, null, addBit);
+			}
+			else if (addBit)
+			{
+				result = new OurBigInt(1);
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
+		internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
 		{
 			if (lhs < rhs)
 			{
@@ -83,16 +83,6 @@ namespace OurBigRat
 		/// <param name="lhs"></param>
 		/// <returns></returns>
 		internal static OurBigInt Not(OurBigInt lhs)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Bit ~
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <returns></returns>
-		internal static OurBigInt Complement(OurBigInt lhs)
 		{
 			throw new NotImplementedException();
 		}
@@ -194,24 +184,11 @@ namespace OurBigRat
 			{
 				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
 				{
-                    //int l = lhscopy.value[i] ? 1 : 0;
-                    //int r = rhscopy.value[i] ? 1 : 0;
-
-                    //if (l < r)
-                    //{
-                    //	return true;
-                    //}
-
-                    //if (l > r)
-                    //{
-                    //	return false;
-                    //}
-
-                    if (lhscopy.value[i] ^ rhscopy.value[i])
-                    {
-                        return rhscopy.value[i];
-                    }
-                }
+					if (lhscopy.value[i] ^ rhscopy.value[i])
+					{
+						return rhscopy.value[i];
+					}
+				}
 
 				lhscopy = lhscopy.previousBlock;
 				rhscopy = rhscopy.previousBlock;
@@ -235,6 +212,8 @@ namespace OurBigRat
 					{
 						tmp.value[i - 1] = lhscopy.value[i];
 					}
+
+					tmp.value[OurBigInt.BOOL_ARRAY_SIZE - 1] = false;
 
 					lhscopy = lhscopy.previousBlock;
 					if (tmp.previousBlock == null)

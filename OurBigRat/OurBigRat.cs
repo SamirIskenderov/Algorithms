@@ -45,9 +45,6 @@
 		public static OurBigRat operator !(OurBigRat lhs)
 			=> OurBigRatMath.Not(lhs);
 
-		public static OurBigRat operator ~(OurBigRat lhs)
-			=> OurBigRatMath.Complement(lhs);
-
 		#endregion unary
 
 		#region binary

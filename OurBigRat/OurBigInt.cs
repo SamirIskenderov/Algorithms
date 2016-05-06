@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OurBigRat
+﻿namespace OurBigRat
 {
 	public class OurBigInt
 	{
@@ -69,44 +67,33 @@ namespace OurBigRat
 			return result;
 		}
 
-        public OurBigInt Parse(string input)
-        {
-            // TODO
+		public OurBigInt Parse(string input)
+		{
+			// TODO
 
-            return new OurBigInt();
-        }
+			return new OurBigInt();
+		}
 
 		public OurBigInt(ulong v) : this()
 		{
 			int i = 0;
 
-            OurBigInt current = this;
+			OurBigInt current = this;
 
-            //if (v != 1)
-            //{
-            //	v--;
-            //}
+			foreach (var item in OurBigIntMathHelper.GetNextBit(v))
+			{
+				current.value[i] = item;
+				i++;
 
-            foreach (var item in OurBigIntMathHelper.GetNextBit(v))
-            {
-                current.value[i] = item;
-                i++;
+				if (i == OurBigInt.BOOL_ARRAY_SIZE)
+				{
+					i = 0;
 
-                if (i == OurBigInt.BOOL_ARRAY_SIZE)
-                {
-                    i = 0;
+					current.previousBlock = new OurBigInt();
 
-                    current.previousBlock = new OurBigInt();
-
-                    current = current.previousBlock;
-                }
-            }
-
-            //foreach (var item in OurBigIntMathHelper.GetNextBit(v).Reverse())
-			//{
-			//	this.value[i] = item;
-			//	i++;
-			//}
+					current = current.previousBlock;
+				}
+			}
 		}
 
 		#endregion ctor
@@ -123,9 +110,6 @@ namespace OurBigRat
 
 		public static OurBigInt operator !(OurBigInt lhs)
 			=> OurBigIntMath.Not(lhs);
-
-		public static OurBigInt operator ~(OurBigInt lhs)
-			=> OurBigIntMath.Complement(lhs);
 
 		#endregion unary
 

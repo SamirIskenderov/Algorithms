@@ -29,11 +29,6 @@ namespace OurBigRat
 			throw new NotImplementedException();
 		}
 
-		internal static OurBigRat Complement(OurBigRat lhs)
-		{
-			throw new NotImplementedException();
-		}
-
 		internal static OurBigRat Multiple(OurBigRat lhs, OurBigRat rhs)
 		{
 			throw new NotImplementedException();
