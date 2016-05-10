@@ -159,6 +159,15 @@ namespace OurBigRat
 		public static OurBigInt operator /(OurBigInt lhs, ulong rhs)
 			=> OurBigIntMath.Divide(lhs, new OurBigInt(rhs));
 
+		public static OurBigInt operator %(OurBigInt lhs, OurBigInt rhs)
+			=> OurBigIntMath.Reminder(lhs, rhs);
+
+		public static OurBigInt operator %(ulong lhs, OurBigInt rhs)
+			=> OurBigIntMath.Reminder(new OurBigInt(lhs), rhs);
+
+		public static OurBigInt operator %(OurBigInt lhs, ulong rhs)
+			=> OurBigIntMath.Reminder(lhs, new OurBigInt(rhs));
+
 		#endregion binary
 
 		#region eq
@@ -437,6 +446,9 @@ namespace OurBigRat
 		#endregion bitwise
 
 		#endregion operators
+
+		public static bool Mod(OurBigInt lhs, OurBigInt rhs, OurBigInt modul)
+			=> lhs % modul == rhs % modul;
 
 		public OurBigInt Clone()
 		{

@@ -2,8 +2,10 @@
 
 namespace OurBigRat
 {
-	internal static class OurBigIntMath
+	public static class OurBigIntMath
 	{
+		
+
 		internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs)
 		{
 			if ((lhs == null) || (rhs == null))
@@ -171,6 +173,33 @@ namespace OurBigRat
 			}
 
 			return result;
+		}
+
+		internal static OurBigInt Reminder(OurBigInt lhs, OurBigInt rhs)
+		{
+			OurBigInt lhscopy = lhs.DeepClone();
+			OurBigInt rhscopy = rhs.DeepClone();
+
+			OurBigInt max = null;
+			OurBigInt min = null;
+
+			if (lhscopy > rhscopy)
+			{
+				max = lhscopy;
+				min = rhscopy;
+			}
+			else
+			{
+				min = lhscopy;
+				max = rhscopy;
+			}
+
+			while (max > min)
+			{
+				max -= min;
+			}
+
+			return max;
 		}
 
 		internal static OurBigInt RightShift(OurBigInt num, int shift)
