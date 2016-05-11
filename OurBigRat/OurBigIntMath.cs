@@ -271,43 +271,99 @@ namespace OurBigRat
 			return result;
 		}
 
-		internal static OurBigInt LeftShift(OurBigInt num, int shift)
-		{
-			#region optimization
+		//internal static OurBigInt LeftShift(OurBigInt num, int shift)
+		//{
+		//	#region optimization
 
-			if (num == 0)
-			{
-				return new OurBigInt();
-			}
+		//	if (num == 0)
+		//	{
+		//		return new OurBigInt();
+		//	}
 
-			#endregion optimization
+		//	#endregion optimization
 
-			OurBigInt result = new OurBigInt();
+		//	OurBigInt result = new OurBigInt();
 
-			if (shift < OurBigInt.BOOL_ARRAY_SIZE)
-			{
-				DoLeftShift(num, shift, result);
-			}
-			else
-			{
-				OurBigInt tmp = result;
-				OurBigInt numcopy = num;
+		//	if (shift < OurBigInt.BOOL_ARRAY_SIZE)
+		//	{
+		//		DoLeftShift(num, shift, result);
+		//	}
+		//	else
+		//	{
+		//		OurBigInt tmp = result;
+		//		OurBigInt numcopy = num;
 
-				shift -= OurBigInt.BOOL_ARRAY_SIZE;
-				numcopy = numcopy.previousBlock;
+		//		shift -= OurBigInt.BOOL_ARRAY_SIZE;
+		//		numcopy = numcopy.previousBlock;
 
-				if (numcopy == null) // if shift is too big for this number.
-				{
-					return new OurBigInt();
-				}
+		//		if (numcopy == null) // if shift is too big for this number.
+		//		{
+		//			return new OurBigInt();
+		//		}
 
-				result = OurBigIntMath.RightShift(numcopy, shift); // TODO to ask goto?
-			}
+		//		result = OurBigIntMath.RightShift(numcopy, shift); // TODO to ask goto?
+		//	}
 
-			OurBigIntMathHelper.TrimStructure(ref result);
+		//	OurBigIntMathHelper.TrimStructure(ref result);
 
-			return result;
-		}
+		//	return result;
+		//}
+
+        internal static OurBigInt LeftShift(OurBigInt input, int shift)
+        {
+            OurBigInt result = new OurBigInt();
+            OurBigInt currentResult = result;
+            OurBigInt currentInput = input;
+
+            int globalStep = 0;
+            int globalStepsCount = OurBigIntMathHelper.GetBlocksCount(input) * OurBigInt.BOOL_ARRAY_SIZE + shift;
+            int currentResultPos = 0;
+            int currentInputPos = 0;
+
+            while (globalStep < shift)
+            {
+                currentResult.value[currentResultPos] = false;
+
+                currentResultPos++;
+                globalStep++;
+
+                if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
+                {
+                    currentResult.previousBlock = new OurBigInt();
+
+                    currentResult = currentResult.previousBlock;
+
+                    currentResultPos = 0;
+                }
+            }
+
+            while (globalStep != globalStepsCount)
+            {
+                currentResult.value[currentResultPos] = currentInput.value[currentInputPos];
+
+                currentInputPos++;
+                currentResultPos++;
+                globalStep++;
+
+                if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
+                {
+                    currentResult.previousBlock = new OurBigInt();
+
+                    currentResult = currentResult.previousBlock;
+
+                    currentResultPos = 0;
+                }
+
+                if (currentInputPos == OurBigInt.BOOL_ARRAY_SIZE)
+                {
+                    currentInput = currentInput.previousBlock;
+
+                    currentInputPos = 0;
+                }
+            }
+
+            return result;
+        }
 
 		private static void DoLeftShift(OurBigInt num, int shift, OurBigInt result)
 		{
