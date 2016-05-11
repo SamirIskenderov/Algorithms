@@ -108,30 +108,6 @@ namespace OurBigRat
 
 		#region operators
 
-		public bool this[int i]
-		{
-			get
-			{
-				if (i < OurBigInt.BOOL_ARRAY_SIZE)
-				{
-					return this.value[i];
-				}
-
-				return this.previousBlock[i];
-			}
-
-			set
-			{
-				if (i < OurBigInt.BOOL_ARRAY_SIZE)
-				{
-					this.value[i] = value;
-					return;
-				}
-
-				this.previousBlock[i] = value;
-			}
-		}
-
 		#region unary
 
 		public static OurBigInt operator --(OurBigInt lhs)
