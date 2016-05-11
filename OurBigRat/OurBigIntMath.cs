@@ -4,8 +4,6 @@ namespace OurBigRat
 {
 	public static class OurBigIntMath
 	{
-		
-
 		internal static OurBigInt Add(OurBigInt lhs, OurBigInt rhs)
 		{
 			if ((lhs == null) || (rhs == null))
