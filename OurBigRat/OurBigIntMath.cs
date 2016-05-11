@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+
 namespace OurBigRat
 {
 	public static class OurBigIntMath
@@ -258,45 +258,16 @@ namespace OurBigRat
 			#endregion optimization
 
 			OurBigInt result = new OurBigInt();
-			OurBigInt tmp = result;
-			OurBigInt numcopy = num;
 
 			if (shift < OurBigInt.BOOL_ARRAY_SIZE)
 			{
-				while (numcopy != null)
-				{
-					bool a = false;
-
-					for (int i = 0; i < shift; i++)
-					{
-						if (num.value[i])
-						{
-							a = true;
-						}
-					}
-
-					if (a)
-					{
-						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
-					}
-
-					for (int i = 0; i < shift; i++)
-					{
-						tmp.previousBlock.value[i] = numcopy.value[OurBigInt.BOOL_ARRAY_SIZE - shift + i];
-					}
-
-					tmp.value = OurBigIntMathHelper.BoolArrayLeftShift(numcopy.value, shift);
-
-					numcopy = numcopy.previousBlock;
-
-					if (numcopy != null && tmp.previousBlock == null)
-					{
-						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
-					}
-				}
+				DoLeftShift(num, shift, result);
 			}
 			else
 			{
+				OurBigInt tmp = result;
+				OurBigInt numcopy = num;
+
 				shift -= OurBigInt.BOOL_ARRAY_SIZE;
 				numcopy = numcopy.previousBlock;
 
@@ -311,6 +282,44 @@ namespace OurBigRat
 			OurBigIntMathHelper.TrimStructure(ref result);
 
 			return result;
+		}
+
+		private static void DoLeftShift(OurBigInt num, int shift, OurBigInt result)
+		{
+			OurBigInt tmp = result;
+			OurBigInt numcopy = num;
+
+			while (numcopy != null)
+			{
+				bool a = false;
+
+				for (int i = 0; i < shift; i++)
+				{
+					if (num.value[i])
+					{
+						a = true;
+					}
+				}
+
+				if (a)
+				{
+					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+				}
+
+				for (int i = 0; i < shift; i++)
+				{
+					tmp.previousBlock.value[i] = numcopy.value[OurBigInt.BOOL_ARRAY_SIZE - shift + i];
+				}
+
+				tmp.value = OurBigIntMathHelper.BoolArrayLeftShift(numcopy.value, shift);
+
+				numcopy = numcopy.previousBlock;
+
+				if (numcopy != null && tmp.previousBlock == null)
+				{
+					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+				}
+			}
 		}
 	}
 }
