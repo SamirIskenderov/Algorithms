@@ -29,7 +29,22 @@ namespace Algorithms.Test
 			Assert.Equal(l == r, lhs == rhs);
 		}
 
-		[Theory]
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(1, 0, 1)]
+        [InlineData(1, 1, 0)]
+        [InlineData(12, 12, 0)]
+        [InlineData(654231, 987, 653244)]
+        public void OperatorMinusMustWork(ulong l, ulong r, ulong res)
+        {
+            OurBigInt lhs = new OurBigInt(l);
+            OurBigInt rhs = new OurBigInt(r);
+            OurBigInt result = new OurBigInt(res);
+
+            Assert.Equal(result.ToString(), (lhs - rhs).ToString());
+        }
+
+        [Theory]
 		[InlineData(0, 0, 0)]
 		[InlineData(0, 5, 0)]
 		[InlineData(1, 2, 0)]

@@ -73,15 +73,40 @@ namespace OurBigRat
 
 		internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
 		{
-			if (lhs < rhs)
-			{
-				throw new ArgumentException($"{nameof(OurBigInt)} can not be negative");
-			}
+            if (lhs == null || rhs == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (lhs < rhs)
+            {
+                throw new ArgumentException("Second member of substraction can not be bigger than first one.");
+            }
+            else if (lhs == rhs)
+            {
+                return new OurBigInt(0);
+            }
 
-			throw new NotImplementedException();
-		}
+            OurBigInt firstMember = lhs.DeepClone();
+            OurBigInt secondMember = !rhs.DeepClone();
 
-		internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
+            secondMember = secondMember + 1;
+
+            int firstMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(firstMember);
+            int secondMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(secondMember);
+
+            if (firstMemberBlockCount > secondMemberBlockCount)
+            {
+                OurBigIntMathHelper.AddNTrueFilledBlocks(secondMember, firstMemberBlockCount - secondMemberBlockCount);
+            }
+
+            OurBigInt result = secondMember + firstMember;
+
+            OurBigIntMathHelper.TrimByBlocksCount(result, firstMemberBlockCount);
+
+            return result;
+        }
+
+        internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
 		{
 			OurBigInt currentLeft = lhs;
 			OurBigInt currentRight = rhs;

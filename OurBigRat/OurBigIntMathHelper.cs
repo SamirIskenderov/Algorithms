@@ -229,6 +229,64 @@ namespace OurBigRat
 			return result;
 		}
 
-		
+		internal static void AddNTrueFilledBlocks(OurBigInt input, int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("Number of adding blocks can not be negative.");
+            }
+            else if (input == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            OurBigInt current = input;
+
+            while (current.previousBlock != null)
+            {
+                current = current.previousBlock;
+            }
+
+            bool[] addingArr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+
+            for (int i = 0; i < addingArr.Length; i++)
+            {
+                addingArr[i] = true;
+            }
+
+            while (n != 0)
+            {
+                current.previousBlock = new OurBigInt(addingArr);
+
+                current = current.previousBlock;
+
+                n--;
+            }
+        }
+
+        internal static void TrimByBlocksCount(OurBigInt input, int n)
+        {
+            if (n <= 0)
+            {
+                throw new ArgumentException("Number of blocks can not be negative or zero.");
+            }
+            else if (input == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            OurBigInt current = input;
+
+            n--;
+
+            while (n != 0)
+            {
+                current = current.previousBlock;
+
+                n--;
+            }
+
+            current.previousBlock = null;
+        }
 	}
 }
