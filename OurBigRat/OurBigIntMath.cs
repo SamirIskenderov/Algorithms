@@ -203,6 +203,15 @@ namespace OurBigRat
 
 		internal static OurBigInt RightShift(OurBigInt num, int shift)
 		{
+			#region optimization
+
+			if (num == 0)
+			{
+				return new OurBigInt();
+			}
+
+			#endregion optimization
+
 			OurBigInt result = new OurBigInt();
 			OurBigInt tmp = result;
 			OurBigInt numcopy = num;
@@ -241,6 +250,15 @@ namespace OurBigRat
 
 		internal static OurBigInt LeftShift(OurBigInt num, int shift)
 		{
+			#region optimization
+
+			if (num == 0)
+			{
+				return new OurBigInt();
+			}
+
+			#endregion optimization
+
 			OurBigInt result = new OurBigInt();
 			OurBigInt tmp = result;
 			OurBigInt numcopy = num;
@@ -249,6 +267,26 @@ namespace OurBigRat
 			{
 				while (numcopy != null)
 				{
+					bool a = false;
+
+					for (int i = 0; i < shift; i++)
+					{
+						if (num.value[i])
+						{
+							a = true;
+						}
+					}
+
+					if (a)
+					{
+						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					}
+
+					for (int i = 0; i < shift; i++)
+					{
+						tmp.previousBlock.value[i] = numcopy.value[OurBigInt.BOOL_ARRAY_SIZE - shift + i];
+					}
+
 					tmp.value = OurBigIntMathHelper.BoolArrayLeftShift(numcopy.value, shift);
 
 					numcopy = numcopy.previousBlock;

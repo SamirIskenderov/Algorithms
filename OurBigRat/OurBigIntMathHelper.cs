@@ -6,32 +6,6 @@ namespace OurBigRat
 {
 	public static class OurBigIntMathHelper
 	{
-		public static IEnumerable<OurBigInt> GetLucas_U_Sequence(long P, long Q)
-		{
-			OurBigInt fir = new OurBigInt(0);
-			OurBigInt sec = new OurBigInt(1);
-
-			yield return fir;
-			yield return sec;
-			OurBigInt v = P * sec - Q * fir;
-			fir = sec;
-			sec = v;
-			yield return v;
-		}
-
-		public static IEnumerable<OurBigInt> GetLucas_V_Sequence(long P, long Q)
-		{
-			OurBigInt fir = new OurBigInt(2);
-			OurBigInt sec = new OurBigInt(P);
-
-			yield return fir;
-			yield return sec;
-			OurBigInt v = P * sec - Q * fir;
-			fir = sec;
-			sec = v;
-			yield return v;
-		}
-
 		/// <summary>
 		/// Return number as a bit collection.
 		/// Collection starts from top order bit.
@@ -239,6 +213,8 @@ namespace OurBigRat
 			OurBigInt current = result;
 
 			OurBigInt addingBlock = new OurBigInt(currentSum);
+
+			OurBigIntMathHelper.TrimStructure(ref addingBlock);
 
 			if (current == null)
 			{
