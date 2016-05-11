@@ -73,40 +73,40 @@ namespace OurBigRat
 
 		internal static OurBigInt Subtract(OurBigInt lhs, OurBigInt rhs)
 		{
-            if (lhs == null || rhs == null)
-            {
-                throw new ArgumentNullException();
-            }
-            else if (lhs < rhs)
-            {
-                throw new ArgumentException("Second member of substraction can not be bigger than first one.");
-            }
-            else if (lhs == rhs)
-            {
-                return new OurBigInt(0);
-            }
+			if (lhs == null || rhs == null)
+			{
+				throw new ArgumentNullException();
+			}
+			else if (lhs < rhs)
+			{
+				throw new ArgumentException("Second member of substraction can not be bigger than first one.");
+			}
+			else if (lhs == rhs)
+			{
+				return new OurBigInt(0);
+			}
 
-            OurBigInt firstMember = lhs.DeepClone();
-            OurBigInt secondMember = !rhs.DeepClone();
+			OurBigInt firstMember = lhs.DeepClone();
+			OurBigInt secondMember = !rhs.DeepClone();
 
-            secondMember = secondMember + 1;
+			secondMember = secondMember + 1;
 
-            int firstMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(firstMember);
-            int secondMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(secondMember);
+			int firstMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(firstMember);
+			int secondMemberBlockCount = OurBigIntMathHelper.GetBlocksCount(secondMember);
 
-            if (firstMemberBlockCount > secondMemberBlockCount)
-            {
-                OurBigIntMathHelper.AddNTrueFilledBlocks(secondMember, firstMemberBlockCount - secondMemberBlockCount);
-            }
+			if (firstMemberBlockCount > secondMemberBlockCount)
+			{
+				OurBigIntMathHelper.AddNTrueFilledBlocks(secondMember, firstMemberBlockCount - secondMemberBlockCount);
+			}
 
-            OurBigInt result = secondMember + firstMember;
+			OurBigInt result = secondMember + firstMember;
 
-            OurBigIntMathHelper.TrimByBlocksCount(result, firstMemberBlockCount);
+			OurBigIntMathHelper.TrimByBlocksCount(result, firstMemberBlockCount);
 
-            return result;
-        }
+			return result;
+		}
 
-        internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
+		internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
 		{
 			OurBigInt currentLeft = lhs;
 			OurBigInt currentRight = rhs;
@@ -271,136 +271,60 @@ namespace OurBigRat
 			return result;
 		}
 
-		//internal static OurBigInt LeftShift(OurBigInt num, int shift)
-		//{
-		//	#region optimization
-
-		//	if (num == 0)
-		//	{
-		//		return new OurBigInt();
-		//	}
-
-		//	#endregion optimization
-
-		//	OurBigInt result = new OurBigInt();
-
-		//	if (shift < OurBigInt.BOOL_ARRAY_SIZE)
-		//	{
-		//		DoLeftShift(num, shift, result);
-		//	}
-		//	else
-		//	{
-		//		OurBigInt tmp = result;
-		//		OurBigInt numcopy = num;
-
-		//		shift -= OurBigInt.BOOL_ARRAY_SIZE;
-		//		numcopy = numcopy.previousBlock;
-
-		//		if (numcopy == null) // if shift is too big for this number.
-		//		{
-		//			return new OurBigInt();
-		//		}
-
-		//		result = OurBigIntMath.RightShift(numcopy, shift); // TODO to ask goto?
-		//	}
-
-		//	OurBigIntMathHelper.TrimStructure(ref result);
-
-		//	return result;
-		//}
-
-        internal static OurBigInt LeftShift(OurBigInt input, int shift)
-        {
-            OurBigInt result = new OurBigInt();
-            OurBigInt currentResult = result;
-            OurBigInt currentInput = input;
-
-            int globalStep = 0;
-            int globalStepsCount = OurBigIntMathHelper.GetBlocksCount(input) * OurBigInt.BOOL_ARRAY_SIZE + shift;
-            int currentResultPos = 0;
-            int currentInputPos = 0;
-
-            while (globalStep < shift)
-            {
-                currentResult.value[currentResultPos] = false;
-
-                currentResultPos++;
-                globalStep++;
-
-                if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
-                {
-                    currentResult.previousBlock = new OurBigInt();
-
-                    currentResult = currentResult.previousBlock;
-
-                    currentResultPos = 0;
-                }
-            }
-
-            while (globalStep != globalStepsCount)
-            {
-                currentResult.value[currentResultPos] = currentInput.value[currentInputPos];
-
-                currentInputPos++;
-                currentResultPos++;
-                globalStep++;
-
-                if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
-                {
-                    currentResult.previousBlock = new OurBigInt();
-
-                    currentResult = currentResult.previousBlock;
-
-                    currentResultPos = 0;
-                }
-
-                if (currentInputPos == OurBigInt.BOOL_ARRAY_SIZE)
-                {
-                    currentInput = currentInput.previousBlock;
-
-                    currentInputPos = 0;
-                }
-            }
-
-            return result;
-        }
-
-		private static void DoLeftShift(OurBigInt num, int shift, OurBigInt result)
+		internal static OurBigInt LeftShift(OurBigInt input, int shift)
 		{
-			OurBigInt tmp = result;
-			OurBigInt numcopy = num;
+			OurBigInt result = new OurBigInt();
+			OurBigInt currentResult = result;
+			OurBigInt currentInput = input;
 
-			while (numcopy != null)
+			int globalStep = 0;
+			int globalStepsCount = OurBigIntMathHelper.GetBlocksCount(input) * OurBigInt.BOOL_ARRAY_SIZE + shift;
+			int currentResultPos = 0;
+			int currentInputPos = 0;
+
+			while (globalStep < shift)
 			{
-				bool a = false;
+				currentResult.value[currentResultPos] = false;
 
-				for (int i = 0; i < shift; i++)
+				currentResultPos++;
+				globalStep++;
+
+				if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
 				{
-					if (num.value[i])
-					{
-						a = true;
-					}
-				}
+					currentResult.previousBlock = new OurBigInt();
 
-				if (a)
-				{
-					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
-				}
+					currentResult = currentResult.previousBlock;
 
-				for (int i = 0; i < shift; i++)
-				{
-					tmp.previousBlock.value[i] = numcopy.value[OurBigInt.BOOL_ARRAY_SIZE - shift + i];
-				}
-
-				tmp.value = OurBigIntMathHelper.BoolArrayLeftShift(numcopy.value, shift);
-
-				numcopy = numcopy.previousBlock;
-
-				if (numcopy != null && tmp.previousBlock == null)
-				{
-					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					currentResultPos = 0;
 				}
 			}
+
+			while (globalStep != globalStepsCount)
+			{
+				currentResult.value[currentResultPos] = currentInput.value[currentInputPos];
+
+				currentInputPos++;
+				currentResultPos++;
+				globalStep++;
+
+				if (currentResultPos == OurBigInt.BOOL_ARRAY_SIZE)
+				{
+					currentResult.previousBlock = new OurBigInt();
+
+					currentResult = currentResult.previousBlock;
+
+					currentResultPos = 0;
+				}
+
+				if (currentInputPos == OurBigInt.BOOL_ARRAY_SIZE)
+				{
+					currentInput = currentInput.previousBlock;
+
+					currentInputPos = 0;
+				}
+			}
+
+			return result;
 		}
 	}
 }

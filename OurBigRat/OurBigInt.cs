@@ -411,7 +411,7 @@ namespace OurBigRat
 		#region bitwise
 
 		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
-					=> OurBigIntMath.And(lhs, rhs);
+			=> OurBigIntMath.And(lhs, rhs);
 
 		public static OurBigInt operator >>(OurBigInt lhs, int rhs)
 			=> OurBigIntMath.RightShift(lhs, rhs);
@@ -474,7 +474,6 @@ namespace OurBigRat
 			OurBigInt result = new OurBigInt();
 			OurBigInt thiscopy = this;
 			OurBigInt tmp = result;
-
 
 			while (thiscopy != null)
 			{

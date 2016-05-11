@@ -232,63 +232,63 @@ namespace OurBigRat
 		}
 
 		internal static void AddNTrueFilledBlocks(OurBigInt input, int n)
-        {
-            if (n < 0)
-            {
-                throw new ArgumentException("Number of adding blocks can not be negative.");
-            }
-            else if (input == null)
-            {
-                throw new ArgumentNullException();
-            }
+		{
+			if (n < 0)
+			{
+				throw new ArgumentException("Number of adding blocks can not be negative.");
+			}
+			else if (input == null)
+			{
+				throw new ArgumentNullException();
+			}
 
-            OurBigInt current = input;
+			OurBigInt current = input;
 
-            while (current.previousBlock != null)
-            {
-                current = current.previousBlock;
-            }
+			while (current.previousBlock != null)
+			{
+				current = current.previousBlock;
+			}
 
-            bool[] addingArr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+			bool[] addingArr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
 
-            for (int i = 0; i < addingArr.Length; i++)
-            {
-                addingArr[i] = true;
-            }
+			for (int i = 0; i < addingArr.Length; i++)
+			{
+				addingArr[i] = true;
+			}
 
-            while (n != 0)
-            {
-                current.previousBlock = new OurBigInt(addingArr);
+			while (n != 0)
+			{
+				current.previousBlock = new OurBigInt(addingArr);
 
-                current = current.previousBlock;
+				current = current.previousBlock;
 
-                n--;
-            }
-        }
+				n--;
+			}
+		}
 
-        internal static void TrimByBlocksCount(OurBigInt input, int n)
-        {
-            if (n <= 0)
-            {
-                throw new ArgumentException("Number of blocks can not be negative or zero.");
-            }
-            else if (input == null)
-            {
-                throw new ArgumentNullException();
-            }
+		internal static void TrimByBlocksCount(OurBigInt input, int n)
+		{
+			if (n <= 0)
+			{
+				throw new ArgumentException("Number of blocks can not be negative or zero.");
+			}
+			else if (input == null)
+			{
+				throw new ArgumentNullException();
+			}
 
-            OurBigInt current = input;
+			OurBigInt current = input;
 
-            n--;
+			n--;
 
-            while (n != 0)
-            {
-                current = current.previousBlock;
+			while (n != 0)
+			{
+				current = current.previousBlock;
 
-                n--;
-            }
+				n--;
+			}
 
-            current.previousBlock = null;
-        }
+			current.previousBlock = null;
+		}
 	}
 }
