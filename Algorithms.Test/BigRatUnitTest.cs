@@ -189,6 +189,21 @@ namespace Algorithms.Test
 			Assert.Equal<OurBigInt>(res, lhs + rhs);
 		}
 
+		[Theory]
+		[InlineData(45, 7, 3)]
+		[InlineData(12589995, 2, 1)]
+		[InlineData(12589994, 2, 0)]
+		[InlineData(123456789123, 987654, 39123)]
+		[InlineData(987654321987, 123456789123, 9003)]
+		public void OperatorMultiplicativeReminderMustWork(ulong l, ulong r, ulong result)
+		{
+			OurBigInt lhs = new OurBigInt(l);
+			OurBigInt rhs = new OurBigInt(r);
+			OurBigInt res = new OurBigInt(result);
+
+			Assert.Equal<OurBigInt>(res, lhs % rhs);
+		}
+
 		[InlineData(0, 1)]
 		[InlineData(1, 0)]
 		[InlineData(123, 4)]

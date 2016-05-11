@@ -216,7 +216,7 @@ namespace OurBigRat
 				max = rhscopy;
 			}
 
-			while (max > min)
+			while (max >= min)
 			{
 				max -= min;
 			}
