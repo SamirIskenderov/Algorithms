@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OurBigRat
 {
-	internal static class OurBigIntMathHelper
+	public static class OurBigIntMathHelper
 	{
 		/// <summary>
 		/// Return number as a bit collection.
@@ -12,7 +12,7 @@ namespace OurBigRat
 		/// </summary>
 		/// <param name="num"></param>
 		/// <returns></returns>
-		internal static IEnumerable<bool> GetNextBit(ulong num)
+		public static IEnumerable<bool> GetNextBit(ulong num)
 		{
 			if (num == 0)
 			{
@@ -157,7 +157,7 @@ namespace OurBigRat
 		internal static bool IsPowerOfTwo(ulong num)
 			=> (num & (num - 1)) == 0;
 
-		internal static ulong BitsToNumber(bool[] bits)
+		public static ulong BitsToNumber(bool[] bits)
 		{
 			ulong div = 1;
 			ulong result = 0;
@@ -213,6 +213,8 @@ namespace OurBigRat
 			OurBigInt current = result;
 
 			OurBigInt addingBlock = new OurBigInt(currentSum);
+
+			OurBigIntMathHelper.TrimStructure(ref addingBlock);
 
 			if (current == null)
 			{
