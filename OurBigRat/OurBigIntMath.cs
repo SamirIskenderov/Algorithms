@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 namespace OurBigRat
 {
 	public static class OurBigIntMath
@@ -85,15 +85,14 @@ namespace OurBigRat
 
 		internal static OurBigInt Multiple(OurBigInt lhs, OurBigInt rhs)
 		{
-            OurBigInt currentLeft = lhs;
-            OurBigInt currentRight = rhs;
+			OurBigInt currentLeft = lhs;
+			OurBigInt currentRight = rhs;
 
-            OurBigInt result = new OurBigInt();
+			OurBigInt result = new OurBigInt();
 
-            foreach (var curRightBit in currentRight)
-            {
-
-            }
+			foreach (var curRightBit in currentRight)
+			{
+			}
 
 			throw new NotImplementedException();
 		}
@@ -208,22 +207,31 @@ namespace OurBigRat
 			OurBigInt tmp = result;
 			OurBigInt numcopy = num;
 
-			while (numcopy != null)
+			if (shift < OurBigInt.BOOL_ARRAY_SIZE)
 			{
-				for (int j = 0; j < shift; j++)
+				while (numcopy != null)
 				{
-					for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= shift; i--)
+					tmp.value = OurBigIntMathHelper.BoolArrayRightShift(numcopy.value, shift);
+
+					numcopy = numcopy.previousBlock;
+
+					if (numcopy != null && tmp.previousBlock == null)
 					{
-						tmp.value[i - shift] = numcopy.value[i];
+						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 					}
 				}
-
+			}
+			else
+			{
+				shift -= OurBigInt.BOOL_ARRAY_SIZE;
 				numcopy = numcopy.previousBlock;
 
-				if (numcopy != null && tmp.previousBlock == null)
+				if (numcopy == null) // if shift is too big for this number.
 				{
-					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					return new OurBigInt();
 				}
+
+				result = OurBigIntMath.RightShift(numcopy, shift); // TODO to ask goto?
 			}
 
 			OurBigIntMathHelper.TrimStructure(ref result);
@@ -237,27 +245,36 @@ namespace OurBigRat
 			OurBigInt tmp = result;
 			OurBigInt numcopy = num;
 
-			while (numcopy != null)
+			if (shift < OurBigInt.BOOL_ARRAY_SIZE)
 			{
-				for (int j = 0; j < shift; j++)
+				while (numcopy != null)
 				{
-					for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - shift; i++)
+					tmp.value = OurBigIntMathHelper.BoolArrayLeftShift(numcopy.value, shift);
+
+					numcopy = numcopy.previousBlock;
+
+					if (numcopy != null && tmp.previousBlock == null)
 					{
-						tmp.value[i + shift] = numcopy.value[i];
+						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
 					}
 				}
-
+			}
+			else
+			{
+				shift -= OurBigInt.BOOL_ARRAY_SIZE;
 				numcopy = numcopy.previousBlock;
 
-				if (numcopy != null && tmp.previousBlock == null)
+				if (numcopy == null) // if shift is too big for this number.
 				{
-					tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					return new OurBigInt();
 				}
+
+				result = OurBigIntMath.RightShift(numcopy, shift); // TODO to ask goto?
 			}
 
 			OurBigIntMathHelper.TrimStructure(ref result);
 
 			return result;
 		}
-    }
+	}
 }

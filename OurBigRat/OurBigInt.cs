@@ -21,7 +21,7 @@ namespace OurBigRat
 			this.value = new bool[BOOL_ARRAY_SIZE];
 		}
 
-		internal OurBigInt(IEnumerable<bool> v) : this()
+		public OurBigInt(IEnumerable<bool> v) : this()
 		{
 			if (v == null)
 			{

@@ -62,6 +62,36 @@ namespace OurBigRat
 			}
 		}
 
+		internal static bool[] BoolArrayRightShift(bool[] arr, int shift)
+		{
+			bool[] result = new bool[arr.Length];
+
+			for (int j = 0; j < shift; j++)
+			{
+				for (int i = shift; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+				{
+					result[i - shift] = arr[i];
+				}
+			}
+
+			return result;
+		}
+
+		internal static bool[] BoolArrayLeftShift(bool[] arr, int shift)
+		{
+			bool[] result = new bool[arr.Length];
+
+			for (int j = 0; j < shift; j++)
+			{
+				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - shift; i++)
+				{
+					result[i + shift] = arr[i];
+				}
+			}
+
+			return result;
+		}
+
 		/// <summary>
 		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
 		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
@@ -224,5 +254,7 @@ namespace OurBigRat
 
 			return result;
 		}
+
+		
 	}
 }
