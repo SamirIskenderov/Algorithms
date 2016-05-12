@@ -1,90 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OurBigRat
+﻿namespace OurBigRat
 {
+	using System;
+	using System.Linq;
+	using digit = OurBigDigit;
+	using bigint = OurBigInt;
+
 	public static class OurBigIntMathHelper
 	{
-		/// <summary>
-		/// Return number as a bit collection.
-		/// Collection starts from top order bit.
-		/// </summary>
-		/// <param name="num"></param>
-		/// <returns></returns>
-		public static IEnumerable<bool> GetNextBit(ulong num)
-		{
-			if (num == 0)
-			{
-				yield return false;
-			}
-
-			while (num != 0)
-			{
-				if (num % 2 == 1)
-				{
-					num = (num - 1) / 2;
-
-					yield return true;
-				}
-				else
-				{
-					num = num / 2;
-
-					yield return false;
-				}
-			}
-		}
-
-		internal static bool[] BoolArrayRightShift(bool[] arr, int shift)
-		{
-			bool[] result = new bool[arr.Length];
-
-			for (int j = 0; j < shift; j++)
-			{
-				for (int i = shift; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
-				{
-					result[i - shift] = arr[i];
-				}
-			}
-
-			return result;
-		}
-
-		internal static bool[] BoolArrayLeftShift(bool[] arr, int shift)
-		{
-			bool[] result = new bool[arr.Length];
-
-			for (int j = 0; j < shift; j++)
-			{
-				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE - shift; i++)
-				{
-					result[i + shift] = arr[i];
-				}
-			}
-
-			return result;
-		}
-
 		/// <summary>
 		/// If input has zero blocks in end of a fraction part or in start of integer part, this func will remove it.
 		/// F.e., 0000000001230,000123000000 will be 00000123,000123000.
 		/// </summary>
 		/// <param name="input"></param>
-		internal static void TrimStructure(ref OurBigInt input)
+		internal static void TrimStructure(ref bigint input)
 		{
-			OurBigInt current = input;
-			OurBigInt currentEdge;
+			bigint current = input;
+			bigint currentEdge;
 
 			while (current != null && current.previousBlock != null)
 			{
-				if (current.previousBlock.value.All(x => x == false)) // if all elements of collection are zeros.
+				if (current.previousBlock.digit.Value.All(x => !x)) // if all elements of collection are zeros.
 				{
 					currentEdge = current;
 
 					while (current.previousBlock != null)
 					{
-						if (current.previousBlock.value.Any(x => x == true))
+						if (current.previousBlock.digit.Value.Any(x => x))
 						{
 							break;
 						}
@@ -102,101 +43,10 @@ namespace OurBigRat
 			}
 		}
 
-		/// <summary>
-		/// Modifies result aray as sum of two arrays or sum of one bit and array.
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <param name="rhs"></param>
-		/// <param name="result"></param>
-		/// <param name="bitOverflow"></param>
-		internal static void BitArraySum(bool[] lhs, bool[] rhs, bool[] result, ref bool bitOverflow)
-		{
-			if (lhs == null ||
-			    result == null)
-			{
-				throw new ArgumentNullException();
-			}
-			else if ((rhs != null && (lhs.Length != rhs.Length || rhs.Length != result.Length)) ||
-			    (lhs.Length != result.Length))
-			{
-				throw new ArgumentException("Input arrays length must be equal.");
-			}
-			if (rhs != null)
-			{
-				for (int i = 0; i < result.Length; i++)
-				{
-					result[i] = lhs[i] ^ rhs[i] ^ bitOverflow;
-					bitOverflow = (lhs[i] && rhs[i]) || ((lhs[i] || rhs[i]) && bitOverflow);
-
-					//if (lhs[i] && rhs[i])
-					//{
-					//    result[i] = false || addBit;
-					//    addBit = true;
-					//}
-					//else if (lhs[i] ^ rhs[i])
-					//{
-					//    result[i] = true && !addBit;
-					//}
-					//else
-					//{
-					//    result[i] = addBit;
-					//    addBit = false;
-					//}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < result.Length; i++)
-				{
-					result[i] = lhs[i] ^ bitOverflow;
-					bitOverflow = lhs[i] && bitOverflow;
-				}
-			}
-		}
-
-		internal static bool IsPowerOfTwo(ulong num)
-			=> (num & (num - 1)) == 0;
-
-		public static ulong BitsToNumber(bool[] bits)
-		{
-			ulong div = 1;
-			ulong result = 0;
-
-			for (int i = 0; i < bits.Length; i++)
-			{
-				if (bits[i])
-				{
-					result += div;
-				}
-
-				div *= 2;
-			}
-
-			return result;
-		}
-
-		/// <summary>
-		/// Compute next highest power of 2, f.e. for 114 it returns 128
-		/// </summary>
-		/// <param name="v"></param>
-		/// <returns></returns>
-		internal static ulong NextPowerOfTwo(ulong v)
-		{
-			v--;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			v |= v >> 16;
-			v++;
-
-			return v;
-		}
-
-		internal static int GetBlocksCount(OurBigInt input)
+		internal static int GetBlocksCount(bigint input)
 		{
 			int result = 0;
-			OurBigInt current = input;
+			bigint current = input;
 
 			while ((object)current != null)
 			{
@@ -208,11 +58,11 @@ namespace OurBigRat
 			return result;
 		}
 
-		internal static OurBigInt AddNewPreviousBlock(OurBigInt result, bool[] currentSum)
+		internal static bigint AddNewPreviousBlock(bigint result, bool[] currentSum)
 		{
-			OurBigInt current = result;
+			bigint current = result;
 
-			OurBigInt addingBlock = new OurBigInt(currentSum);
+			bigint addingBlock = new bigint(currentSum);
 
 			OurBigIntMathHelper.TrimStructure(ref addingBlock);
 
@@ -231,7 +81,7 @@ namespace OurBigRat
 			return result;
 		}
 
-		internal static void AddNTrueFilledBlocks(OurBigInt input, int n)
+		internal static void AddNTrueFilledBlocks(bigint input, int n)
 		{
 			if (n < 0)
 			{
@@ -242,23 +92,23 @@ namespace OurBigRat
 				throw new ArgumentNullException();
 			}
 
-			OurBigInt current = input;
+			bigint current = input;
 
 			while (current.previousBlock != null)
 			{
 				current = current.previousBlock;
 			}
 
-			bool[] addingArr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+			digit digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]);
 
-			for (int i = 0; i < addingArr.Length; i++)
+			for (int i = 0; i < digit.Value.Count; i++)
 			{
-				addingArr[i] = true;
+				digit.Value[i] = true;
 			}
 
 			while (n != 0)
 			{
-				current.previousBlock = new OurBigInt(addingArr);
+				current.previousBlock = new bigint(digit);
 
 				current = current.previousBlock;
 
@@ -266,7 +116,7 @@ namespace OurBigRat
 			}
 		}
 
-		internal static void TrimByBlocksCount(OurBigInt input, int n)
+		internal static void TrimByBlocksCount(bigint input, int n)
 		{
 			if (n <= 0)
 			{
@@ -277,7 +127,7 @@ namespace OurBigRat
 				throw new ArgumentNullException();
 			}
 
-			OurBigInt current = input;
+			bigint current = input;
 
 			n--;
 

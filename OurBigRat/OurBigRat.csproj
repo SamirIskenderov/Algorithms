@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OurBigDigit.cs" />
+    <Compile Include="OurBigDigitMathHelper.cs" />
     <Compile Include="OurBigInt.cs" />
     <Compile Include="OurBigRatMath.cs" />
     <Compile Include="OurBigRatMathHelper.cs" />

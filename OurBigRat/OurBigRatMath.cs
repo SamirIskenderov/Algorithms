@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace OurBigRat
+﻿namespace OurBigRat
 {
+	using System;
+
 	internal static class OurBigRatMath
 	{
 		internal static OurBigRat Abs(OurBigRat lhs)

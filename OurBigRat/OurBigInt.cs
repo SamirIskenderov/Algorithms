@@ -1,43 +1,45 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace OurBigRat
+﻿namespace OurBigRat
 {
+	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using digit = OurBigDigit;
+	using bigint = OurBigInt;
+
 	public class OurBigInt : IComparable, IEnumerable<bool>
 	{
 		internal const int BOOL_ARRAY_SIZE = 32;
 
-		internal bool[] value;
+		internal digit digit;
 
-		internal OurBigInt previousBlock;
+		internal bigint previousBlock;
 
 		#region ctor
 
 		public OurBigInt()
 		{
-			this.value = new bool[BOOL_ARRAY_SIZE];
+			this.digit = new digit();
 		}
 
-		public OurBigInt(IEnumerable<bool> v) : this()
+		public OurBigInt(IEnumerable<bool> bits) : this()
 		{
-			if (v == null)
+			if (bits == null)
 			{
 				throw new ArgumentNullException();
 			}
 
 			int i = 0;
 
-			OurBigInt current = this;
+			bigint current = this;
 
-			foreach (var item in v)
+			foreach (var bit in bits)
 			{
-				current.value[i] = item;
+				current.digit.Value[i] = bit;
 				i++;
 
-				if (i == OurBigInt.BOOL_ARRAY_SIZE)
+				if (i == bigint.BOOL_ARRAY_SIZE)
 				{
 					i = 0;
 
@@ -53,13 +55,13 @@ namespace OurBigRat
 			StringBuilder sb = new StringBuilder();
 			byte a = 0;
 
-			OurBigInt tmp = this;
+			bigint tmp = this;
 
 			while (tmp != null)
 			{
 				sb.Append("[ ");
 
-				foreach (var item in tmp.value.Reverse())
+				foreach (var item in tmp.digit.Value.Reverse())
 				{
 					sb.Append(item ? '1' : '0');
 
@@ -82,26 +84,31 @@ namespace OurBigRat
 			return sb.ToString();
 		}
 
-		public OurBigInt(ulong v) : this()
+		public OurBigInt(ulong num) : this()
 		{
 			int i = 0;
 
-			OurBigInt current = this;
+			bigint current = this;
 
-			foreach (var item in OurBigIntMathHelper.GetNextBit(v))
+			foreach (var bit in OurBigDigitMathHelper.GetNextBit(num))
 			{
-				current.value[i] = item;
+				current.digit.Value[i] = bit;
 				i++;
 
-				if (i == OurBigInt.BOOL_ARRAY_SIZE)
+				if (i == bigint.BOOL_ARRAY_SIZE)
 				{
 					i = 0;
 
-					current.previousBlock = new OurBigInt();
+					current.previousBlock = new bigint();
 
 					current = current.previousBlock;
 				}
 			}
+		}
+
+		internal OurBigInt(digit digit)
+		{
+			this.digit = digit;
 		}
 
 		#endregion ctor
@@ -110,69 +117,69 @@ namespace OurBigRat
 
 		#region unary
 
-		public static OurBigInt operator --(OurBigInt lhs)
-			=> OurBigIntMath.Subtract(lhs, new OurBigInt(1));
+		public static bigint operator --(bigint lhs)
+			=> OurBigIntMath.Subtract(lhs, new bigint(1));
 
-		public static OurBigInt operator ++(OurBigInt lhs)
-			=> OurBigIntMath.Add(lhs, new OurBigInt(1));
+		public static bigint operator ++(bigint lhs)
+			=> OurBigIntMath.Add(lhs, new bigint(1));
 
-		public static OurBigInt operator !(OurBigInt lhs)
+		public static bigint operator !(bigint lhs)
 			=> OurBigIntMath.Not(lhs);
 
 		#endregion unary
 
 		#region binary
 
-		public static OurBigInt operator +(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator +(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Add(lhs, rhs);
 
-		public static OurBigInt operator +(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Add(new OurBigInt(lhs), rhs);
+		public static bigint operator +(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Add(new bigint(lhs), rhs);
 
-		public static OurBigInt operator +(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Add(lhs, new OurBigInt(rhs));
+		public static bigint operator +(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Add(lhs, new bigint(rhs));
 
-		public static OurBigInt operator -(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator -(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Subtract(lhs, rhs);
 
-		public static OurBigInt operator -(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Subtract(new OurBigInt(lhs), rhs);
+		public static bigint operator -(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Subtract(new bigint(lhs), rhs);
 
-		public static OurBigInt operator -(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Subtract(lhs, new OurBigInt(rhs));
+		public static bigint operator -(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Subtract(lhs, new bigint(rhs));
 
-		public static OurBigInt operator *(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator *(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Multiple(lhs, rhs);
 
-		public static OurBigInt operator *(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Multiple(new OurBigInt(lhs), rhs);
+		public static bigint operator *(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Multiple(new bigint(lhs), rhs);
 
-		public static OurBigInt operator *(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Multiple(lhs, new OurBigInt(rhs));
+		public static bigint operator *(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Multiple(lhs, new bigint(rhs));
 
-		public static OurBigInt operator /(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator /(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Divide(lhs, rhs);
 
-		public static OurBigInt operator /(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Divide(new OurBigInt(lhs), rhs);
+		public static bigint operator /(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Divide(new bigint(lhs), rhs);
 
-		public static OurBigInt operator /(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Divide(lhs, new OurBigInt(rhs));
+		public static bigint operator /(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Divide(lhs, new bigint(rhs));
 
-		public static OurBigInt operator %(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator %(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Reminder(lhs, rhs);
 
-		public static OurBigInt operator %(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Reminder(new OurBigInt(lhs), rhs);
+		public static bigint operator %(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Reminder(new bigint(lhs), rhs);
 
-		public static OurBigInt operator %(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Reminder(lhs, new OurBigInt(rhs));
+		public static bigint operator %(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Reminder(lhs, new bigint(rhs));
 
 		#endregion binary
 
 		#region eq
 
-		public static bool operator ==(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator ==(bigint lhs, bigint rhs)
 		{
 			object olhs = (object)lhs;
 			object orhs = (object)rhs;
@@ -190,22 +197,22 @@ namespace OurBigRat
 			return lhs.CompareTo(rhs) == 0;
 		}
 
-		public static bool operator ==(ulong lhs, OurBigInt rhs)
-			=> new OurBigInt(lhs) == rhs;
+		public static bool operator ==(ulong lhs, bigint rhs)
+			=> new bigint(lhs) == rhs;
 
-		public static bool operator ==(OurBigInt lhs, ulong rhs)
-			=> lhs == new OurBigInt(rhs);
+		public static bool operator ==(bigint lhs, ulong rhs)
+			=> lhs == new bigint(rhs);
 
-		public static bool operator !=(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator !=(bigint lhs, bigint rhs)
 			=> !(lhs == rhs);
 
-		public static bool operator !=(ulong lhs, OurBigInt rhs)
+		public static bool operator !=(ulong lhs, bigint rhs)
 			=> !(lhs == rhs);
 
-		public static bool operator !=(OurBigInt lhs, ulong rhs)
+		public static bool operator !=(bigint lhs, ulong rhs)
 			=> !(lhs == rhs);
 
-		public static bool operator <(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator <(bigint lhs, bigint rhs)
 		{
 			if ((object)lhs == null)
 			{
@@ -215,13 +222,13 @@ namespace OurBigRat
 			return lhs.CompareTo(rhs) < 0;
 		}
 
-		public static bool operator <(ulong lhs, OurBigInt rhs)
-			=> new OurBigInt(lhs) < rhs;
+		public static bool operator <(ulong lhs, bigint rhs)
+			=> new bigint(lhs) < rhs;
 
-		public static bool operator <(OurBigInt lhs, ulong rhs)
-			=> lhs < new OurBigInt(rhs);
+		public static bool operator <(bigint lhs, ulong rhs)
+			=> lhs < new bigint(rhs);
 
-		public static bool operator >(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator >(bigint lhs, bigint rhs)
 		{
 			if ((object)lhs == null)
 			{
@@ -231,28 +238,28 @@ namespace OurBigRat
 			return lhs.CompareTo(rhs) > 0;
 		}
 
-		public static bool operator >(ulong lhs, OurBigInt rhs)
-			=> new OurBigInt(lhs) > rhs;
+		public static bool operator >(ulong lhs, bigint rhs)
+			=> new bigint(lhs) > rhs;
 
-		public static bool operator >(OurBigInt lhs, ulong rhs)
-			=> lhs > new OurBigInt(rhs);
+		public static bool operator >(bigint lhs, ulong rhs)
+			=> lhs > new bigint(rhs);
 
-		public static bool operator <=(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator <=(bigint lhs, bigint rhs)
 			=> lhs == rhs || lhs < rhs;
 
-		public static bool operator <=(ulong lhs, OurBigInt rhs)
+		public static bool operator <=(ulong lhs, bigint rhs)
 			=> lhs == rhs || lhs < rhs;
 
-		public static bool operator <=(OurBigInt lhs, ulong rhs)
+		public static bool operator <=(bigint lhs, ulong rhs)
 			=> lhs == rhs || lhs < rhs;
 
-		public static bool operator >=(OurBigInt lhs, OurBigInt rhs)
+		public static bool operator >=(bigint lhs, bigint rhs)
 			=> lhs == rhs || lhs > rhs;
 
-		public static bool operator >=(ulong lhs, OurBigInt rhs)
+		public static bool operator >=(ulong lhs, bigint rhs)
 			=> lhs == rhs || lhs > rhs;
 
-		public static bool operator >=(OurBigInt lhs, ulong rhs)
+		public static bool operator >=(bigint lhs, ulong rhs)
 			=> lhs == rhs || lhs > rhs;
 
 		public override bool Equals(object obj)
@@ -264,7 +271,7 @@ namespace OurBigRat
 			}
 
 			// If parameter cannot be cast to Point return false.
-			OurBigInt p = obj as OurBigInt;
+			bigint p = obj as bigint;
 			if ((object)p == null)
 			{
 				return false;
@@ -274,7 +281,7 @@ namespace OurBigRat
 			return this == p;
 		}
 
-		public bool Equals(OurBigInt obj)
+		public bool Equals(bigint obj)
 		{
 			if ((object)obj == null)
 			{
@@ -297,7 +304,7 @@ namespace OurBigRat
 				return -1; // TODO  to ask
 			}
 
-			OurBigInt p = obj as OurBigInt;
+			bigint p = obj as bigint;
 			if (p == null)
 			{
 				return -1; // TODO  to ask
@@ -306,14 +313,14 @@ namespace OurBigRat
 			return this.CompareTo(p);
 		}
 
-		public int CompareTo(OurBigInt input)
+		public int CompareTo(bigint input)
 		{
 			if ((object)input == null)
 			{
 				return 1;
 			}
 
-			OurBigInt thiscopy = this;
+			bigint thiscopy = this;
 
 			OurBigIntMathHelper.TrimStructure(ref thiscopy);
 			OurBigIntMathHelper.TrimStructure(ref input);
@@ -330,13 +337,13 @@ namespace OurBigRat
 				return 1;
 			}
 
-			OurBigInt lhscopy = this.Clone();
-			OurBigInt rhscopy = input.Clone();
+			bigint lhscopy = this.DeepClone();
+			bigint rhscopy = input.DeepClone();
 
-			OurBigInt lhscopyParent = lhscopy;
-			OurBigInt rhscopyParent = rhscopy;
+			bigint lhscopyParent = lhscopy;
+			bigint rhscopyParent = rhscopy;
 
-			OurBigInt tmp = new OurBigInt();
+			bigint tmp = new bigint();
 
 			if (lhsBlockCount != 1)
 			{
@@ -346,13 +353,13 @@ namespace OurBigRat
 					rhscopy = rhscopy.previousBlock;
 				}
 
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+				for (int i = bigint.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
 				{
-					if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && lhscopy.previousBlock.value[i])
+					if ((lhscopy.previousBlock.digit.Value[i] ^ rhscopy.previousBlock.digit.Value[i]) && lhscopy.previousBlock.digit.Value[i])
 					{
 						return 1;
 					}
-					else if ((lhscopy.previousBlock.value[i] ^ rhscopy.previousBlock.value[i]) && rhscopy.previousBlock.value[i])
+					else if ((lhscopy.previousBlock.digit.Value[i] ^ rhscopy.previousBlock.digit.Value[i]) && rhscopy.previousBlock.digit.Value[i])
 					{
 						return -1;
 					}
@@ -365,13 +372,13 @@ namespace OurBigRat
 			}
 			else
 			{
-				for (int i = OurBigInt.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+				for (int i = bigint.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
 				{
-					if ((lhscopy.value[i] ^ rhscopy.value[i]) && lhscopy.value[i])
+					if ((lhscopy.digit.Value[i] ^ rhscopy.digit.Value[i]) && lhscopy.digit.Value[i])
 					{
 						return 1;
 					}
-					else if ((lhscopy.value[i] ^ rhscopy.value[i]) && rhscopy.value[i])
+					else if ((lhscopy.digit.Value[i] ^ rhscopy.digit.Value[i]) && rhscopy.digit.Value[i])
 					{
 						return -1;
 					}
@@ -388,13 +395,13 @@ namespace OurBigRat
 				throw new NullReferenceException();
 			}
 
-			OurBigInt current = this;
+			bigint current = this;
 
 			while (current != null)
 			{
-				for (int i = 0; i < current.value.Length; i++)
+				for (int i = 0; i < current.digit.Value.Count; i++)
 				{
-					yield return current.value[i];
+					yield return current.digit.Value[i];
 				}
 
 				current = current.previousBlock;
@@ -410,102 +417,102 @@ namespace OurBigRat
 
 		#region bitwise
 
-		public static OurBigInt operator &(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator &(bigint lhs, bigint rhs)
 			=> OurBigIntMath.And(lhs, rhs);
 
-		public static OurBigInt operator >>(OurBigInt lhs, int rhs)
+		public static bigint operator >>(bigint lhs, int rhs)
 			=> OurBigIntMath.RightShift(lhs, rhs);
 
-		public static OurBigInt operator <<(OurBigInt lhs, int rhs)
+		public static bigint operator <<(bigint lhs, int rhs)
 			=> OurBigIntMath.LeftShift(lhs, rhs);
 
-		public static OurBigInt operator &(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.And(new OurBigInt(lhs), rhs);
+		public static bigint operator &(ulong lhs, bigint rhs)
+			=> OurBigIntMath.And(new bigint(lhs), rhs);
 
-		public static OurBigInt operator &(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.And(lhs, new OurBigInt(rhs));
+		public static bigint operator &(bigint lhs, ulong rhs)
+			=> OurBigIntMath.And(lhs, new bigint(rhs));
 
-		public static OurBigInt operator |(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator |(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Or(lhs, rhs);
 
-		public static OurBigInt operator |(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Or(new OurBigInt(lhs), rhs);
+		public static bigint operator |(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Or(new bigint(lhs), rhs);
 
-		public static OurBigInt operator |(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Or(lhs, new OurBigInt(rhs));
+		public static bigint operator |(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Or(lhs, new bigint(rhs));
 
-		public static OurBigInt operator ^(OurBigInt lhs, OurBigInt rhs)
+		public static bigint operator ^(bigint lhs, bigint rhs)
 			=> OurBigIntMath.Xor(lhs, rhs);
 
-		public static OurBigInt operator ^(ulong lhs, OurBigInt rhs)
-			=> OurBigIntMath.Xor(new OurBigInt(lhs), rhs);
+		public static bigint operator ^(ulong lhs, bigint rhs)
+			=> OurBigIntMath.Xor(new bigint(lhs), rhs);
 
-		public static OurBigInt operator ^(OurBigInt lhs, ulong rhs)
-			=> OurBigIntMath.Xor(lhs, new OurBigInt(rhs));
+		public static bigint operator ^(bigint lhs, ulong rhs)
+			=> OurBigIntMath.Xor(lhs, new bigint(rhs));
 
 		#endregion bitwise
 
 		#endregion operators
 
-		public static bool Mod(OurBigInt lhs, OurBigInt rhs, OurBigInt modul)
+		public static bool Mod(bigint lhs, bigint rhs, bigint modul)
 			=> lhs % modul == rhs % modul;
 
-		public OurBigInt Clone()
+		public bigint Clone()
 		{
-			OurBigInt result = new OurBigInt
+			bigint result = new bigint
 			{
 				previousBlock = this.previousBlock,
+				digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]),
 			};
 
-			bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
-
-			for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+			for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
 			{
-				arr[i] = this.value[i];
+				digit.Value[i] = this.digit.Value[i];
 			}
-
-			result.value = arr;
 
 			return result;
 		}
 
-		public OurBigInt DeepClone()
+		public bigint DeepClone(bool hasTrim = true)
 		{
-			OurBigInt result = new OurBigInt();
-			OurBigInt thiscopy = this;
-			OurBigInt tmp = result;
+			bigint result = new bigint();
+			bigint thiscopy = this;
+			bigint tmp = result;
 
 			while (thiscopy != null)
 			{
-				bool[] arr = new bool[OurBigInt.BOOL_ARRAY_SIZE];
+				digit digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]);
 
-				for (int i = 0; i < OurBigInt.BOOL_ARRAY_SIZE; i++)
+				for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
 				{
-					arr[i] = thiscopy.value[i];
+					digit.Value[i] = thiscopy.digit.Value[i];
 				}
 
-				tmp.value = arr;
+				tmp.digit = digit;
 
 				thiscopy = thiscopy.previousBlock;
 
-				if ((thiscopy != null) && (result.previousBlock == null))
+				if ((thiscopy != null) && (tmp.previousBlock == null))
 				{
-					result = OurBigIntMathHelper.AddNewPreviousBlock(tmp, new bool[OurBigInt.BOOL_ARRAY_SIZE]);
+					OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[bigint.BOOL_ARRAY_SIZE]);
 				}
 
 				tmp = tmp.previousBlock;
 			}
 
-			OurBigIntMathHelper.TrimStructure(ref result);
+			if (hasTrim)
+			{
+				OurBigIntMathHelper.TrimStructure(ref result);
+			}
 
 			return result;
 		}
 
-		public static OurBigInt Parse(string input)
+		public static bigint Parse(string input)
 		{
 			// TODO
 
-			return new OurBigInt();
+			return new bigint();
 		}
 	}
 }
