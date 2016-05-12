@@ -43,8 +43,10 @@
 		/// <param name="rhs"></param>
 		/// <param name="result"></param>
 		/// <param name="bitOverflow"></param>
-		internal static void DigitSum(digit lhs, digit rhs, digit result, ref bool bitOverflow)
+		internal static digit DigitSum(digit lhs, digit rhs, ref bool bitOverflow)
 		{
+            digit result = new digit();
+
 			if (lhs == null ||
 			    result == null)
 			{
@@ -71,7 +73,37 @@
 					bitOverflow = lhs.Value[i] && bitOverflow;
 				}
 			}
+
+            return result;
 		}
+
+        internal static digit DigitSubtract(digit lhs, digit rhs)
+        {
+            if (lhs == null || rhs == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else if (lhs.CompareTo(rhs) < 0)
+            {
+                throw new ArithmeticException("First member can not be less than second one.");
+            }
+            else if (lhs.CompareTo(rhs) == 0)
+            {
+                return new digit();
+            }
+
+            rhs = OurBigDigitMathHelper.Invert(rhs);
+
+            bool[] unoArray = new bool[digit.RADIX];
+
+            unoArray[digit.RADIX - 1] = true;
+
+            bool trash = false;
+
+            rhs = OurBigDigitMath.DigitSum(rhs, new digit(unoArray), ref trash);
+
+            return OurBigDigitMath.DigitSum(lhs, rhs, ref trash);
+        }
 
 		/// <summary>
 		/// Modifies result aray as sum of two arrays or sum of one bit and array
@@ -117,12 +149,12 @@
 				if (!penult && last) // 01
 				{
 					bool nothing = false;
-					OurBigDigitMath.DigitSum(P, A, P, ref nothing);
+					P = OurBigDigitMath.DigitSum(P, A, ref nothing);
 				}
 				else // 10
 				{
 					bool nothing = false;
-					OurBigDigitMath.DigitSum(P, S, P, ref nothing);
+					P = OurBigDigitMath.DigitSum(P, S, ref nothing);
 				}
 
 				P = OurBigDigitMath.DigitRightShift(P, 1);

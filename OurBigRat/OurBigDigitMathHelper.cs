@@ -74,5 +74,17 @@
 
 			return v;
 		}
-	}
+
+        internal static digit Invert(digit input)
+        {
+            digit result = new digit();
+
+            for (int i = 0; i < OurBigDigit.RADIX; i++)
+            {
+                result.Value[i] = !input.Value[i];
+            }
+
+            return result;
+        }
+    }
 }

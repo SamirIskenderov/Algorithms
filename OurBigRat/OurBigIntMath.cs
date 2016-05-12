@@ -55,13 +55,13 @@
 
 			if (lhs != null && rhs != null)
 			{
-				OurBigDigitMath.DigitSum(lhs.digit, rhs.digit, result.digit, ref addBit);
+				result.digit = OurBigDigitMath.DigitSum(lhs.digit, rhs.digit, ref addBit);
 
 				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, rhs.previousBlock, addBit);
 			}
 			else if (lhs != null)
 			{
-				OurBigDigitMath.DigitSum(lhs.digit, null, result.digit, ref addBit);
+				result.digit = OurBigDigitMath.DigitSum(lhs.digit, null, ref addBit);
 
 				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, null, addBit);
 			}
