@@ -2,8 +2,8 @@
 {
 	using System;
 	using System.Linq;
-	using digit = OurBigDigit;
 	using bigint = OurBigInt;
+	using digit = OurBigDigit;
 
 	public static class OurBigIntMathHelper
 	{

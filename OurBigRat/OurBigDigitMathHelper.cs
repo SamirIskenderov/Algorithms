@@ -3,7 +3,6 @@
 	using System;
 	using System.Collections.Generic;
 	using digit = OurBigDigit;
-	using bigint = OurBigInt;
 
 	internal static class OurBigDigitMathHelper
 	{

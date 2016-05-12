@@ -2,9 +2,9 @@
 {
 	using System;
 	using bigint = OurBigInt;
-    using digit = OurBigDigit;
+	using digit = OurBigDigit;
 
-    public static class OurBigIntMath
+	public static class OurBigIntMath
 	{
 		internal static bigint Add(bigint lhs, bigint rhs)
 		{
