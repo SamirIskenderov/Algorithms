@@ -1,20 +1,24 @@
 ﻿namespace OurBigRat
 {
-	using System.Collections.Generic;
-	using bigint = OurBigInt;
+    using System.Collections.Generic;
+    using System.Linq;
+    using bigint = OurBigInt;
 
-	internal class OurBigDigit
+    internal class OurBigDigit
 	{
-		public OurBigDigit()
+        internal const int RADIX = 32;
+
+
+        internal OurBigDigit()
 		{
-			this.Value = new bool[bigint.BOOL_ARRAY_SIZE];
+			this.Value = new bool[OurBigDigit.RADIX];
 		}
 
-		public OurBigDigit(IList<bool> v)
+        internal OurBigDigit(IEnumerable<bool> v)
 		{
-			this.Value = v;
+			this.Value = v.ToArray();
 		}
 
-		internal IList<bool> Value { get; set; }
+		internal bool[] Value { get; set; }
 	}
 }

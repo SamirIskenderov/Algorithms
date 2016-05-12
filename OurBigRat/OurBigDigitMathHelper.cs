@@ -39,11 +39,11 @@
 
 		internal static digit DigitRightShift(digit digit, int shift)
 		{
-			digit result = new digit(new bool[digit.Value.Count]);
+			digit result = new digit(new bool[digit.Value.Length]);
 
 			for (int j = 0; j < shift; j++)
 			{
-				for (int i = shift; i < bigint.BOOL_ARRAY_SIZE; i++)
+				for (int i = shift; i < digit.RADIX; i++)
 				{
 					result.Value[i - shift] = digit.Value[i];
 				}
@@ -54,11 +54,11 @@
 
 		internal static digit DigitLeftShift(digit digit, int shift)
 		{
-			digit result = new digit(new bool[digit.Value.Count]);
+			digit result = new digit(new bool[digit.Value.Length]);
 
 			for (int j = 0; j < shift; j++)
 			{
-				for (int i = 0; i < bigint.BOOL_ARRAY_SIZE - shift; i++)
+				for (int i = 0; i < digit.RADIX - shift; i++)
 				{
 					result.Value[i + shift] = digit.Value[i];
 				}
@@ -81,14 +81,14 @@
 			{
 				throw new ArgumentNullException();
 			}
-			else if ((rhs != null && (lhs.Value.Count != rhs.Value.Count || rhs.Value.Count != result.Value.Count)) ||
-			    (lhs.Value.Count != result.Value.Count))
+			else if ((rhs != null && (lhs.Value.Length != rhs.Value.Length || rhs.Value.Length != result.Value.Length)) ||
+			    (lhs.Value.Length != result.Value.Length))
 			{
-				throw new ArgumentException("Input arrays Value.Count must be equal.");
+				throw new ArgumentException("Input arrays Value.Length must be equal.");
 			}
 			if (rhs != null)
 			{
-				for (int i = 0; i < result.Value.Count; i++)
+				for (int i = 0; i < result.Value.Length; i++)
 				{
 					result.Value[i] = lhs.Value[i] ^ rhs.Value[i] ^ bitOverflow;
 					bitOverflow = (lhs.Value[i] && rhs.Value[i]) || ((lhs.Value[i] || rhs.Value[i]) && bitOverflow);
@@ -96,7 +96,7 @@
 			}
 			else
 			{
-				for (int i = 0; i < result.Value.Count; i++)
+				for (int i = 0; i < result.Value.Length; i++)
 				{
 					result.Value[i] = lhs.Value[i] ^ bitOverflow;
 					bitOverflow = lhs.Value[i] && bitOverflow;

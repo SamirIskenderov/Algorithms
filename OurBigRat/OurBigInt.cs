@@ -10,7 +10,6 @@
 
 	public class OurBigInt : IComparable, IEnumerable<bool>
 	{
-		internal const int BOOL_ARRAY_SIZE = 32;
 
 		internal digit digit;
 
@@ -39,7 +38,7 @@
 				current.digit.Value[i] = bit;
 				i++;
 
-				if (i == bigint.BOOL_ARRAY_SIZE)
+				if (i == digit.RADIX)
 				{
 					i = 0;
 
@@ -95,7 +94,7 @@
 				current.digit.Value[i] = bit;
 				i++;
 
-				if (i == bigint.BOOL_ARRAY_SIZE)
+				if (i == digit.RADIX)
 				{
 					i = 0;
 
@@ -353,7 +352,7 @@
 					rhscopy = rhscopy.previousBlock;
 				}
 
-				for (int i = bigint.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+				for (int i = digit.RADIX - 1; i >= 0; i--)
 				{
 					if ((lhscopy.previousBlock.digit.Value[i] ^ rhscopy.previousBlock.digit.Value[i]) && lhscopy.previousBlock.digit.Value[i])
 					{
@@ -372,7 +371,7 @@
 			}
 			else
 			{
-				for (int i = bigint.BOOL_ARRAY_SIZE - 1; i >= 0; i--)
+				for (int i = digit.RADIX - 1; i >= 0; i--)
 				{
 					if ((lhscopy.digit.Value[i] ^ rhscopy.digit.Value[i]) && lhscopy.digit.Value[i])
 					{
@@ -399,7 +398,7 @@
 
 			while (current != null)
 			{
-				for (int i = 0; i < current.digit.Value.Count; i++)
+				for (int i = 0; i < current.digit.Value.Length; i++)
 				{
 					yield return current.digit.Value[i];
 				}
@@ -462,10 +461,10 @@
 			bigint result = new bigint
 			{
 				previousBlock = this.previousBlock,
-				digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]),
+				digit = new digit(new bool[digit.RADIX]),
 			};
 
-			for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
+			for (int i = 0; i < digit.RADIX; i++)
 			{
 				digit.Value[i] = this.digit.Value[i];
 			}
@@ -481,9 +480,9 @@
 
 			while (thiscopy != null)
 			{
-				digit digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]);
+				digit digit = new digit(new bool[digit.RADIX]);
 
-				for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
+				for (int i = 0; i < digit.RADIX; i++)
 				{
 					digit.Value[i] = thiscopy.digit.Value[i];
 				}
@@ -494,7 +493,7 @@
 
 				if ((thiscopy != null) && (tmp.previousBlock == null))
 				{
-					OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[bigint.BOOL_ARRAY_SIZE]);
+					OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[digit.RADIX]);
 				}
 
 				tmp = tmp.previousBlock;

@@ -2,8 +2,9 @@
 {
 	using System;
 	using bigint = OurBigInt;
+    using digit = OurBigDigit;
 
-	public static class OurBigIntMath
+    public static class OurBigIntMath
 	{
 		internal static bigint Add(bigint lhs, bigint rhs)
 		{
@@ -121,8 +122,8 @@
 
 		private static bigint BoothsMultiplication(bigint lhs, bigint rhs)
 		{
-			ulong x = (uint)OurBigIntMathHelper.GetBlocksCount(lhs) * bigint.BOOL_ARRAY_SIZE;
-			ulong y = (uint)OurBigIntMathHelper.GetBlocksCount(rhs) * bigint.BOOL_ARRAY_SIZE;
+			ulong x = (uint)OurBigIntMathHelper.GetBlocksCount(lhs) * digit.RADIX;
+			ulong y = (uint)OurBigIntMathHelper.GetBlocksCount(rhs) * digit.RADIX;
 
 			bigint A = lhs.DeepClone();
 			bigint S = lhs.DeepClone();
@@ -150,7 +151,7 @@
 
 			while (lhscopy != null)
 			{
-				for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
+				for (int i = 0; i < digit.RADIX; i++)
 				{
 					tmp.digit.Value[i] = !lhscopy.digit.Value[i];
 				}
@@ -159,7 +160,7 @@
 
 				if ((lhscopy != null) && (tmp.previousBlock == null))
 				{
-					OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[bigint.BOOL_ARRAY_SIZE]);
+					OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[digit.RADIX]);
 				}
 
 				tmp = tmp.previousBlock;
@@ -193,7 +194,7 @@
 
 			while (lhscopy != null)
 			{
-				for (int i = 0; i < bigint.BOOL_ARRAY_SIZE; i++)
+				for (int i = 0; i < digit.RADIX; i++)
 				{
 					resultcopy.digit.Value[i] = func?.Invoke(lhscopy.digit.Value[i], rhscopy.digit.Value[i]) ?? default(bool);
 				}
@@ -204,7 +205,7 @@
 				if ((lhscopy != null) &&
 						(resultcopy.previousBlock == null))
 				{
-					resultcopy = OurBigIntMathHelper.AddNewPreviousBlock(resultcopy, new bool[bigint.BOOL_ARRAY_SIZE]);
+					resultcopy = OurBigIntMathHelper.AddNewPreviousBlock(resultcopy, new bool[digit.RADIX]);
 				}
 
 				resultcopy = resultcopy.previousBlock;
@@ -255,7 +256,7 @@
 			bigint tmp = result;
 			bigint numcopy = num;
 
-			if (shift < bigint.BOOL_ARRAY_SIZE)
+			if (shift < digit.RADIX)
 			{
 				while (numcopy != null)
 				{
@@ -265,13 +266,13 @@
 
 					if (numcopy != null && tmp.previousBlock == null)
 					{
-						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[bigint.BOOL_ARRAY_SIZE]);
+						tmp = OurBigIntMathHelper.AddNewPreviousBlock(result, new bool[digit.RADIX]);
 					}
 				}
 			}
 			else
 			{
-				shift -= bigint.BOOL_ARRAY_SIZE;
+				shift -= digit.RADIX;
 				numcopy = numcopy.previousBlock;
 
 				if (numcopy == null) // if shift is too big for this number.
@@ -294,7 +295,7 @@
 			bigint currentInput = input;
 
 			int globalStep = 0;
-			int globalStepsCount = OurBigIntMathHelper.GetBlocksCount(input) * bigint.BOOL_ARRAY_SIZE + shift;
+			int globalStepsCount = OurBigIntMathHelper.GetBlocksCount(input) * digit.RADIX + shift;
 			int currentResultPos = 0;
 			int currentInputPos = 0;
 
@@ -305,7 +306,7 @@
 				currentResultPos++;
 				globalStep++;
 
-				if (currentResultPos == bigint.BOOL_ARRAY_SIZE)
+				if (currentResultPos == digit.RADIX)
 				{
 					currentResult.previousBlock = new bigint();
 
@@ -323,7 +324,7 @@
 				currentResultPos++;
 				globalStep++;
 
-				if (currentResultPos == bigint.BOOL_ARRAY_SIZE)
+				if (currentResultPos == digit.RADIX)
 				{
 					currentResult.previousBlock = new bigint();
 
@@ -332,7 +333,7 @@
 					currentResultPos = 0;
 				}
 
-				if (currentInputPos == bigint.BOOL_ARRAY_SIZE)
+				if (currentInputPos == digit.RADIX)
 				{
 					currentInput = currentInput.previousBlock;
 

@@ -99,9 +99,9 @@
 				current = current.previousBlock;
 			}
 
-			digit digit = new digit(new bool[bigint.BOOL_ARRAY_SIZE]);
+			digit digit = new digit(new bool[digit.RADIX]);
 
-			for (int i = 0; i < digit.Value.Count; i++)
+			for (int i = 0; i < digit.Value.Length; i++)
 			{
 				digit.Value[i] = true;
 			}
