@@ -5,16 +5,16 @@
     using System.Linq;
     using bigint = OurBigInt;
 
-    internal class OurBigDigit
+	internal class OurBigDigit
 	{
-        internal const int RADIX = 32;
-        
-        internal OurBigDigit()
+		internal const int RADIX = 32;
+
+		internal OurBigDigit()
 		{
 			this.Value = new bool[OurBigDigit.RADIX];
 		}
 
-        internal OurBigDigit(IEnumerable<bool> v)
+		internal OurBigDigit(IEnumerable<bool> v)
 		{
 			this.Value = v.ToArray();
 		}

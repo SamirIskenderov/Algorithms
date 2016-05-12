@@ -5,12 +5,11 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
-	using digit = OurBigDigit;
 	using bigint = OurBigInt;
+	using digit = OurBigDigit;
 
 	public class OurBigInt : IComparable, IEnumerable<bool>
 	{
-
 		internal digit digit;
 
 		internal bigint previousBlock;

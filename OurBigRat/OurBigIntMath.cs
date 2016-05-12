@@ -2,9 +2,9 @@
 {
 	using System;
 	using bigint = OurBigInt;
-    using digit = OurBigDigit;
+	using digit = OurBigDigit;
 
-    public static class OurBigIntMath
+	public static class OurBigIntMath
 	{
 		internal static bigint Add(bigint lhs, bigint rhs)
 		{
@@ -55,13 +55,13 @@
 
 			if (lhs != null && rhs != null)
 			{
-				OurBigDigitMathHelper.DigitSum(lhs.digit, rhs.digit, result.digit, ref addBit);
+				OurBigDigitMath.DigitSum(lhs.digit, rhs.digit, result.digit, ref addBit);
 
 				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, rhs.previousBlock, addBit);
 			}
 			else if (lhs != null)
 			{
-				OurBigDigitMathHelper.DigitSum(lhs.digit, null, result.digit, ref addBit);
+				OurBigDigitMath.DigitSum(lhs.digit, null, result.digit, ref addBit);
 
 				result.previousBlock = OurBigIntMath.Add(lhs.previousBlock, null, addBit);
 			}
@@ -260,7 +260,7 @@
 			{
 				while (numcopy != null)
 				{
-					tmp.digit = OurBigDigitMathHelper.DigitRightShift(numcopy.digit, shift);
+					tmp.digit = OurBigDigitMath.DigitRightShift(numcopy.digit, shift);
 
 					numcopy = numcopy.previousBlock;
 
