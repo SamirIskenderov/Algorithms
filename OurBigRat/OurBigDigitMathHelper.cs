@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using digit = OurBigDigit;
 
-	internal static class OurBigDigitMathHelper
+	public static class OurBigDigitMathHelper
 	{
 		/// <summary>
 		/// Return number as a bit collection.

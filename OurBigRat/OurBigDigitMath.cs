@@ -4,7 +4,7 @@
 
 	using digit = OurBigDigit;
 
-	internal static class OurBigDigitMath
+	public static class OurBigDigitMath
 	{
 		internal static digit DigitRightShift(digit digit, int shift)
 		{
@@ -71,6 +71,66 @@
 					bitOverflow = lhs.Value[i] && bitOverflow;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Modifies result aray as sum of two arrays or sum of one bit and array
+		/// </summary>
+		/// <param name="m"></param>
+		/// <param name="r"></param>
+		/// <param name="overflow"></param>
+		/// <returns></returns>
+		public static digit DigitMultiple(digit m, digit r, out digit overflow)
+		{
+			overflow = new digit();
+
+			int x = m.Value.Length;
+			int y = r.Value.Length;
+
+			int length = x + y + 1;
+			digit A = new digit(new bool[length]);
+			digit S = new digit(new bool[length]);
+			digit P = new digit(new bool[length]);
+
+			for (int i = 0; i < x; i++)
+			{
+				A.Value[i] = m.Value[i];
+				S.Value[i] = !m.Value[i];
+			}
+
+			for (int i = x; i < x + y; i++)
+			{
+				P.Value[i] = r.Value[i - x];
+			}
+
+			for (int i = 0; i < y; i++)
+			{
+				bool last = P.Value[length - 1];
+				bool penult = P.Value[length - 2];
+
+				if ((!penult && !last) ||
+					(penult && last)) // 00 or 11
+				{
+					continue;
+				}
+
+				if (!penult && last) // 01
+				{
+					bool nothing = false;
+					OurBigDigitMath.DigitSum(P, A, P, ref nothing);
+				}
+				else // 10
+				{
+					bool nothing = false;
+					OurBigDigitMath.DigitSum(P, S, P, ref nothing);
+				}
+
+				P = OurBigDigitMath.DigitRightShift(P, 1);
+			}
+
+			P = OurBigDigitMath.DigitRightShift(P, 1);
+
+			return P;
 		}
 	}
 }

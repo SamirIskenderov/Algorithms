@@ -115,25 +115,6 @@
 
 			bigint result = new bigint();
 
-			result = OurBigIntMath.BoothsMultiplication(lhs, rhs);
-
-			return result;
-		}
-
-		private static bigint BoothsMultiplication(bigint lhs, bigint rhs)
-		{
-			ulong x = (uint)OurBigIntMathHelper.GetBlocksCount(lhs) * digit.RADIX;
-			ulong y = (uint)OurBigIntMathHelper.GetBlocksCount(rhs) * digit.RADIX;
-
-			bigint A = lhs.DeepClone();
-			bigint S = lhs.DeepClone();
-			bigint P = rhs.DeepClone();
-
-			return null;
-		}
-
-		private static bigint BoothsMultiplication(bigint a, bigint s, bigint p, ulong x, ulong y)
-		{
 			throw new NotImplementedException();
 		}
 

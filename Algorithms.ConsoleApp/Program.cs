@@ -4,20 +4,31 @@ using System;
 
 namespace Algorithms.ConsoleApp
 {
+	using digit = OurBigDigit;
+
 	internal class Program
 	{
 		private static void Main()
 		{
-			uint a = 15621;
-			uint b = 1488; 
+			bool[] l = new bool[digit.RADIX];
+			bool[] r = new bool[digit.RADIX];
 
-			OurBigInt oa = new OurBigInt(a);
-			OurBigInt ob = new OurBigInt(b);
+			l[3] = true;
+			r[2] = true;
+			r[4] = true;
 
-			uint r = a >> 1;
-			Console.WriteLine(r);
-			OurBigInt or = oa >> 1;
-			Console.WriteLine(or);
+			digit o = new digit();
+			digit lhs = new digit(l);
+			digit rhs = new digit(r);
+
+			Console.WriteLine(OurBigDigitMathHelper.BitsToNumber(l));
+			Console.WriteLine(OurBigDigitMathHelper.BitsToNumber(r));
+
+			digit result = OurBigDigitMath.DigitMultiple(lhs, rhs, out o);
+
+			Console.WriteLine(OurBigDigitMathHelper.BitsToNumber(result.Value));
+
+			int a = 2;
 		}
 	}
 }
