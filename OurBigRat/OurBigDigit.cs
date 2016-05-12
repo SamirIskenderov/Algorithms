@@ -14,12 +14,12 @@
 			this.Value = new bool[OurBigDigit.RADIX];
 		}
 
-		public OurBigDigit(IEnumerable<bool> v)
+		public OurBigDigit(bool[] v)
 		{
-			this.Value = v.ToArray();
+			this.Value = v;
 		}
 
-		public override string ToString()
+        public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
 			byte a = 0;
@@ -55,7 +55,7 @@
 				throw new ArgumentNullException();
 			}
 
-			for (int i = RADIX - 1; i >= 0; i--)
+			for (int i = 0; i < RADIX; i++ )
 			{
 				if ((this.Value[i] ^ input.Value[i]))
 				{

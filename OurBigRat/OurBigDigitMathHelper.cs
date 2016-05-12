@@ -1,6 +1,5 @@
 ﻿namespace OurBigRat
 {
-	using System;
 	using System.Collections.Generic;
 	using digit = OurBigDigit;
 
@@ -103,8 +102,20 @@
 			arr[0] = true;
 
 			digit one = new digit(arr);
+			bool trash = false;
+			return OurBigDigitMath.DigitSum(OurBigDigitMathHelper.Invert(num), one, ref trash);
+		}
 
-			return OurBigDigitMath.DigitSum(OurBigDigitMath.Invert(num), one);
+		internal static digit Invert(digit input)
+		{
+			digit result = new digit();
+
+			for (int i = 0; i < OurBigDigit.RADIX; i++)
+			{
+				result.Value[i] = !input.Value[i];
+			}
+
+			return result;
 		}
 	}
 }
