@@ -89,6 +89,7 @@
 			overflow = new digit();
 
 			digit mcopy = OurBigDigitMathHelper.Trim(m);
+			digit mminuscopy = OurBigDigitMathHelper.UnaryMinus(mcopy);
 			digit rcopy = OurBigDigitMathHelper.Trim(r);
 
 			int x = mcopy.Value.Length;
@@ -102,7 +103,7 @@
 			for (int i = y + 1; i < x + y + 1; i++)
 			{
 				A.Value[i] = mcopy.Value[i - y - 1];
-				S.Value[i] = !mcopy.Value[i - y - 1];
+				S.Value[i] = mminuscopy.Value[i - y - 1];
 			}
 
 			for (int i = 0; i < x + 1; i++)
