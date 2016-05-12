@@ -74,5 +74,37 @@
 
 			return v;
 		}
+
+		internal static digit Trim(digit m)
+		{
+			digit result = null;
+			bool found = false;
+
+			for (int i = m.Value.Length - 1; i >= 0; i--)
+			{
+				if ((!found) && (m.Value[i]))
+				{
+					found = true;
+					result = new digit(new bool[i + 1]);
+				}
+
+				if (found)
+				{
+					result.Value[i] = m.Value[i];
+				}
+			}
+
+			return result;
+		}
+
+		internal static digit UnaryMinus(digit num)
+		{
+			bool[] arr = new bool[digit.RADIX];
+			arr[0] = true;
+
+			digit one = new digit(arr);
+
+			return OurBigDigitMath.DigitSum(OurBigDigitMath.Invert(num), one);
+		}
 	}
 }

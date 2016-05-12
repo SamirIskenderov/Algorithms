@@ -13,9 +13,11 @@ namespace Algorithms.ConsoleApp
 			bool[] l = new bool[digit.RADIX];
 			bool[] r = new bool[digit.RADIX];
 
-			l[3] = true;
+			l[0] = true;
+			l[1] = true;
+			r[0] = true;
 			r[2] = true;
-			r[4] = true;
+			r[3] = true;
 
 			digit o = new digit();
 			digit lhs = new digit(l);

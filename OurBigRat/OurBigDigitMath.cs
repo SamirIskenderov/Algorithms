@@ -12,7 +12,7 @@
 
 			for (int j = 0; j < shift; j++)
 			{
-				for (int i = shift; i < digit.RADIX; i++)
+				for (int i = shift; i < result.Value.Length; i++)
 				{
 					result.Value[i - shift] = digit.Value[i];
 				}
@@ -27,7 +27,7 @@
 
 			for (int j = 0; j < shift; j++)
 			{
-				for (int i = 0; i < digit.RADIX - shift; i++)
+				for (int i = 0; i < result.Value.Length - shift; i++)
 				{
 					result.Value[i + shift] = digit.Value[i];
 				}
@@ -43,8 +43,10 @@
 		/// <param name="rhs"></param>
 		/// <param name="result"></param>
 		/// <param name="bitOverflow"></param>
-		internal static void DigitSum(digit lhs, digit rhs, digit result, ref bool bitOverflow)
+		internal static digit DigitSum(digit lhs, digit rhs, ref bool bitOverflow)
 		{
+			digit result = new digit();
+
 			if (lhs == null ||
 			    result == null)
 			{
@@ -71,6 +73,8 @@
 					bitOverflow = lhs.Value[i] && bitOverflow;
 				}
 			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -84,45 +88,43 @@
 		{
 			overflow = new digit();
 
-			int x = m.Value.Length;
-			int y = r.Value.Length;
+			digit mcopy = OurBigDigitMathHelper.Trim(m);
+			digit rcopy = OurBigDigitMathHelper.Trim(r);
+
+			int x = mcopy.Value.Length;
+			int y = rcopy.Value.Length;
 
 			int length = x + y + 1;
 			digit A = new digit(new bool[length]);
 			digit S = new digit(new bool[length]);
 			digit P = new digit(new bool[length]);
 
-			for (int i = 0; i < x; i++)
+			for (int i = y + 1; i < x + y + 1; i++)
 			{
-				A.Value[i] = m.Value[i];
-				S.Value[i] = !m.Value[i];
+				A.Value[i] = mcopy.Value[i - y - 1];
+				S.Value[i] = !mcopy.Value[i - y - 1];
 			}
 
-			for (int i = x; i < x + y; i++)
+			for (int i = 0; i < x + 1; i++)
 			{
-				P.Value[i] = r.Value[i - x];
+				P.Value[i + 1] = rcopy.Value[i];
 			}
 
 			for (int i = 0; i < y; i++)
 			{
-				bool last = P.Value[length - 1];
-				bool penult = P.Value[length - 2];
-
-				if ((!penult && !last) ||
-					(penult && last)) // 00 or 11
-				{
-					continue;
-				}
+				bool last = P.Value[0];
+				bool penult = P.Value[1];
 
 				if (!penult && last) // 01
 				{
-					bool nothing = false;
-					OurBigDigitMath.DigitSum(P, A, P, ref nothing);
+					bool trash = false;
+					P = OurBigDigitMath.DigitSum(P, A, ref trash);
 				}
-				else // 10
+
+				if (penult && !last) // 10
 				{
-					bool nothing = false;
-					OurBigDigitMath.DigitSum(P, S, P, ref nothing);
+					bool trash = false;
+					P = OurBigDigitMath.DigitSum(P, S, ref trash);
 				}
 
 				P = OurBigDigitMath.DigitRightShift(P, 1);
