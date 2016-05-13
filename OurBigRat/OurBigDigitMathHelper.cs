@@ -39,9 +39,6 @@
 		internal static bool IsPowerOfTwo(ulong num)
 			=> (num & (num - 1)) == 0;
 
-		internal static bool IsPowerOfTwo(int num)
-			=> (num & (num - 1)) == 0;
-
 		public static ulong BitsToNumber(bool[] bits)
 		{
 			ulong div = 1;
