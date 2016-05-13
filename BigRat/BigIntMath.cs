@@ -5,7 +5,7 @@
 	internal class BigIntMath : Singleton<BigIntMath>
 	{
 		private BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
-
+		private BigIntMath() { }
 		internal BigInt Add(BigInt bigInt, BigInt rhs)
 		{
 			throw new NotImplementedException();
