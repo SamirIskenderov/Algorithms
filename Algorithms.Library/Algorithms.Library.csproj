@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bitwise.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Divider.cs" />
     <Compile Include="Calc.cs" />

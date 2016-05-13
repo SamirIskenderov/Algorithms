@@ -2,6 +2,8 @@
 {
 	internal class BigIntMathHelper : Singleton<BigIntMathHelper>
 	{
+		private BigIntMathHelper() { }
+
         internal int GetBlocksCount(BigInt input)
         {
             int result = 0;
