@@ -1,4 +1,4 @@
-﻿namespace BigRat
+﻿namespace Algorithms.BigRat
 {
 	using System;
 	using System.Reflection;

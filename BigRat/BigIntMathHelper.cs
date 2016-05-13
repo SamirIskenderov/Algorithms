@@ -1,23 +1,24 @@
-﻿namespace BigRat
+﻿namespace Algorithms.BigRat
 {
 	internal class BigIntMathHelper : Singleton<BigIntMathHelper>
 	{
+		private BigIntMathHelper()
+		{
+		}
 
-		private BigIntMathHelper() { }
+		internal int GetBlocksCount(BigInt input)
+		{
+			int result = 0;
+			BigInt current = input;
 
-        internal int GetBlocksCount(BigInt input)
-        {
-            int result = 0;
-            BigInt current = input;
+			while ((object)current != null)
+			{
+				result++;
 
-            while ((object)current != null)
-            {
-                result++;
+				current = current.previousBlock;
+			}
 
-                current = current.previousBlock;
-            }
-
-            return result;
-        }
-    }
+			return result;
+		}
+	}
 }

@@ -1,11 +1,11 @@
-﻿using BigRat;
-
+﻿
 namespace Algorithms.Test
 {
+using BigRat;
 using System;
 using System.Linq;
 using Xunit;
-using bigint = BigInt;
+using bigint = Algorithms.BigRat.BigInt;
 	public class BigRatUnitTest
 	{
 		#region operators

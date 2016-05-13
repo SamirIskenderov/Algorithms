@@ -1,14 +1,17 @@
-﻿namespace BigRat
+﻿namespace Algorithms.BigRat
 {
+	using Library;
 	using System;
+	using System.Linq;
+	using System.Text;
 	using bigint = BigInt;
 
 	public class BigInt : IComparable
 	{
 		internal bigint previousBlock;
 		internal uint value;
-		private static BigIntMath math = BigIntMath.Instance;
-        private static BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
+		private static readonly BigIntMath math = BigIntMath.Instance;
+		private static readonly BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
 
 		internal static bigint One { get; } = new bigint(1);
 		internal static bigint Zero { get; } = new bigint(0);
@@ -196,72 +199,72 @@
 
 		public int CompareTo(bigint input)
 		{
-            if ((object)input == null)
-            {
-                return 1;
-            }
+			if ((object)input == null)
+			{
+				return 1;
+			}
 
-            bigint thiscopy = this;
+			bigint thiscopy = this;
 
-            //mathHelper.TrimStructure(ref thiscopy);
-            //mathHelper.TrimStructure(ref input); TO REALIZE
+			//mathHelper.TrimStructure(ref thiscopy);
+			//mathHelper.TrimStructure(ref input); TO REALIZE
 
-            int lhsBlockCount = mathHelper.GetBlocksCount(this);
-            int rhsBlockCount = mathHelper.GetBlocksCount(input);
+			int lhsBlockCount = mathHelper.GetBlocksCount(this);
+			int rhsBlockCount = mathHelper.GetBlocksCount(input);
 
-            if (lhsBlockCount < rhsBlockCount)
-            {
-                return -1;
-            }
-            else if (lhsBlockCount > rhsBlockCount)
-            {
-                return 1;
-            }
+			if (lhsBlockCount < rhsBlockCount)
+			{
+				return -1;
+			}
+			else if (lhsBlockCount > rhsBlockCount)
+			{
+				return 1;
+			}
 
-            bigint lhscopy = this/*.DeepClone()*/;
-            bigint rhscopy = input/*.DeepClone()*/; /*TO REALIZE*/
+			bigint lhscopy = this/*.DeepClone()*/;
+			bigint rhscopy = input/*.DeepClone()*/; /*TO REALIZE*/
 
-            bigint lhscopyParent = lhscopy;
-            bigint rhscopyParent = rhscopy;
+			bigint lhscopyParent = lhscopy;
+			bigint rhscopyParent = rhscopy;
 
-            bigint tmp = new bigint();
+			bigint tmp = new bigint();
 
-            if (lhsBlockCount != 1)
-            {
-                while (lhscopy.previousBlock.previousBlock != null)
-                {
-                    lhscopy = lhscopy.previousBlock;
-                    rhscopy = rhscopy.previousBlock;
-                }
+			if (lhsBlockCount != 1)
+			{
+				while (lhscopy.previousBlock.previousBlock != null)
+				{
+					lhscopy = lhscopy.previousBlock;
+					rhscopy = rhscopy.previousBlock;
+				}
 
-                if (lhscopy.previousBlock.value > rhscopy.previousBlock.value)
-                {
-                    return 1;
-                }
-                else if (lhscopy.previousBlock.value < rhscopy.previousBlock.value)
-                {
-                    return -1;
-                }
+				if (lhscopy.previousBlock.value > rhscopy.previousBlock.value)
+				{
+					return 1;
+				}
+				else if (lhscopy.previousBlock.value < rhscopy.previousBlock.value)
+				{
+					return -1;
+				}
 
-                lhscopy.previousBlock = null;
-                rhscopy.previousBlock = null;
+				lhscopy.previousBlock = null;
+				rhscopy.previousBlock = null;
 
-                return lhscopyParent.CompareTo(rhscopyParent);
-            }
-            else
-            {
-                if (lhscopy.value > rhscopy.value)
-                {
-                    return 1;
-                }
-                else if (lhscopy.value < rhscopy.value)
-                {
-                    return -1;
-                }
-            }
+				return lhscopyParent.CompareTo(rhscopyParent);
+			}
+			else
+			{
+				if (lhscopy.value > rhscopy.value)
+				{
+					return 1;
+				}
+				else if (lhscopy.value < rhscopy.value)
+				{
+					return -1;
+				}
+			}
 
-            return 0;
-        }
+			return 0;
+		}
 
 		public override bool Equals(object obj)
 		{
@@ -331,6 +334,39 @@
 			}
 
 			return result;
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			byte a = 0;
+
+			bigint current = this;
+
+			while (current != null)
+			{
+				sb.Append("[ ");
+
+				foreach (var item in Bitwise.GetNextBit(this.value).Reverse())
+				{
+					sb.Append(item ? '1' : '0');
+
+					if (a == 3)
+					{
+						sb.Append(' ');
+						a = 0;
+					}
+					else
+					{
+						a++;
+					}
+				}
+
+				sb.Append("] ");
+				current = current.previousBlock;
+			}
+
+			return sb.ToString();
 		}
 	}
 }

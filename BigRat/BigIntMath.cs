@@ -1,38 +1,125 @@
-﻿namespace BigRat
+﻿namespace Algorithms.BigRat
 {
 	using System;
+	using bigint = BigInt;
 
 	internal class BigIntMath : Singleton<BigIntMath>
 	{
-		private BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
+		private readonly BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
 
 		private BigIntMath()
 		{
 		}
 
-		internal BigInt Add(BigInt bigInt, BigInt rhs)
+		internal bigint Add(bigint bigint, bigint rhs)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal BigInt Divide(BigInt lhs, BigInt rhs)
+		internal bigint Divide(bigint lhs, bigint rhs)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal BigInt Multiple(BigInt lhs, BigInt rhs)
+		internal bigint Multiple(bigint lhs, bigint rhs)
+		{
+			bigint result = new bigint();
+
+			int lBlockCount = mathHelper.GetBlocksCount(lhs);
+			int rBlockCount = mathHelper.GetBlocksCount(rhs);
+
+			bigint min = null;
+			bigint max = null;
+
+			if (lBlockCount < rBlockCount)
+			{
+				min = lhs.DeepClone();
+				max = rhs.DeepClone();
+			}
+			else
+			{
+				max = lhs.DeepClone();
+				min = rhs.DeepClone();
+			}
+
+			bigint current = result;
+
+			while (max != null)
+			{
+				long aspt = max.value * min.value;
+
+				if (aspt > uint.MaxValue)
+				{
+					result.value = uint.MaxValue;
+
+					bigint over = new bigint
+					{
+						value = (uint)(aspt - uint.MaxValue)
+					};
+
+					max += over;
+				}
+				else
+				{
+					result.value = (uint)aspt;
+				}
+
+				max = max.previousBlock;
+				min = min.previousBlock;
+
+				if (max != null)
+				{
+					result.previousBlock = new bigint();
+					result = result.previousBlock;
+				}
+			}
+
+			return result;
+		}
+
+		internal bigint Reminder(bigint lhs, bigint rhs)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal BigInt Reminder(BigInt lhs, BigInt rhs)
+		internal bigint Subtract(bigint lhs, bigint rhs)
 		{
-			throw new NotImplementedException();
-		}
+			bigint result = new bigint();
 
-		internal BigInt Subtract(BigInt lhs, BigInt one)
-		{
-			throw new NotImplementedException();
+			int lBlockCount = mathHelper.GetBlocksCount(lhs);
+			int rBlockCount = mathHelper.GetBlocksCount(rhs);
+
+			bigint min = null;
+			bigint max = null;
+
+			if (lBlockCount < rBlockCount)
+			{
+				min = lhs.DeepClone();
+				max = rhs.DeepClone();
+			}
+			else
+			{
+				max = lhs.DeepClone();
+				min = rhs.DeepClone();
+			}
+
+			bigint current = result;
+
+			while (max != null)
+			{
+				result.value = max.value - min.value;
+
+				max = max.previousBlock;
+				min = min.previousBlock;
+
+				if (max != null)
+				{
+					result.previousBlock = new bigint();
+					result = result.previousBlock;
+				}
+			}
+
+			return result;
 		}
 	}
 }
