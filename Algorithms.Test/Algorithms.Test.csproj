@@ -73,6 +73,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BigRatUnitTest.cs" />
+    <Compile Include="BitwiseUnitTest.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="DividerUnitTest.cs" />
     <Compile Include="GraphNodeUnitTest.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Isbn10GeneratorUnitTest.cs" />
     <Compile Include="IssnGeneratorUnitTest.cs" />
     <Compile Include="PrimeGeneratorUnitTest.cs" />
-    <Compile Include="BigNumberDSUnitTest.cs" />
     <Compile Include="SortTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextGeneratorUnitTest.cs" />
@@ -98,6 +98,10 @@
     <ProjectReference Include="..\BigNumberDS\BigNumberDS.csproj">
       <Project>{63AC7F9A-C2B0-4E7D-A6C1-F7B933EA9768}</Project>
       <Name>BigNumberDS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BigRat\BigRat.csproj">
+      <Project>{6EC1DB0E-3DAE-46C9-9C10-1F763E81008E}</Project>
+      <Name>BigRat</Name>
     </ProjectReference>
     <ProjectReference Include="..\OurBigRat\OurBigRat.csproj">
       <Project>{B2A8BD8E-0910-4193-A9B2-619267825AB5}</Project>

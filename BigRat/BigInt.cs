@@ -1,15 +1,13 @@
 ﻿namespace BigRat
 {
 	using System;
-	using System.Collections.Generic;
 	using bigint = BigInt;
 
-	public class BigInt
+	public class BigInt : IComparable
 	{
+		internal bigint previousBlock;
+		internal uint value;
 		private static BigIntMath math = BigIntMath.Instance;
-		private bigint previousBlock;
-		private uint value;
-
 		internal static bigint One { get; } = new bigint(1);
 		internal static bigint Zero { get; } = new bigint(0);
 
@@ -182,13 +180,13 @@
 		{
 			if (obj == null)
 			{
-				return -1; // TODO  to ask
+				return 1;
 			}
 
 			bigint p = obj as bigint;
 			if (p == null)
 			{
-				return -1; // TODO  to ask
+				return 1;
 			}
 
 			return this.CompareTo(p);
@@ -231,11 +229,42 @@
 
 		public override int GetHashCode()
 		{
-			throw new NotImplementedException();
+			bigint tmp = this;
+
+			int result = 0;
+			while (tmp != null)
+			{
+				result += (int)tmp.value;
+
+				tmp = tmp.previousBlock;
+			}
+
+			return result;
 		}
 
 		#endregion eq
 
 		#endregion operators
+
+		public bigint DeepClone()
+		{
+			bigint tmp = this;
+			bigint result = new bigint();
+			bigint current = result;
+
+			while (tmp != null)
+			{
+				current.value = tmp.value;
+
+				tmp = tmp.previousBlock;
+				if (tmp != null)
+				{
+					current.previousBlock = new bigint();
+					current = current.previousBlock;
+				}
+			}
+
+			return result;
+		}
 	}
 }

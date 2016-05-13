@@ -1,20 +1,24 @@
-﻿
-namespace BigRat
+﻿namespace BigRat
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 	using System.Reflection;
-	using System.Text;
-	using System.Threading.Tasks;
+
 	/// generic Singleton<T> (потокобезопасный с использованием generic-класса и с отложенной инициализацией)
 
 	/// <typeparam name="T">Singleton class</typeparam>
 	public class Singleton<T> where T : class
 	{
-		/// Защищённый конструктор необходим для того, чтобы предотвратить создание экземпляра класса Singleton. 
+		/// Защищённый конструктор необходим для того, чтобы предотвратить создание экземпляра класса Singleton.
 		/// Он будет вызван из закрытого конструктора наследственного класса.
 		protected Singleton() { }
+
+		public static T Instance
+		{
+			get
+			{
+				return SingletonCreator<T>.CreatorInstance;
+			}
+		}
 
 		/// Фабрика используется для отложенной инициализации экземпляра класса
 		private sealed class SingletonCreator<S> where S : class
@@ -31,14 +35,5 @@ namespace BigRat
 				get { return instance; }
 			}
 		}
-
-		public static T Instance
-		{
-			get
-			{
-				return SingletonCreator<T>.CreatorInstance;
-			}
-		}
-
 	}
 }

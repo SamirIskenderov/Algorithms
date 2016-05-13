@@ -43,7 +43,7 @@ namespace Algorithms.Library
 		/// </summary>
 		/// <param name="num"></param>
 		/// <returns></returns>
-		internal static bool IsPowerOfTwo(ulong num)
+		public static bool IsPowerOfTwo(ulong num)
 			=> (num & (num - 1)) == 0;
 
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Algorithms.Library
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns></returns>
-		internal static ulong NextPowerOfTwo(ulong v)
+		public static ulong NextPowerOfTwo(ulong v)
 		{
 			v--;
 			v |= v >> 1;
@@ -98,7 +98,7 @@ namespace Algorithms.Library
 		/// <param name="lhs">Left array must have the same length as right array</param>
 		/// <param name="rhs">Right array must have the same length as left array</param>
 		/// <returns>New array with same length as parents have</returns>
-		internal static bool[] BitArraySum(bool[] lhs, bool[] rhs)
+		public static bool[] BitArraySum(bool[] lhs, bool[] rhs)
 		{
 			bool bitOverflow = false;
 
@@ -128,7 +128,7 @@ namespace Algorithms.Library
 		/// </summary>
 		/// <param name="array">Input array</param>
 		/// <returns>New array with same length as parent has in twos-complement</returns>
-		internal static bool[] UnaryMinus(bool[] array)
+		public static bool[] UnaryMinus(bool[] array)
 		{
 			bool[] one = new bool[array.Length];
 			one[0] = true;
@@ -141,7 +141,7 @@ namespace Algorithms.Library
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns>New array with same length as parent has</returns>
-		internal static bool[] Invert(bool[] input)
+		public static bool[] Invert(bool[] input)
 		{
 			bool[] result = new bool[input.Length];
 
@@ -217,10 +217,10 @@ namespace Algorithms.Library
 					P = BitArraySum(P, S);
 				}
 
-				P = BoolArrayRightShift(P, 1);
+				P = BitArrayRightShift(P, 1);
 			}
 
-			P = BoolArrayRightShift(P, 1);
+			P = BitArrayRightShift(P, 1);
 
 			bool[] result = new bool[P.Length];
 			P.CopyTo(result, 0);
@@ -234,7 +234,7 @@ namespace Algorithms.Library
 		/// <param name="arr"></param>
 		/// <param name="shift"></param>
 		/// <returns>New array with same length as parent has</returns>
-		internal static bool[] BoolArrayRightShift(bool[] arr, int shift)
+		public static bool[] BitArrayRightShift(bool[] arr, int shift)
 		{
 			bool[] result = new bool[arr.Length];
 
@@ -255,7 +255,7 @@ namespace Algorithms.Library
 		/// <param name="lhs">Left array must have the same length as right array</param>
 		/// <param name="rhs">Right array must have the same length as left array</param>
 		/// <returns>New array with same length as parents have</returns>
-		internal static bool[] BoolArraySubtract(bool[] lhs, bool[] rhs)
+		public static bool[] BitArraySubtract(bool[] lhs, bool[] rhs)
 		{
 			rhs = UnaryMinus(rhs);
 
