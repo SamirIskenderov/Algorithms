@@ -1,4 +1,6 @@
 ﻿using OurBigRat;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace Algorithms.Test
@@ -170,6 +172,33 @@ namespace Algorithms.Test
 			OurBigInt result = new OurBigInt(res);
 
 			Assert.Equal<OurBigInt>(result, lhs - rhs);
+		}
+
+		[Theory]
+		[InlineData(0, 0, 0)]
+		[InlineData(0, 1, 0)]
+		[InlineData(123, 0, 0)]
+		[InlineData(5, 2, 10)]
+		[InlineData(987, 456, 450072)]
+		[InlineData(9223372036854775807, 2, 18446744073709551614)]
+		public void TmpDigitTest(ulong l, ulong r, ulong result)
+		{
+			foreach (var item in OurBigDigitMathHelper.GetNextBit(l))
+			{
+				Console.Write(item);
+			}
+
+			bool[] larr = OurBigDigitMathHelper.GetNextBit(l).ToArray();
+			bool[] rarr = OurBigDigitMathHelper.GetNextBit(r).ToArray();
+			bool[] resultarr = OurBigDigitMathHelper.GetNextBit(result).ToArray();
+
+			OurBigDigit lhs = new OurBigDigit(larr);
+			OurBigDigit rhs = new OurBigDigit(rarr);
+			OurBigDigit res = new OurBigDigit(resultarr);
+
+			OurBigDigit trash = new OurBigDigit();
+
+			Assert.Equal<OurBigDigit>(res, OurBigDigitMath.DigitMultiple(lhs, rhs, out trash));
 		}
 
 		[Theory]

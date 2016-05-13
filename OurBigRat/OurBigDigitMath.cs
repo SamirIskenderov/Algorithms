@@ -1,7 +1,8 @@
 ﻿namespace OurBigRat
 {
 	using System;
-
+	using System.Linq;
+	using System.Text;
 	using digit = OurBigDigit;
 
 	public static class OurBigDigitMath
@@ -45,7 +46,15 @@
 		/// <param name="bitOverflow"></param>
 		internal static digit DigitSum(digit lhs, digit rhs, ref bool bitOverflow)
 		{
-			digit result = new digit();
+			digit result = null;
+			if (lhs.Value.Length == rhs.Value.Length)
+			{
+				result = new digit(new bool[lhs.Value.Length]);
+			}
+			else
+			{
+				result = new digit();
+			}
 
 			if (lhs == null ||
 			    result == null)
@@ -74,36 +83,89 @@
 				}
 			}
 
-            return result;
+			return result;
 		}
 
-        internal static digit DigitSubtract(digit lhs, digit rhs)
-        {
-            if (lhs == null || rhs == null)
-            {
-                throw new ArgumentNullException();
-            }
-            else if (lhs.CompareTo(rhs) < 0)
-            {
-                throw new ArithmeticException("First member can not be less than second one.");
-            }
-            else if (lhs.CompareTo(rhs) == 0)
-            {
-                return new digit();
-            }
+		/// <summary>
+		/// Modifies result aray as sum of two arrays or sum of one bit and array.
+		/// </summary>
+		/// <param name="lhs"></param>
+		/// <param name="rhs"></param>
+		/// <param name="result"></param>
+		/// <param name="bitOverflow"></param>
+		internal static bool[] BitArraySum(bool[] lhs, bool[] rhs, ref bool bitOverflow)
+		{
+			if (lhs == null || rhs == null)
+			{
+				throw new ArgumentNullException();
+			}
 
-            rhs = OurBigDigitMathHelper.Invert(rhs);
+			if (lhs.Length != rhs.Length)
+			{
+				throw new ArgumentException("Arraies length must be the same");
+			}
 
-            bool[] unoArray = new bool[digit.RADIX];
+			bool[] result = new bool[Math.Max(lhs.Length, rhs.Length)];
 
-            unoArray[digit.RADIX - 1] = true;
+			for (int i = 0; i < result.Length; i++)
+			{
+				result[i] = lhs[i] ^ rhs[i] ^ bitOverflow;
+				bitOverflow = (lhs[i] && rhs[i]) || ((lhs[i] || rhs[i]) && bitOverflow);
+			}
 
-            bool trash = false;
+			return result;
+		}
 
-            rhs = OurBigDigitMath.DigitSum(rhs, new digit(unoArray), ref trash);
+		internal static digit DigitSubtract(digit lhs, digit rhs)
+		{
+			if (lhs == null || rhs == null)
+			{
+				throw new ArgumentNullException();
+			}
+			else if (lhs.CompareTo(rhs) < 0)
+			{
+				throw new ArithmeticException("First member can not be less than second one.");
+			}
+			else if (lhs.CompareTo(rhs) == 0)
+			{
+				return new digit();
+			}
 
-            return OurBigDigitMath.DigitSum(lhs, rhs, ref trash);
-        }
+			rhs = OurBigDigitMathHelper.Invert(rhs);
+
+			bool trash = false;
+
+			rhs = OurBigDigitMath.DigitSum(rhs, digit.One, ref trash);
+
+			return OurBigDigitMath.DigitSum(lhs, rhs, ref trash);
+		}
+
+		public static string ATS(bool[] arr)
+		{
+			StringBuilder sb = new StringBuilder();
+			byte a = 0;
+
+			sb.Append("[ ");
+
+			foreach (var item in arr.Reverse())
+			{
+				sb.Append(item ? '1' : '0');
+
+				if (a == 3)
+				{
+					sb.Append(' ');
+					a = 0;
+				}
+				else
+				{
+					a++;
+				}
+			}
+
+			sb.Append("] ");
+
+			return sb.ToString();
+		}
 
 		/// <summary>
 		/// Modifies result aray as sum of two arrays or sum of one bit and array
@@ -114,7 +176,17 @@
 		/// <returns></returns>
 		public static digit DigitMultiple(digit m, digit r, out digit overflow)
 		{
-			overflow = new digit();
+			if (m.Equals(digit.Zero))
+			{
+				overflow = new digit();
+				return new digit();
+			}
+
+			if (r.Equals(digit.Zero))
+			{
+				overflow = new digit();
+				return new digit();
+			}
 
 			digit mcopy = OurBigDigitMathHelper.Trim(m);
 			digit mminuscopy = OurBigDigitMathHelper.UnaryMinus(mcopy);
@@ -124,46 +196,67 @@
 			int y = rcopy.Value.Length;
 
 			int length = x + y + 1;
-			digit A = new digit(new bool[length]);
-			digit S = new digit(new bool[length]);
-			digit P = new digit(new bool[length]);
+			bool[] A = new bool[length];
+			bool[] S = new bool[length];
+			bool[] P = new bool[length];
 
 			for (int i = y + 1; i < x + y + 1; i++)
 			{
-				A.Value[i] = mcopy.Value[i - y - 1];
-				S.Value[i] = mminuscopy.Value[i - y - 1];
+				A[i] = mcopy.Value[i - y - 1];
+				S[i] = mminuscopy.Value[i - y - 1];
 			}
 
-			for (int i = 0; i < x + 1; i++)
+			for (int i = 0; i < x; i++)
 			{
-				P.Value[i + 1] = rcopy.Value[i];
+				P[i + 1] = rcopy.Value[i];
 			}
 
 			for (int i = 0; i < y; i++)
 			{
-				bool last = P.Value[0];
-				bool penult = P.Value[1];
+				bool last = P[0];
+				bool penult = P[1];
+				bool trash = false;
 
 				if (!penult && last) // 01
 				{
-					bool trash = false;
-					P = OurBigDigitMath.DigitSum(P, A, ref trash);
-
+					P = OurBigDigitMath.BitArraySum(P, A, ref trash);
 				}
 
 				if (penult && !last) // 10
 				{
-					bool trash = false;
-					P = OurBigDigitMath.DigitSum(P, S, ref trash);
-
+					P = OurBigDigitMath.BitArraySum(P, S, ref trash);
 				}
 
-				P = OurBigDigitMath.DigitRightShift(P, 1);
+				if (trash)
+				{
+					bool[] tmp = new bool[P.Length];
+					tmp[0] = true;
+					OurBigDigitMath.BitArraySum(P, tmp, ref trash);
+				}
+
+				P = OurBigDigitMathHelper.BoolArrayRightShift(P, 1);
 			}
 
-			P = OurBigDigitMath.DigitRightShift(P, 1);
+			P = OurBigDigitMathHelper.BoolArrayRightShift(P, 1);
 
-			return P;
+			digit result = new digit(P);
+
+			overflow = new digit(OurBigDigitMathHelper.BoolArrayRightShift(P, digit.RADIX));
+			if (!overflow.Equals(digit.Zero))
+			{
+
+			//overflow = OurBigDigitMath.DigitSubtract(overflow, digit.One);
+			}
+			return result;
+		}
+
+		internal static bool[] BoolArraySubtract(bool[] lhs, bool[] rhs)
+		{
+			rhs = OurBigDigitMathHelper.UnaryMinus(rhs);
+
+			bool trash = false;
+
+			return OurBigDigitMath.BitArraySum(lhs, rhs, ref trash);
 		}
 	}
 }
