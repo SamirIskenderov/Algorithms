@@ -8,7 +8,7 @@
 
 	public class BigInt : IComparable
 	{
-		internal bigint previousBlock;
+		public bigint previousBlock;
 		internal uint value;
 		private static readonly BigIntMath math = BigIntMath.Instance;
 		private static readonly BigIntMathHelper mathHelper = BigIntMathHelper.Instance;
@@ -338,13 +338,15 @@
 
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			byte a = 0;
+			StringBuilder sb = new StringBuilder(32);
 
 			bigint current = this;
 
 			while (current != null)
 			{
+				int count = 0;
+				byte a = 0;
+
 				sb.Append("[ ");
 
 				foreach (var item in Bitwise.GetNextBit(this.value).Reverse())
@@ -360,6 +362,24 @@
 					{
 						a++;
 					}
+					count++;
+				}
+
+				while (count < 32)
+				{
+					sb.Append('0');
+
+					if (a == 3)
+					{
+						sb.Append(' ');
+						a = 0;
+					}
+					else
+					{
+						a++;
+					}
+
+					count++;
 				}
 
 				sb.Append("] ");
