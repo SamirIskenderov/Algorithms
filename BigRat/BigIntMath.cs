@@ -46,7 +46,7 @@
 
 			while (max != null)
 			{
-				long aspt = max.value * min.value;
+				long aspt = (long)max.value * (long)min.value;
 
 				if (aspt > uint.MaxValue)
 				{
@@ -107,7 +107,15 @@
 
 			while (max != null)
 			{
-				result.value = max.value - min.value;
+				long aspt = max.value - min.value;
+
+				if (aspt < uint.MinValue)
+				{
+					aspt += uint.MaxValue;
+					max.previousBlock.value -= uint.MaxValue;
+				}
+
+				result.value = (uint)aspt;
 
 				max = max.previousBlock;
 				min = min.previousBlock;
