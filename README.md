@@ -1,6 +1,12 @@
 # Algorithms
 Some my algorithms.
 
+#Installation
+
+You can simple download NuGet packages from <a href="https://www.nuget.org/packages?q=snowinmars">here</a> or compile it with .NET Framework 4+
+
+#Table of content
+
 Now there is
 <ul>
 	<li>
@@ -14,13 +20,14 @@ Now there is
 	<li>
 		Sorts
 		<ul>
-			<li>Bubble</li>
-			<li>Quick bubble</li>
-			<li>Insert</li>
-			<li>Quick</li>
-			<li>Merge</li>
 			<li>Bogosort</li>
+			<li>Bubble</li>
+			<li>Heap</li>
+			<li>Insert</li>
+			<li>Merge</li>
 			<li>Pancake</li>
+			<li>Quick bubble</li>
+			<li>Quick</li>
 		</ul>
 	</li>
 	<li>
