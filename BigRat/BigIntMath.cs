@@ -115,15 +115,15 @@
 					max.previousBlock.value -= uint.MaxValue;
 				}
 
-				result.value = (uint)aspt;
+				current.value = (uint)aspt;
 
 				max = max.previousBlock;
 				min = min.previousBlock;
 
 				if (max != null)
 				{
-					result.previousBlock = new bigint();
-					result = result.previousBlock;
+					current.previousBlock = new bigint();
+					current = current.previousBlock;
 				}
 			}
 

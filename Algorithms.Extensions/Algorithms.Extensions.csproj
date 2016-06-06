@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Algorithms.Extensions</RootNamespace>
     <AssemblyName>Algorithms.Extensions</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,11 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ApplicationException.cs" />
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="BigIntegerExtension.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Exceptions\ArgumentAppException.cs" />
+    <Compile Include="Exceptions\ArgumentNullAppException.cs" />
+    <Compile Include="Exceptions\ValidationAppException.cs" />
     <Compile Include="IComparableExtension.cs" />
+    <Compile Include="Singleton.cs" />
     <Compile Include="StringBuilderExtension.cs" />
     <Compile Include="IListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

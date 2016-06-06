@@ -349,7 +349,7 @@
 
 				sb.Append("[ ");
 
-				foreach (var item in Bitwise.GetNextBit(this.value).Reverse())
+				foreach (var item in Bitwise.GetNextBit(current.value).Reverse())
 				{
 					sb.Append(item ? '1' : '0');
 

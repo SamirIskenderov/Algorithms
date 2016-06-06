@@ -45,6 +45,7 @@ namespace Algorithms.Library
 				ThreeDotsMark = this.ThreeDotsMark,
 				WordMaxLength = this.WordMaxLength,
 				WordMinLength = this.WordMinLength,
+				IsFirstLetterAlwaysUpper = this.IsFirstLetterAlwaysUpper,
 			};
 
 			foreach (var item in this.Marks)
@@ -69,6 +70,7 @@ namespace Algorithms.Library
 			this.IsUsingCommas = true;
 			this.IsUsingExclamationMarks = true;
 			this.IsUsingQuestionMarks = true;
+			this.IsFirstLetterAlwaysUpper = false;
 
 			this.SpaceMark = ' ';
 			this.DotMark = '.';
@@ -177,6 +179,8 @@ namespace Algorithms.Library
 
 		#endregion marks
 
+		public bool IsFirstLetterAlwaysUpper { get; set; }
+
 		public int WordMaxLength { get; set; }
 		public int WordMinLength { get; set; }
 
@@ -191,7 +195,7 @@ namespace Algorithms.Library
 				sb.Append(Convert.ToChar(Common.rand.Next(97, 122))); // english symbols codes
 			}
 
-			if (isFirstLerretUp)
+			if ((IsFirstLetterAlwaysUpper) && (isFirstLerretUp))
 			{
 				sb[0] = Char.ToUpper(sb[0], CultureInfo.CurrentCulture);
 			}
@@ -209,7 +213,7 @@ namespace Algorithms.Library
 
 				sb.Append(this.GetNewWord(this.WordMinLength, this.WordMaxLength));
 
-				if (wasSentenceEnd)
+				if ((IsFirstLetterAlwaysUpper) || (wasSentenceEnd))
 				{
 					sb[0] = Char.ToUpper(sb[0]);
 					wasSentenceEnd = false;
