@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\ArgumentAppException.cs" />
     <Compile Include="Exceptions\ArgumentNullAppException.cs" />
     <Compile Include="Exceptions\ValidationAppException.cs" />
+    <Compile Include="FastObjectAllocator.cs" />
     <Compile Include="IComparableExtension.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="StringBuilderExtension.cs" />
