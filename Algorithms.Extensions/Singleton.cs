@@ -1,8 +1,8 @@
-﻿namespace Algorithms.Extensions
-{
-    using System;
-    using System.Reflection;
+﻿using System;
+using System.Reflection;
 
+namespace Algorithms.Extensions
+{
     /// <summary>
     /// Thread-safe generic singleton
     /// </summary>

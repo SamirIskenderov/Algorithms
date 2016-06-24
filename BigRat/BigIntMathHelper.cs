@@ -1,11 +1,7 @@
 ﻿namespace Algorithms.BigRat
 {
-	internal class BigIntMathHelper : Singleton<BigIntMathHelper>
+	internal class BigIntMathHelper
 	{
-		private BigIntMathHelper()
-		{
-		}
-
 		internal int GetBlocksCount(BigInt input)
 		{
 			int result = 0;

@@ -33,6 +33,11 @@ namespace Algorithms.Extensions
 
                 ConstructorInfo defaultCtor = objType.GetConstructor(new Type[] { });
 
+                if (defaultCtor == null)
+                {
+                    throw new InvalidOperationException("Can't allocate object: ctor is null");
+                }
+
                 ILGenerator ilGen = meth.GetILGenerator();
 
                 ilGen.Emit(OpCodes.Newobj, defaultCtor);

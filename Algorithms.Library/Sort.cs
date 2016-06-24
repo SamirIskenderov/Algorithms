@@ -1,10 +1,10 @@
-﻿namespace Algorithms.Library
-{
-	using Extensions;
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Algorithms.Extensions;
 
+namespace Algorithms.Library
+{
 	public static class Sort
 	{
 		public static void Bogosort<T>(ref IList<T> arr)
