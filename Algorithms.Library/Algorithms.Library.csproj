@@ -60,6 +60,8 @@
     <Compile Include="Generators\PrimeGenerator.cs" />
     <Compile Include="Graph\Graph.cs" />
     <Compile Include="Graph\GraphNode.cs" />
+    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Menu\MenuNode.cs" />
     <Compile Include="Search.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
