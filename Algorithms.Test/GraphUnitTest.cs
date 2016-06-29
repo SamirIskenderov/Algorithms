@@ -21,273 +21,52 @@ namespace Algorithms.Test
 		//       / \
 		//      6   7
 
-		private Graph NewGraph
+		private static Graph NewGraph
 		{
 			get
 			{
-				Graph graph = new Graph
-				{
-					EnsureValidity = false
-				};
+				Graph graph = new Graph();
 
-				graph.AddNode(9);
+                GraphNode node0 = new GraphNode(0);
+                GraphNode node1 = new GraphNode(1);
+                GraphNode node2 = new GraphNode(2);
+                GraphNode node3 = new GraphNode(3);
+                GraphNode node4 = new GraphNode(4);
+                GraphNode node5 = new GraphNode(5);
+                GraphNode node6 = new GraphNode(6);
+                GraphNode node7 = new GraphNode(7);
+                GraphNode node8 = new GraphNode(8);
 
-				graph.ConnectNodes(graph.Nodes[0], graph.Nodes[1]);
-				graph.ConnectNodes(graph.Nodes[1], graph.Nodes[2]);
-				graph.ConnectNodes(graph.Nodes[2], graph.Nodes[3]);
-				graph.ConnectNodes(graph.Nodes[3], graph.Nodes[4]);
-				graph.ConnectNodes(graph.Nodes[4], graph.Nodes[5]);
-				graph.ConnectNodes(graph.Nodes[5], graph.Nodes[7]);
-				graph.ConnectNodes(graph.Nodes[5], graph.Nodes[6]);
-				graph.ConnectNodes(graph.Nodes[3], graph.Nodes[8]);
+                node0.Connect(node1);
+                node1.Connect(node2);
+                node2.Connect(node3);
+                node3.Connect(node8);
+                node3.Connect(node4);
+                node4.Connect(node5);
+                node5.Connect(node6);
+                node5.Connect(node7);
 
-				graph.EnsureValidity = true;
+                graph.AddNode(node0);
+                graph.AddNode(node1);
+                graph.AddNode(node2);
+                graph.AddNode(node3);
+                graph.AddNode(node4);
+                graph.AddNode(node5);
+                graph.AddNode(node6);
+                graph.AddNode(node7);
+                graph.AddNode(node8);
 
-				if (!graph.CheckValidity())
-				{
-					throw new ArgumentException("Graph is not valid");
-				}
-
-				return graph;
+                return graph;
 			}
 		}
-
-		#region operators
-
-		#region hash
-
-		[TestMethod]
-		public void GetHashCodeForSameGraphMustReturnSameValue()
-		{
-			Assert.AreEqual(true, this.NewGraph.GetHashCode() == this.NewGraph.GetHashCode());
-		}
-
-		[TestMethod]
-		public void GetHashCodeForCopyOfGraphMustReturnSameValue()
-		{
-			Graph rhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			rhs.AddNode(9);
-
-			rhs.ConnectNodes(rhs.Nodes[0], rhs.Nodes[1]);
-			rhs.ConnectNodes(rhs.Nodes[1], rhs.Nodes[2]);
-			rhs.ConnectNodes(rhs.Nodes[2], rhs.Nodes[3]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[4]);
-			rhs.ConnectNodes(rhs.Nodes[4], rhs.Nodes[5]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[7]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[6]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[8]);
-
-			rhs.EnsureValidity = true;
-
-			Assert.AreEqual(true, this.NewGraph.GetHashCode() == rhs.GetHashCode());
-		}
-
-		[TestMethod]
-		public void GetHashCodeForAlmostSameMustReturnNotSameValueVer1()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.AddNode();
-
-			Assert.AreEqual(false, lhs.GetHashCode() == rhs.GetHashCode());
-		}
-
-		[TestMethod]
-		public void GetHashCodeForAlmostSameMustReturnNotSameValueVer2()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.ConnectNodes(1, 5);
-
-			Assert.AreEqual(false, lhs.GetHashCode() == rhs.GetHashCode());
-		}
-
-		#endregion hash
-
-		#region equals
-
-		[TestMethod]
-		public void GraphMustBeEqualToItsetf()
-		{
-			Graph graph = this.NewGraph;
-
-			Assert.AreEqual(true, graph.Equals(graph));
-		}
-
-		[TestMethod]
-		public void GraphsMustBeCommutativeEquals()
-		{
-			Graph rhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			rhs.AddNode(9);
-
-			rhs.ConnectNodes(rhs.Nodes[0], rhs.Nodes[1]);
-			rhs.ConnectNodes(rhs.Nodes[1], rhs.Nodes[2]);
-			rhs.ConnectNodes(rhs.Nodes[2], rhs.Nodes[3]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[4]);
-			rhs.ConnectNodes(rhs.Nodes[4], rhs.Nodes[5]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[7]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[6]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[8]);
-
-			rhs.EnsureValidity = true;
-
-			Graph lhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			lhs.AddNode(9);
-
-			lhs.ConnectNodes(lhs.Nodes[0], lhs.Nodes[1]);
-			lhs.ConnectNodes(lhs.Nodes[1], lhs.Nodes[2]);
-			lhs.ConnectNodes(lhs.Nodes[2], lhs.Nodes[3]);
-			lhs.ConnectNodes(lhs.Nodes[3], lhs.Nodes[4]);
-			lhs.ConnectNodes(lhs.Nodes[4], lhs.Nodes[5]);
-			lhs.ConnectNodes(lhs.Nodes[5], lhs.Nodes[7]);
-			lhs.ConnectNodes(lhs.Nodes[5], lhs.Nodes[6]);
-			lhs.ConnectNodes(lhs.Nodes[3], lhs.Nodes[8]);
-
-			lhs.EnsureValidity = true;
-
-			Assert.AreEqual(lhs.Equals(rhs), rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void GraphsMustBeAssociativeEquals()
-		{
-			Graph rhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			rhs.AddNode(9);
-
-			rhs.ConnectNodes(rhs.Nodes[0], rhs.Nodes[1]);
-			rhs.ConnectNodes(rhs.Nodes[1], rhs.Nodes[2]);
-			rhs.ConnectNodes(rhs.Nodes[2], rhs.Nodes[3]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[4]);
-			rhs.ConnectNodes(rhs.Nodes[4], rhs.Nodes[5]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[7]);
-			rhs.ConnectNodes(rhs.Nodes[5], rhs.Nodes[6]);
-			rhs.ConnectNodes(rhs.Nodes[3], rhs.Nodes[8]);
-
-			rhs.EnsureValidity = true;
-
-			Graph mhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			mhs.AddNode(9);
-
-			mhs.ConnectNodes(mhs.Nodes[0], mhs.Nodes[1]);
-			mhs.ConnectNodes(mhs.Nodes[1], mhs.Nodes[2]);
-			mhs.ConnectNodes(mhs.Nodes[2], mhs.Nodes[3]);
-			mhs.ConnectNodes(mhs.Nodes[3], mhs.Nodes[4]);
-			mhs.ConnectNodes(mhs.Nodes[4], mhs.Nodes[5]);
-			mhs.ConnectNodes(mhs.Nodes[5], mhs.Nodes[7]);
-			mhs.ConnectNodes(mhs.Nodes[5], mhs.Nodes[6]);
-			mhs.ConnectNodes(mhs.Nodes[3], mhs.Nodes[8]);
-
-			mhs.EnsureValidity = true;
-
-			Graph lhs = new Graph
-			{
-				EnsureValidity = false
-			};
-
-			lhs.AddNode(9);
-
-			lhs.ConnectNodes(lhs.Nodes[0], lhs.Nodes[1]);
-			lhs.ConnectNodes(lhs.Nodes[1], lhs.Nodes[2]);
-			lhs.ConnectNodes(lhs.Nodes[2], lhs.Nodes[3]);
-			lhs.ConnectNodes(lhs.Nodes[3], lhs.Nodes[4]);
-			lhs.ConnectNodes(lhs.Nodes[4], lhs.Nodes[5]);
-			lhs.ConnectNodes(lhs.Nodes[5], lhs.Nodes[7]);
-			lhs.ConnectNodes(lhs.Nodes[5], lhs.Nodes[6]);
-			lhs.ConnectNodes(lhs.Nodes[3], lhs.Nodes[8]);
-
-			lhs.EnsureValidity = true;
-
-			Assert.AreEqual(true, rhs.Equals(mhs) && (mhs.Equals(lhs) && rhs.Equals(lhs)));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualToNull()
-		{
-			Graph graph = this.NewGraph;
-
-			Assert.AreEqual(false, graph.Equals(null));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualAnotherDifferentGraphVer1()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.AddNode();
-
-			Assert.AreEqual(false, rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualAnotherDifferentGraphVer2()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.ConnectNodes(1, 5);
-
-			Assert.AreEqual(false, rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualAnotherDifferentGraphVer3()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.CanBeCyclic = !rhs.CanBeCyclic;
-
-			Assert.AreEqual(false, rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualAnotherDifferentGraphVer4()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.CanBeLooped = !rhs.CanBeLooped;
-
-			Assert.AreEqual(false, rhs.Equals(lhs));
-		}
-
-		[TestMethod]
-		public void GraphMustNotBeEqualAnotherDifferentGraphVer5()
-		{
-			Graph rhs = this.NewGraph;
-			Graph lhs = this.NewGraph;
-			lhs.CanBeNonConnectivity = !rhs.CanBeNonConnectivity;
-
-			Assert.AreEqual(false, rhs.Equals(lhs));
-		}
-
-		#endregion equals
-
-		#endregion operators
 
 		#region correct
 
 		[TestMethod]
 		public void CreateTestGraphMustNotThrowArgExc()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph.CloneDirectly();
+            Assert.IsFalse(graph == null);
 		}
 
 		#endregion correct
@@ -297,7 +76,7 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OriginalGraphMustNotContainsCycle()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
 			Assert.AreEqual(false, graph.IsCycle());
 		}
@@ -305,25 +84,29 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void ModifyedOriginalGraphMustContainsCycleVer1()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//        |
-			//        5
-			//       / \
-			//      6---7
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //        |
+            //        5
+            //       / \
+            //      6---7
+            //        ^
+            //       new
 
-			graph.CanBeCyclic = true;
+            Assert.AreEqual(false, graph.IsCycle());
 
-			graph.ConnectNodes(6, 7);
+            graph.State |= State.CanBeCycle;
+
+			graph.Connect(graph.Nodes[6], graph.Nodes[7]);
 
 			Assert.AreEqual(true, graph.IsCycle());
 		}
@@ -331,25 +114,27 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void ModifyedOriginalGraphMustContainsCycleVer2()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//    |   |
-			//    |   5
-			//    \  / \
-			//      6   7
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //    |   |
+            //    |   5
+            //new \  / \
+            //      6   7
 
-			graph.CanBeCyclic = true;
+            Assert.AreEqual(false, graph.IsCycle());
 
-			graph.ConnectNodes(6, 8);
+            graph.State |= State.CanBeCycle;
+
+			graph.Connect(graph.Nodes[6], graph.Nodes[8]);
 
 			Assert.AreEqual(true, graph.IsCycle());
 		}
@@ -361,7 +146,7 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OriginalGraphMustNotContainsLoops()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
 			Assert.AreEqual(false, graph.IsLooped());
 		}
@@ -369,11 +154,13 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void ModifyedOriginalGraphMustContainsLoop()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			graph.CanBeLooped = true;
+            Assert.AreEqual(false, graph.IsLooped());
 
-			graph.ConnectNodes(6, 6);
+            graph.State = State.CanBeLooped;
+
+			graph.Connect(graph.Nodes[6], graph.Nodes[6]);
 
 			Assert.AreEqual(true, graph.IsLooped());
 		}
@@ -385,7 +172,7 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OriginalGraphMustBeConnectivity()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
 			Assert.AreEqual(true, graph.IsConnectivity());
 		}
@@ -393,28 +180,30 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void ModifyedOriginalGraphMustBeConnectivity()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//        |
-			//        5
-			//       / \
-			//      6   7
-			//          |
-			//          9
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //        |
+            //        5
+            //       / \
+            //      6   7
+            //          |
+            //          9 < new
 
-			graph.CanBeNonConnectivity = true;
+            Assert.AreEqual(true, graph.IsConnectivity());
 
-			graph.AddNode();
-			graph.ConnectNodes(7, 9);
+            graph.State = State.CanBeNonConnectivly;
+
+            graph.AddNode();
+			graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
 			Assert.AreEqual(true, graph.IsConnectivity());
 		}
@@ -422,25 +211,27 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void ModifyedOriginalGraphMustNotBeConnectivity()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//        |
-			//        5
-			//       / \
-			//      6   7
-			//
-			//          9
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //        |
+            //        5
+            //       / \
+            //      6   7
+            //
+            //          9 < new
 
-			graph.CanBeNonConnectivity = true;
+            Assert.AreEqual(true, graph.IsConnectivity());
+
+            graph.State = State.CanBeNonConnectivly;
 
 			graph.AddNode();
 
@@ -454,66 +245,66 @@ namespace Algorithms.Test
 		[TestMethod]
 		public void OriginalGraphMustHaveRouteBetweenNodes()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			Assert.AreEqual(true, graph.IsRouteBetween(2, 5));
+			Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[2], graph.Nodes[5]));
 		}
 
 		[TestMethod]
 		public void ModifyedOriginalGraphMustHaveRouteBetweenNodes()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//        |
-			//        5
-			//       / \
-			//      6   7
-			//          |
-			//          9
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //        |
+            //        5
+            //       / \
+            //      6   7
+            //          | < new
+            //          9 < new
 
-			graph.CanBeNonConnectivity = true;
+            graph.State = State.CanBeNonConnectivly;
 
 			graph.AddNode();
-			graph.ConnectNodes(7, 9);
+			graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
-			Assert.AreEqual(true, graph.IsRouteBetween(9, 6));
+			Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
 		}
 
 		[TestMethod]
 		public void NonConnectivityGraphMustNotHaveRouteBetweenNonConnectiviedNodes()
 		{
-			Graph graph = this.NewGraph.Clone();
+			Graph graph = NewGraph;
 
-			//      0
-			//      |
-			//      1
-			//      |
-			//      2
-			//      |
-			//      3
-			//     / \
-			//    8   4
-			//        |
-			//        5
-			//       / \
-			//      6   7
-			//
-			//          9
+            //      0
+            //      |
+            //      1
+            //      |
+            //      2
+            //      |
+            //      3
+            //     / \
+            //    8   4
+            //        |
+            //        5
+            //       / \
+            //      6   7
+            //
+            //          9 < new
 
-			graph.CanBeNonConnectivity = true;
+            graph.State = State.CanBeNonConnectivly;
 
 			graph.AddNode();
 
-			Assert.AreEqual(false, graph.IsRouteBetween(9, 6));
+			Assert.AreEqual(false, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
 		}
 
 		#endregion routeBetween
