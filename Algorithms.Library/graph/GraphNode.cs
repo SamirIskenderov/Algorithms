@@ -1,151 +1,96 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Algorithms.Library
 {
-	public enum Color
-	{
-		None = 0,
-		White = 1,
-		Grey = 2,
-		Black = 3,
-	}
+    public enum Color
+    {
+        Black = 0,
+        Grey = 1,
+        White = 2,
+    }
 
-	public class GraphNode
-	{
-		public GraphNode Clone()
-		{
-			GraphNode node = new GraphNode(this.Number)
-			{
-				Color = this.Color
-			};
+    public class GraphNode : ICloneable
+    {
+        #region Public Constructors
 
-			foreach (var item in this.Connections)
-			{
-				node.AddConnection(item);
-			}
+        public GraphNode(int id, IEnumerable<GraphNode> connections = null, Color color = Color.White)
+        {
+            this.Id = id;
+            this.Color = color;
 
-			return node;
-		}
+            if (connections == null)
+            {
+                connections = new List<GraphNode>();
+            }
 
-		public GraphNode(ushort number) : this(number, new List<ushort>())
-		{
-		}
+            this.Connections = connections.ToList();
+        }
 
-		public static bool operator !=(GraphNode lhsGraph, GraphNode rhsGraph)
-		    => !(lhsGraph == rhsGraph);
+        #endregion Public Constructors
 
-		public static bool operator ==(GraphNode lhsGraph, GraphNode rhsGraph)
-		{
-			if (((object)lhsGraph == null) || ((object)rhsGraph == null))
-			{
-				return false;
-			}
+        #region Public Properties
 
-			if (lhsGraph.Number != rhsGraph.Number)
-			{
-				return false;
-			}
+        public Color Color { get; set; }
+        public IList<GraphNode> Connections { get; private set; }
+        public int Id { get; set; }
 
-			if (lhsGraph.Connections.Count != rhsGraph.Connections.Count)
-			{
-				return false;
-			}
+        #endregion Public Properties
 
-			for (int i = 0; i < lhsGraph.Connections.Count; i++)
-			{
-				if (lhsGraph.Connections[i] != rhsGraph.Connections[i])
-				{
-					return false;
-				}
-			}
+        #region Clone
 
-			return true;
-		}
+        public object Clone()
+        {
+            return (object)this.CloneDirectly();
+        }
 
-		public override int GetHashCode()
-		{
-			int result = 17;
+        /// <summary>
+        /// Overload of this.Clone() by return value
+        /// </summary>
+        /// <returns></returns>
+        public GraphNode CloneDirectly()
+        {
+            return new GraphNode(this.Id, this.Connections, this.Color);
+        }
 
-			for (int i = 0; i < this.Connections.Count; i++)
-			{
-				result ^= i;
-				foreach (var item in this.Connections)
-				{
-					result ^= item;
-				}
-			}
+        public GraphNode DeepClone()
+        {
+            IList<GraphNode> connection = this.Connections.ToList();
 
-			return result ^ this.Number;
-		}
+            return new GraphNode(this.Id, connection, this.Color);
+        }
 
-		public override bool Equals(object obj)
-		{
-			if (obj == null)
-			{
-				return false;
-			}
+        #endregion Clone
 
-			GraphNode node = obj as GraphNode;
+        #region Public Methods
 
-			if (node == null)
-			{
-				return false;
-			}
+        /// <summary>
+        /// This method add connection to this. In result nodes appears in Connections property of each other.
+        /// </summary>
+        /// <param name="node"></param>
+        public void Connect(GraphNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-			if (node == this)
-			{
-				return true;
-			}
+            this.Connections.Add(node);
+            node.Connections.Add(this);
+        }
 
-			return this == node &&
-			    this.Color == node.Color;
-		}
+        public void Disconnect(GraphNode node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-		public GraphNode(ushort number, IList<ushort> connections)
-		{
-			this.Number = number;
-			this.Connections = connections.ToList();
-			this.Color = Color.White;
-		}
+            this.Connections.Remove(node);
+            node.Connections.Remove(this);
+        }
 
-		public Color Color { get; set; }
-
-		public IList<ushort> Connections { get; private set; }
-
-		public ushort Number { get; private set; }
-
-		/// <summary>
-		/// One-way bind this node with node with index index.
-		/// Return false if connection already exists.
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		public bool AddConnection(ushort index)
-		{
-			if (this.Connections.Contains(index))
-			{
-				return false;
-			}
-
-			this.Connections.Add(index);
-			return true;
-		}
-
-		public GraphNode GetNew()
-		{
-			return new GraphNode((ushort)this.Connections.Count);
-		}
-
-		/// <summary>
-		/// One-way unbind this node with node with index index.
-		/// Return false, if there wasn't such connection.
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		public bool RemoveConnection(ushort index)
-		{
-			return this.Connections.Remove(index);
-		}
-	}
+        #endregion Public Methods
+    }
 }
