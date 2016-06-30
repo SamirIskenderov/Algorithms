@@ -22,7 +22,7 @@ namespace Algorithms.Library.Menu
             this.graph.State = State.Default;
         }
 
-        internal protected Menu(Graph graph)
+        protected internal Menu(Graph graph)
         {
             this.graph = graph;
             this.graph.State = State.Default;
