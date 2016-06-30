@@ -41,48 +41,11 @@ namespace Algorithms.Library
         public Guid Id { get; } = Guid.NewGuid();
         public IList<GraphNode> Nodes { get; private set; }
         public State State { get; set; }
+        public GraphNode Head => this.Nodes[0];
 
         #endregion Public Properties
 
         #region Public Methods
-
-        /// <summary>
-        /// Colories every node in graph.
-        /// </summary>
-        /// <param name="color"></param>
-        public void SetColor(Color color)
-        {
-            foreach (var item in this.Nodes)
-            {
-                item.Color = color;
-            }
-        }
-
-        /// <summary>
-        /// Check, is graph solid using DFS.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsNonConnectivity()
-        {
-            try
-            {
-                GraphNode root = this.Nodes[0];
-
-                foreach (var node in this.Nodes)
-                {
-                    if (!this.IsRouteBetween(node, root))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-            finally
-            {
-                this.ClearColor();
-            }
-        }
 
         public void AddNode()
         {
@@ -183,6 +146,32 @@ namespace Algorithms.Library
         }
 
         /// <summary>
+        /// Check, is graph solid using DFS.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsNonConnectivity()
+        {
+            try
+            {
+                GraphNode root = this.Nodes[0];
+
+                foreach (var node in this.Nodes)
+                {
+                    if (!this.IsRouteBetween(node, root))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            finally
+            {
+                this.ClearColor();
+            }
+        }
+
+        /// <summary>
         /// Check, is there any route between two nodes.
         /// Based on deep-first.
         /// </summary>
@@ -217,20 +206,21 @@ namespace Algorithms.Library
             this.EnshureValid();
         }
 
+        /// <summary>
+        /// Colories every node in graph.
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetColor(Color color)
+        {
+            foreach (var item in this.Nodes)
+            {
+                item.Color = color;
+            }
+        }
+
         #endregion Public Methods
 
         #region Private Methods
-
-        /// <summary>
-        /// Set color of all nodes of this graph to Color.White
-        /// </summary>
-        private void ClearColor()
-        {
-            foreach (var graphNode in this.Nodes)
-            {
-                graphNode.Color = Color.White;
-            }
-        }
 
         protected virtual void EnshureValid()
         {
@@ -238,7 +228,7 @@ namespace Algorithms.Library
             {
                 if (this.IsCycle())
                 {
-                        throw new InvalidOperationException($"Graph {this.Id} state {this.State} is not allow to use this action: graph could became cycle");
+                    throw new InvalidOperationException($"Graph {this.Id} state {this.State} is not allow to use this action: graph could became cycle");
                 }
             }
 
@@ -259,13 +249,24 @@ namespace Algorithms.Library
             }
         }
 
+        /// <summary>
+        /// Set color of all nodes of this graph to Color.White
+        /// </summary>
+        private void ClearColor()
+        {
+            foreach (var graphNode in this.Nodes)
+            {
+                graphNode.Color = Color.White;
+            }
+        }
+
         private bool IsCycle(GraphNode node, GraphNode lastNode)
         {
             node.Color = Color.Grey;
 
             foreach (var item in node.Connections)
             {
-                if ((item == lastNode) || 
+                if ((item == lastNode) ||
                     (item == node))
                 {
                     continue;
@@ -338,7 +339,7 @@ namespace Algorithms.Library
 
         public object Clone()
         {
-            return (object) this.CloneDirectly();
+            return (object)this.CloneDirectly();
         }
 
         /// <summary>

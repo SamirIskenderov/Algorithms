@@ -38,7 +38,7 @@ namespace Algorithms.Library
 
         #region Clone
 
-        public object Clone()
+        public virtual object Clone()
         {
             return (object)this.CloneDirectly();
         }
@@ -47,12 +47,12 @@ namespace Algorithms.Library
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public GraphNode CloneDirectly()
+        public virtual GraphNode CloneDirectly()
         {
             return new GraphNode(this.Connections, this.Color);
         }
 
-        public GraphNode DeepClone()
+        public virtual GraphNode DeepClone()
         {
             IList<GraphNode> connection = this.Connections.ToList();
 
