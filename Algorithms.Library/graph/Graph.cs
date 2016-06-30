@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Algorithms.Library
 {
@@ -20,7 +21,7 @@ namespace Algorithms.Library
 
         public Graph()
         {
-            this.Nodes = new List<GraphNode>();
+            this.Nodes = new Dictionary<int, GraphNode>();
             this.State = State.Default;
         }
 
@@ -31,7 +32,27 @@ namespace Algorithms.Library
                 nodes = new List<GraphNode>();
             }
 
-            this.Nodes = nodes.ToList();
+            this.Nodes = new Dictionary<int, GraphNode>();
+
+            foreach (var node in nodes)
+            {
+                this.Nodes.Add(new KeyValuePair<int, GraphNode>(this.Nodes.Count, node));
+            }
+        }
+
+        public Graph(IDictionary<int, GraphNode> nodes)
+        {
+            if (nodes == null)
+            {
+                nodes = new Dictionary<int, GraphNode>();
+            }
+
+            this.Nodes = new Dictionary<int, GraphNode>();
+
+            foreach (var node in nodes)
+            {
+                this.Nodes.Add(node);
+            }
         }
 
         #endregion Public Constructors
@@ -39,7 +60,7 @@ namespace Algorithms.Library
         #region Public Properties
 
         public Guid Id { get; set; }
-        public IList<GraphNode> Nodes { get; private set; }
+        public IDictionary<int, GraphNode> Nodes { get; private set; }
         public State State { get; set; }
 
         #endregion Public Properties
@@ -54,7 +75,7 @@ namespace Algorithms.Library
         {
             foreach (var item in this.Nodes)
             {
-                item.Color = color;
+                item.Value.Color = color;
             }
         }
 
@@ -69,7 +90,7 @@ namespace Algorithms.Library
                 var node = this.Nodes[0];
                 this.IsCycle(node, node);
 
-                return this.Nodes.All(item => item.Color != Color.White);
+                return this.Nodes.All(item => item.Value.Color != Color.White);
             }
             finally
             {
@@ -79,22 +100,26 @@ namespace Algorithms.Library
 
         public void AddNode()
         {
-            int id = (this.Nodes.Count == 0 ?
-                                0 :
-                                this.Nodes.Max(n => n.Id));
-
-            GraphNode node = new GraphNode(id + 1);
-            this.Nodes.Add(node);
+            GraphNode node = new GraphNode();
+            this.Nodes.Add(new KeyValuePair<int, GraphNode>(this.Nodes.Count, node));
         }
 
         public void AddNode(GraphNode node)
         {
-            if (this.Nodes.Contains(node))
+            if (this.Nodes.Values.Contains(node))
             {
                 throw new ArgumentException($"Graph {this.Id} already contains node {node}");
             }
 
-            this.Nodes.Add(node);
+            this.Nodes.Add(new KeyValuePair<int, GraphNode>(this.Nodes.Count, node));
+
+            foreach (var connection in node.Connections)
+            {
+                if (!this.Nodes.Values.Contains(connection))
+                {
+                    this.AddNode(connection);
+                }
+            }
         }
 
         public void Connect(GraphNode lhs, GraphNode rhs)
@@ -105,6 +130,13 @@ namespace Algorithms.Library
             }
 
             lhs.Connect(rhs);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(256);
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -123,12 +155,12 @@ namespace Algorithms.Library
             {
                 foreach (var item in this.Nodes)
                 {
-                    if (item.Color != Color.White)
+                    if (item.Value.Color != Color.White)
                     {
                         continue;
                     }
 
-                    if (this.IsCycle(item, item))
+                    if (this.IsCycle(item.Value, item.Value))
                     {
                         return true;
                     }
@@ -154,9 +186,9 @@ namespace Algorithms.Library
         {
             foreach (var node in this.Nodes)
             {
-                foreach (var connect in node.Connections)
+                foreach (var connect in node.Value.Connections)
                 {
-                    if (node == connect)
+                    if (node.Value == connect)
                     {
                         return true;
                     }
@@ -186,17 +218,19 @@ namespace Algorithms.Library
 
         public void RemoveNode(GraphNode node)
         {
-            if (!this.Nodes.Contains(node))
+            if (!this.Nodes.Values.Contains(node))
             {
                 throw new ArgumentException($"Graph {this.Id} has no node {node}");
             }
 
             foreach (var graphNode in this.Nodes)
             {
-                graphNode.Disconnect(node);
+                graphNode.Value.Disconnect(node);
             }
 
-            this.Nodes.Remove(node);
+            KeyValuePair<int, GraphNode> a = this.Nodes.First(n => n.Value == node);
+
+            this.Nodes.Remove(a);
         }
 
         #endregion Public Methods
@@ -210,7 +244,7 @@ namespace Algorithms.Library
         {
             foreach (var graphNode in this.Nodes)
             {
-                graphNode.Color = Color.White;
+                graphNode.Value.Color = Color.White;
             }
         }
 
@@ -311,7 +345,7 @@ namespace Algorithms.Library
 
         public Graph DeepClone()
         {
-            IList<GraphNode> newNodes = this.Nodes.ToList();
+            IDictionary<int, GraphNode> newNodes = this.Nodes;
 
             return new Graph(newNodes)
             {

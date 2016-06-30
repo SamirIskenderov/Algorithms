@@ -11,13 +11,12 @@ namespace Algorithms.Library
         White = 2,
     }
 
-    public class GraphNode : ICloneable
+    public class GraphNode : ICloneable, IComparable<GraphNode>, IComparable
     {
         #region Public Constructors
 
-        public GraphNode(int id, IEnumerable<GraphNode> connections = null, Color color = Color.White)
+        public GraphNode(IEnumerable<GraphNode> connections = null, Color color = Color.White)
         {
-            this.Id = id;
             this.Color = color;
 
             if (connections == null)
@@ -34,7 +33,6 @@ namespace Algorithms.Library
 
         public Color Color { get; set; }
         public IList<GraphNode> Connections { get; private set; }
-        public int Id { get; set; }
 
         #endregion Public Properties
 
@@ -51,14 +49,14 @@ namespace Algorithms.Library
         /// <returns></returns>
         public GraphNode CloneDirectly()
         {
-            return new GraphNode(this.Id, this.Connections, this.Color);
+            return new GraphNode(this.Connections, this.Color);
         }
 
         public GraphNode DeepClone()
         {
             IList<GraphNode> connection = this.Connections.ToList();
 
-            return new GraphNode(this.Id, connection, this.Color);
+            return new GraphNode(connection, this.Color);
         }
 
         #endregion Clone
@@ -92,5 +90,50 @@ namespace Algorithms.Library
         }
 
         #endregion Public Methods
+
+        #region Equals
+
+        public static bool operator ==(GraphNode lhs, GraphNode rhs)
+        {
+            return lhs?.CompareTo(rhs) == 0;
+        }
+
+        public static bool operator !=(GraphNode lhs, GraphNode rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public int CompareTo(GraphNode other)
+        {
+            return (object.ReferenceEquals(this, other) ? 0 : -1);
+        }
+
+        // due to shallow hash of this.Connections.GetHashCode(), hashes will always be different.
+        public override bool Equals(object obj)
+        {
+            GraphNode node = obj as GraphNode;
+
+            return node != null && this.Equals(node);
+        }
+
+        public bool Equals(GraphNode node)
+        {
+            return this.CompareTo(node) == 0;
+        }
+
+        public int CompareTo(object obj)
+        {
+            GraphNode node = obj as GraphNode;
+
+            if (node == null)
+            {
+                return -1;
+            }
+
+            return this.CompareTo(node);
+        }
+
+        #endregion Equals
+
     }
 }
