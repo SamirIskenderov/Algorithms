@@ -1,5 +1,4 @@
-﻿using Algorithms.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +37,7 @@ namespace Algorithms.Library
 
         #region Public Properties
 
-        public Guid Id { get; set; }
+        public Guid Id { get; } = Guid.NewGuid();
         public IList<GraphNode> Nodes { get; private set; }
         public State State { get; set; }
 
@@ -91,6 +90,14 @@ namespace Algorithms.Library
             }
 
             this.Nodes.Add(node);
+
+            foreach (var connection in node.Connections)
+            {
+                if (!this.Nodes.Contains(connection))
+                {
+                    this.AddNode(connection);
+                }
+            }
         }
 
         public void Connect(GraphNode lhs, GraphNode rhs)
@@ -311,7 +318,6 @@ namespace Algorithms.Library
 
             return new Graph(newNodes)
             {
-                Id = this.Id,
                 State = this.State,
             };
         }

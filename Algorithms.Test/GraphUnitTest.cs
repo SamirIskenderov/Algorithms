@@ -15,11 +15,11 @@ namespace Algorithms.Test
 		//      |
 		//      3
 		//     / \
-		//    8   4
+		//    4   5
 		//        |
-		//        5
+		//        6
 		//       / \
-		//      6   7
+		//      7   8
 
 		private static Graph NewGraph
 		{
@@ -47,14 +47,6 @@ namespace Algorithms.Test
                 node5.Connect(node7);
 
                 graph.AddNode(node0);
-                graph.AddNode(node1);
-                graph.AddNode(node2);
-                graph.AddNode(node3);
-                graph.AddNode(node4);
-                graph.AddNode(node5);
-                graph.AddNode(node6);
-                graph.AddNode(node7);
-                graph.AddNode(node8);
 
                 return graph;
 			}
@@ -94,11 +86,11 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //        |
-            //        5
+            //        6
             //       / \
-            //      6---7
+            //      7---8
             //        ^
             //       new
 
@@ -106,7 +98,7 @@ namespace Algorithms.Test
 
             graph.State |= State.CanBeCycle;
 
-			graph.Connect(graph.Nodes[6], graph.Nodes[7]);
+			graph.Connect(graph.Nodes[7], graph.Nodes[8]);
 
 			Assert.AreEqual(true, graph.IsCycle());
 		}
@@ -124,17 +116,17 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //    |   |
-            //    |   5
+            //    |   6
             //new \  / \
-            //      6   7
+            //      7   8
 
             Assert.AreEqual(false, graph.IsCycle());
 
             graph.State |= State.CanBeCycle;
 
-			graph.Connect(graph.Nodes[6], graph.Nodes[8]);
+			graph.Connect(graph.Nodes[4], graph.Nodes[7]);
 
 			Assert.AreEqual(true, graph.IsCycle());
 		}
@@ -190,11 +182,11 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //        |
-            //        5
+            //        6
             //       / \
-            //      6   7
+            //      7   8
             //          |
             //          9 < new
 
@@ -221,11 +213,11 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //        |
-            //        5
+            //        6
             //       / \
-            //      6   7
+            //      7   8
             //
             //          9 < new
 
@@ -263,11 +255,11 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //        |
-            //        5
+            //        6
             //       / \
-            //      6   7
+            //      7   8
             //          | < new
             //          9 < new
 
@@ -292,11 +284,11 @@ namespace Algorithms.Test
             //      |
             //      3
             //     / \
-            //    8   4
+            //    4   5
             //        |
-            //        5
+            //        6
             //       / \
-            //      6   7
+            //      7   8
             //
             //          9 < new
 
