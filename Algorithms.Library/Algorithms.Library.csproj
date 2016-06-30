@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achivement\Achivement.cs" />
+    <Compile Include="Achivement\AchivementTree.cs" />
     <Compile Include="Bitwise.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Divider.cs" />
