@@ -27,11 +27,15 @@ namespace Algorithms.Library
         {
             int lhs = 0;
             int rhs = list.Count;
-            int mid = 0;
 
             while (lhs < rhs)
             {
-                mid = (lhs + rhs) / 2;
+                int mid;
+                checked
+                {
+                    mid = (lhs + rhs) / 2;
+                }
+
                 if (list[mid].CompareTo(sreachingItem) == 0)
                 {
                     return mid;
