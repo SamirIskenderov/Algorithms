@@ -8,33 +8,24 @@ namespace Algorithms.Library.Menu
 {
     public class Menu : ICloneable
     {
-        private readonly Graph graph;
+        private Graph graph;
 
         public Menu()
         {
-            this.graph = new Graph
-            {
-                State = State.Default
-            };
+            this.graph = new Graph();
+            this.graph.State = State.Default;
         }
 
         public Menu(IEnumerable<GraphNode> nodes)
         {
-            this.graph = new Graph(nodes)
-            {
-                State = State.Default
-            };
-        }
-
-        protected internal Menu(Graph graph)
-        {
-            this.graph = graph;
+            this.graph = new Graph(nodes);
             this.graph.State = State.Default;
         }
 
-        public Menu(IDictionary<int, GraphNode> nodes)
+        internal protected Menu(Graph graph)
         {
-            this.graph = new Graph(nodes);
+            this.graph = graph;
+            this.graph.State = State.Default;
         }
 
         public void AddNode()

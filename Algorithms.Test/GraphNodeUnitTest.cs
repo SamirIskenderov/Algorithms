@@ -10,18 +10,18 @@ namespace Algorithms.Test
 		{
 			get
 			{
-				GraphNode node = new GraphNode()
+				GraphNode node = new GraphNode(13)
 				{
 					Color = Color.Grey
 				};
 
-                GraphNode node0 = new GraphNode();
-                GraphNode node1 = new GraphNode();
-                GraphNode node2 = new GraphNode();
+                GraphNode node0 = new GraphNode(7);
+                GraphNode node1 = new GraphNode(0);
+                GraphNode node2 = new GraphNode(2);
 
-                node.Connect(node0);
-				node.Connect(node1);
-				node.Connect(node2);
+                node.Connections.Add(node0);
+				node.Connections.Add(node1);
+				node.Connections.Add(node2);
 
 				return node;
 			}

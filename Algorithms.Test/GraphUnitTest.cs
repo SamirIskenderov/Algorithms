@@ -27,15 +27,15 @@ namespace Algorithms.Test
 			{
 				Graph graph = new Graph();
 
-                GraphNode node0 = new GraphNode();
-                GraphNode node1 = new GraphNode();
-                GraphNode node2 = new GraphNode();
-                GraphNode node3 = new GraphNode();
-                GraphNode node4 = new GraphNode();
-                GraphNode node5 = new GraphNode();
-                GraphNode node6 = new GraphNode();
-                GraphNode node7 = new GraphNode();
-                GraphNode node8 = new GraphNode();
+                GraphNode node0 = new GraphNode(0);
+                GraphNode node1 = new GraphNode(1);
+                GraphNode node2 = new GraphNode(2);
+                GraphNode node3 = new GraphNode(3);
+                GraphNode node4 = new GraphNode(4);
+                GraphNode node5 = new GraphNode(5);
+                GraphNode node6 = new GraphNode(6);
+                GraphNode node7 = new GraphNode(7);
+                GraphNode node8 = new GraphNode(8);
 
                 node0.Connect(node1);
                 node1.Connect(node2);
@@ -47,6 +47,14 @@ namespace Algorithms.Test
                 node5.Connect(node7);
 
                 graph.AddNode(node0);
+                graph.AddNode(node1);
+                graph.AddNode(node2);
+                graph.AddNode(node3);
+                graph.AddNode(node4);
+                graph.AddNode(node5);
+                graph.AddNode(node6);
+                graph.AddNode(node7);
+                graph.AddNode(node8);
 
                 return graph;
 			}
