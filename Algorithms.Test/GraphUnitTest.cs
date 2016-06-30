@@ -1,31 +1,30 @@
 ﻿using Algorithms.Library;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Algorithms.Test
 {
-	[TestClass]
-	public class GraphUnitTest
-	{
-		//      0
-		//      |
-		//      1
-		//      |
-		//      2
-		//      |
-		//      3
-		//     / \
-		//    4   5
-		//        |
-		//        6
-		//       / \
-		//      7   8
+    [TestClass]
+    public class GraphUnitTest
+    {
+        //      0
+        //      |
+        //      1
+        //      |
+        //      2
+        //      |
+        //      3
+        //     / \
+        //    4   5
+        //        |
+        //        6
+        //       / \
+        //      7   8
 
-		private static Graph NewGraph
-		{
-			get
-			{
-				Graph graph = new Graph();
+        private static Graph NewGraph
+        {
+            get
+            {
+                Graph graph = new Graph();
 
                 GraphNode node0 = new GraphNode();
                 GraphNode node1 = new GraphNode();
@@ -49,34 +48,34 @@ namespace Algorithms.Test
                 graph.AddNode(node0);
 
                 return graph;
-			}
-		}
+            }
+        }
 
-		#region correct
+        #region correct
 
-		[TestMethod]
-		public void CreateTestGraphMustNotThrowArgExc()
-		{
-			Graph graph = NewGraph.CloneDirectly();
+        [TestMethod]
+        public void CreateTestGraphMustNotThrowArgExc()
+        {
+            Graph graph = NewGraph.CloneDirectly();
             Assert.IsFalse(graph == null);
-		}
+        }
 
-		#endregion correct
+        #endregion correct
 
-		#region cycles
+        #region cycles
 
-		[TestMethod]
-		public void OriginalGraphMustNotContainsCycle()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void OriginalGraphMustNotContainsCycle()
+        {
+            Graph graph = NewGraph;
 
-			Assert.AreEqual(false, graph.IsCycle());
-		}
+            Assert.AreEqual(false, graph.IsCycle());
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustContainsCycleVer1()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void ModifyedOriginalGraphMustContainsCycleVer1()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -96,17 +95,17 @@ namespace Algorithms.Test
 
             Assert.AreEqual(false, graph.IsCycle());
 
-            graph.State |= State.CanBeCycle;
+            graph.State = State.CanBeCycle;
 
-			graph.Connect(graph.Nodes[7], graph.Nodes[8]);
+            graph.Connect(graph.Nodes[7], graph.Nodes[8]);
 
-			Assert.AreEqual(true, graph.IsCycle());
-		}
+            Assert.AreEqual(true, graph.IsCycle());
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustContainsCycleVer2()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void ModifyedOriginalGraphMustContainsCycleVer2()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -124,55 +123,84 @@ namespace Algorithms.Test
 
             Assert.AreEqual(false, graph.IsCycle());
 
-            graph.State |= State.CanBeCycle;
+            graph.State = State.CanBeCycle;
 
-			graph.Connect(graph.Nodes[4], graph.Nodes[7]);
+            graph.Connect(graph.Nodes[4], graph.Nodes[7]);
 
-			Assert.AreEqual(true, graph.IsCycle());
-		}
+            Assert.AreEqual(true, graph.IsCycle());
+        }
 
-		#endregion cycles
+        #endregion cycles
 
-		#region loops
+        #region loops
 
-		[TestMethod]
-		public void OriginalGraphMustNotContainsLoops()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void OriginalGraphMustNotContainsLoops()
+        {
+            Graph graph = NewGraph;
 
-			Assert.AreEqual(false, graph.IsLooped());
-		}
+            Assert.AreEqual(false, graph.IsLooped());
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustContainsLoop()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void CycleAndLoopIsDifferent()
+        {
+            Graph graph = NewGraph;
+
+            Assert.AreEqual(false, graph.IsCycle());
+            Assert.AreEqual(false, graph.IsLooped());
+
+            graph.State = State.CanBeLooped;
+
+            graph.Connect(graph.Nodes[6], graph.Nodes[6]);
+
+            Assert.AreEqual(false, graph.IsCycle());
+            Assert.AreEqual(true, graph.IsLooped());
+        }
+
+        [TestMethod]
+        //      0
+        //      |
+        //      1
+        //      |
+        //      2
+        //      |
+        //      3
+        //     / \
+        //    4   5
+        //        |
+        //        6
+        //       / \
+        //      7   8
+        public void ModifyedOriginalGraphMustContainsLoop()
+        {
+            Graph graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsLooped());
 
             graph.State = State.CanBeLooped;
 
-			graph.Connect(graph.Nodes[6], graph.Nodes[6]);
+            graph.Connect(graph.Nodes[6], graph.Nodes[6]);
 
-			Assert.AreEqual(true, graph.IsLooped());
-		}
+            Assert.AreEqual(true, graph.IsLooped());
+        }
 
-		#endregion loops
+        #endregion loops
 
-		#region connectivity
+        #region connectivity
 
-		[TestMethod]
-		public void OriginalGraphMustBeConnectivity()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void OriginalGraphMustBeConnectivity()
+        {
+            Graph graph = NewGraph;
 
-			Assert.AreEqual(true, graph.IsConnectivity());
-		}
+            Assert.AreEqual(false, graph.IsNonConnectivity());
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustBeConnectivity()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void ModifyedOriginalGraphMustBeConnectivity()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -190,20 +218,20 @@ namespace Algorithms.Test
             //          |
             //          9 < new
 
-            Assert.AreEqual(true, graph.IsConnectivity());
+            Assert.AreEqual(false, graph.IsNonConnectivity());
 
             graph.State = State.CanBeNonConnectivly;
 
             graph.AddNode();
-			graph.Connect(graph.Nodes[7], graph.Nodes[9]);
+            graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
-			Assert.AreEqual(true, graph.IsConnectivity());
-		}
+            Assert.AreEqual(false, graph.IsNonConnectivity());
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustNotBeConnectivity()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void ModifyedOriginalGraphMustNotBeConnectivity()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -221,31 +249,31 @@ namespace Algorithms.Test
             //
             //          9 < new
 
-            Assert.AreEqual(true, graph.IsConnectivity());
+            Assert.AreEqual(false, graph.IsNonConnectivity());
 
             graph.State = State.CanBeNonConnectivly;
 
-			graph.AddNode();
+            graph.AddNode();
 
-			Assert.AreEqual(false, graph.IsConnectivity());
-		}
+            Assert.AreEqual(true, graph.IsNonConnectivity());
+        }
 
-		#endregion connectivity
+        #endregion connectivity
 
-		#region routeBetween
+        #region routeBetween
 
-		[TestMethod]
-		public void OriginalGraphMustHaveRouteBetweenNodes()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void OriginalGraphMustHaveRouteBetweenNodes()
+        {
+            Graph graph = NewGraph;
 
-			Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[2], graph.Nodes[5]));
-		}
+            Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[2], graph.Nodes[5]));
+        }
 
-		[TestMethod]
-		public void ModifyedOriginalGraphMustHaveRouteBetweenNodes()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void ModifyedOriginalGraphMustHaveRouteBetweenNodes()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -265,16 +293,16 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-			graph.AddNode();
-			graph.Connect(graph.Nodes[7], graph.Nodes[9]);
+            graph.AddNode();
+            graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
-			Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
-		}
+            Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
+        }
 
-		[TestMethod]
-		public void NonConnectivityGraphMustNotHaveRouteBetweenNonConnectiviedNodes()
-		{
-			Graph graph = NewGraph;
+        [TestMethod]
+        public void NonConnectivityGraphMustNotHaveRouteBetweenNonConnectiviedNodes()
+        {
+            Graph graph = NewGraph;
 
             //      0
             //      |
@@ -294,11 +322,11 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-			graph.AddNode();
+            graph.AddNode();
 
-			Assert.AreEqual(false, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
-		}
+            Assert.AreEqual(false, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
+        }
 
-		#endregion routeBetween
-	}
+        #endregion routeBetween
+    }
 }

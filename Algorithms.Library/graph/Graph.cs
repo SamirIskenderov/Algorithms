@@ -31,6 +31,7 @@ namespace Algorithms.Library
             }
 
             this.Nodes = nodes.ToList();
+            this.State = State.Default;
         }
 
         #endregion Public Constructors
@@ -61,14 +62,21 @@ namespace Algorithms.Library
         /// Check, is graph solid using DFS.
         /// </summary>
         /// <returns></returns>
-        public bool IsConnectivity()
+        public bool IsNonConnectivity()
         {
             try
             {
-                var node = this.Nodes[0];
-                this.IsCycle(node, node);
+                GraphNode root = this.Nodes[0];
 
-                return this.Nodes.All(item => item.Color != Color.White);
+                foreach (var node in this.Nodes)
+                {
+                    if (!this.IsRouteBetween(node, root))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
             finally
             {
@@ -80,6 +88,7 @@ namespace Algorithms.Library
         {
             GraphNode node = new GraphNode();
             this.Nodes.Add(node);
+            this.EnshureValid();
         }
 
         public void AddNode(GraphNode node)
@@ -98,6 +107,8 @@ namespace Algorithms.Library
                     this.AddNode(connection);
                 }
             }
+
+            this.EnshureValid();
         }
 
         public void Connect(GraphNode lhs, GraphNode rhs)
@@ -108,6 +119,8 @@ namespace Algorithms.Library
             }
 
             lhs.Connect(rhs);
+
+            this.EnshureValid();
         }
 
         /// <summary>
@@ -121,7 +134,7 @@ namespace Algorithms.Library
             {
                 this.ClearColor();
             }
-            // TODO what
+
             try
             {
                 foreach (var item in this.Nodes)
@@ -200,6 +213,8 @@ namespace Algorithms.Library
             }
 
             this.Nodes.Remove(node);
+
+            this.EnshureValid();
         }
 
         #endregion Public Methods
@@ -217,9 +232,31 @@ namespace Algorithms.Library
             }
         }
 
-        private bool EnshureValid()
+        protected virtual void EnshureValid()
         {
-            throw new System.NotImplementedException();
+            if (!this.State.HasFlag(State.CanBeCycle))
+            {
+                if (this.IsCycle())
+                {
+                        throw new InvalidOperationException($"Graph {this.Id} state {this.State} is not allow to use this action: graph could became cycle");
+                }
+            }
+
+            if (!this.State.HasFlag(State.CanBeLooped))
+            {
+                if (this.IsLooped())
+                {
+                    throw new InvalidOperationException($"Graph {this.Id} state {this.State} is not allow to use this action: graph could became looped");
+                }
+            }
+
+            if (!this.State.HasFlag(State.CanBeNonConnectivly))
+            {
+                if (this.IsNonConnectivity())
+                {
+                    throw new InvalidOperationException($"Graph {this.Id} state {this.State} is not allow to use this action: graph could became non-connectivited");
+                }
+            }
         }
 
         private bool IsCycle(GraphNode node, GraphNode lastNode)
@@ -228,7 +265,8 @@ namespace Algorithms.Library
 
             foreach (var item in node.Connections)
             {
-                if (item == lastNode)
+                if ((item == lastNode) || 
+                    (item == node))
                 {
                     continue;
                 }
@@ -300,7 +338,7 @@ namespace Algorithms.Library
 
         public object Clone()
         {
-            return (object)this.CloneDirectly();
+            return (object) this.CloneDirectly();
         }
 
         /// <summary>
