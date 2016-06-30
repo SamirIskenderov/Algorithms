@@ -15,9 +15,8 @@ namespace Algorithms.Library
     {
         #region Public Constructors
 
-        public GraphNode(int id, IEnumerable<GraphNode> connections = null, Color color = Color.White)
+        public GraphNode(IEnumerable<GraphNode> connections = null, Color color = Color.White)
         {
-            this.Id = id;
             this.Color = color;
 
             if (connections == null)
@@ -34,7 +33,6 @@ namespace Algorithms.Library
 
         public Color Color { get; set; }
         public IList<GraphNode> Connections { get; private set; }
-        public int Id { get; set; }
 
         #endregion Public Properties
 
@@ -51,14 +49,14 @@ namespace Algorithms.Library
         /// <returns></returns>
         public GraphNode CloneDirectly()
         {
-            return new GraphNode(this.Id, this.Connections, this.Color);
+            return new GraphNode(this.Connections, this.Color);
         }
 
         public GraphNode DeepClone()
         {
             IList<GraphNode> connection = this.Connections.ToList();
 
-            return new GraphNode(this.Id, connection, this.Color);
+            return new GraphNode(connection, this.Color);
         }
 
         #endregion Clone

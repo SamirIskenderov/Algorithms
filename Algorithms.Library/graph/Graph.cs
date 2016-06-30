@@ -79,11 +79,7 @@ namespace Algorithms.Library
 
         public void AddNode()
         {
-            int id = (this.Nodes.Count == 0 ?
-                                0 :
-                                this.Nodes.Max(n => n.Id));
-
-            GraphNode node = new GraphNode(id + 1);
+            GraphNode node = new GraphNode();
             this.Nodes.Add(node);
         }
 
