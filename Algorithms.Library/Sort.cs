@@ -17,7 +17,7 @@ namespace Algorithms.Library
 
             while (!IsArraySorted(arr))
             {
-                arr = arr.Shuffle(Common.rand).ToList();
+                arr = arr.Shuffle(Common.Rand).ToList();
             }
         }
 
@@ -73,26 +73,26 @@ namespace Algorithms.Library
 
             int cap = array.Count / 2;
 
-            IList<T> lhs_array = new List<T>(cap);
+            IList<T> lhsArray = new List<T>(cap);
 
             for (int i = 0; i < array.Count / 2; i++)
             {
-                lhs_array.Add(array[i]);
+                lhsArray.Add(array[i]);
             }
 
             cap = array.Count % 2 == 0 ? array.Count / 2 : array.Count / 2 + 1;
 
-            IList<T> rhs_array = new List<T>(cap);
+            IList<T> rhsArray = new List<T>(cap);
 
             for (int i = 0; i < cap; i++)
             {
-                rhs_array.Add(array[(array.Count / 2) + i]);
+                rhsArray.Add(array[(array.Count / 2) + i]);
             }
 
-            lhs_array = MergeSort(lhs_array).ToList();
-            rhs_array = MergeSort(rhs_array).ToList();
+            lhsArray = MergeSort(lhsArray).ToList();
+            rhsArray = MergeSort(rhsArray).ToList();
 
-            return Merge(lhs_array, rhs_array);
+            return Merge(lhsArray, rhsArray);
         }
 
         public static void PancakeSort<T>(IList<T> arr, int cutoffValue = 2)
@@ -192,7 +192,7 @@ namespace Algorithms.Library
         {
             int i = 0;
             int j = 0;
-            T tmp;
+
             for (i = left + 1; i < right; i++)
             {
                 for (j = i; j > 0; j--)
@@ -201,7 +201,8 @@ namespace Algorithms.Library
                     {
                         break;
                     }
-                    tmp = arr[j - 1];
+
+                    T tmp = arr[j - 1];
                     arr[j - 1] = arr[j];
                     arr[j] = tmp;
                 }
@@ -308,19 +309,12 @@ namespace Algorithms.Library
         private static void QuickSort<T>(IList<T> arr, int left, int right, uint cutoffValue)
             where T : IComparable
         {
-            /*
-				     * quicksort with mid divider
-				     */
-
-            T mid;
-            T foo;
             int l = left;
             int r = right;
 
             //finding good divider
-            mid = arr[arr.Count / 2];
+            T mid = arr[arr.Count / 2];
 
-            // sorting
             while (l <= r)
             {
                 while ((arr[l].CompareTo(mid) < 0) && (l < right))
@@ -333,14 +327,16 @@ namespace Algorithms.Library
                     r--;
                 }
 
-                if (l <= r)
+                if (l > r)
                 {
-                    foo = arr[l];
-                    arr[l] = arr[r];
-                    arr[r] = foo;
-                    l++;
-                    r--;
+                    continue;
                 }
+
+                T foo = arr[l];
+                arr[l] = arr[r];
+                arr[r] = foo;
+                l++;
+                r--;
             }
 
             if (Math.Abs(r - left) > cutoffValue)

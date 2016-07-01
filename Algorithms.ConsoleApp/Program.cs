@@ -1,14 +1,12 @@
-﻿using System;
-using Algorithms.Library.Menu;
+﻿using Algorithms.Library.Menu;
 
 namespace Algorithms.ConsoleApp
 {
-
-	internal class Program
-	{
-		private static void Main()
-		{
-			Menu menu = new Menu();
+    internal class Program
+    {
+        private static void Main()
+        {
+            Menu menu = new Menu();
 
             MenuNode newGame = new MenuNode("New game");
             MenuNode loadGame = new MenuNode("Load");

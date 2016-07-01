@@ -59,9 +59,9 @@ namespace Algorithms.Library
             ulong div = 1;
             ulong result = 0;
 
-            for (int i = 0; i < bits.Length; i++)
+            foreach (bool bit in bits)
             {
-                if (bits[i])
+                if (bit)
                 {
                     result += div;
                 }
@@ -168,7 +168,7 @@ namespace Algorithms.Library
             // if m == 0 or r == 0 - return zero.
             if ((!m.Any(bit => bit)) || (!r.Any(bit => bit)))
             {
-                return new bool[] { false };
+                return new[] { false };
             }
 
             bool[] mcopy = new bool[m.Length];

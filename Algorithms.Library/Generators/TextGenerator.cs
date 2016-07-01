@@ -188,11 +188,11 @@ namespace Algorithms.Library
         {
             // I think, you have to create new StringBuilder due to way of StringBuilder's .ToString()
             StringBuilder sb = new StringBuilder(wordMaxLength);
-            int wordLength = Common.rand.Next(wordMinLength, wordMaxLength);
+            int wordLength = Common.Rand.Next(wordMinLength, wordMaxLength);
 
             for (int j = 0; j < wordLength; j++)
             {
-                sb.Append(Convert.ToChar(Common.rand.Next(97, 122))); // english symbols codes
+                sb.Append(Convert.ToChar(Common.Rand.Next(97, 122))); // english symbols codes
             }
 
             if ((IsFirstLetterAlwaysUpper) && (isFirstLerretUp))
@@ -221,7 +221,7 @@ namespace Algorithms.Library
 
                 if (this.IsUsingCommas)
                 {
-                    if ((Common.rand.Next(0, this.CommaSentenceLength) == this.CommaSentenceLength - 1))
+                    if ((Common.Rand.Next(0, this.CommaSentenceLength) == this.CommaSentenceLength - 1))
                     {
                         sb.Append(this.CommaMark);
                     }
@@ -280,7 +280,7 @@ namespace Algorithms.Library
         private bool AppendOnRandom(StringBuilder sb, char symbol)
         {
             if (!this.Marks.Contains(sb[sb.Length - 2]) &&
-                (Common.rand.Next(0, this.SentenceLength) == this.SentenceLength - 1) &&
+                (Common.Rand.Next(0, this.SentenceLength) == this.SentenceLength - 1) &&
                 (sb.Length > 4))
             {
                 if (this.Marks.Contains(sb[sb.Length - 2]))

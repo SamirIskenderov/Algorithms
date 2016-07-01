@@ -1,190 +1,188 @@
-﻿using System;
-using System.Linq;
-using Xunit;
+﻿using Xunit;
 using bigint = Algorithms.BigRat.BigInt;
 
 namespace Algorithms.Test
 {
-	public class BigRatUnitTest
-	{
-		#region operators
+    public class BigRatUnitTest
+    {
+        #region operators
 
-		[Theory]
-		[InlineData(0, 0)]
-		[InlineData(0, 1)]
-		[InlineData(1, 0)]
-		[InlineData(1, 1)]
-		[InlineData(12, 12)]
-		[InlineData(156, 874)]
-		[InlineData(321, 99984)]
-		[InlineData(0, 123456)]
-		[InlineData(654231, 987)]
-		[InlineData(695451, 6512)]
-		[InlineData(18446744073709551615, 0)]
-		[InlineData(18446744073709551615, 12355121578451)]
-		[InlineData(18446744073709551615, 18446744073709551615)]
-		public void OperatorEquallyMustWork(uint l, uint r)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(12, 12)]
+        [InlineData(156, 874)]
+        [InlineData(321, 99984)]
+        [InlineData(0, 123456)]
+        [InlineData(654231, 987)]
+        [InlineData(695451, 6512)]
+        [InlineData(18446744073709551615, 0)]
+        [InlineData(18446744073709551615, 12355121578451)]
+        [InlineData(18446744073709551615, 18446744073709551615)]
+        public void OperatorEquallyMustWork(uint l, uint r)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
 
-			Assert.Equal(l == r, lhs == rhs);
-		}
+            Assert.Equal(l == r, lhs == rhs);
+        }
 
-		[Theory]
-		[InlineData(0, 0)]
-		[InlineData(0, 1)]
-		[InlineData(1, 0)]
-		[InlineData(1, 1)]
-		[InlineData(12, 12)]
-		[InlineData(156, 874)]
-		[InlineData(321, 99984)]
-		[InlineData(0, 123456)]
-		[InlineData(654231, 987)]
-		[InlineData(695451, 6512)]
-		[InlineData(123456789123, 4045432065982464)]
-		[InlineData(4045432065982464, 123456789123)]
-		[InlineData(4045432065982464, 4045432065982464)]
-		public void OperatorGreaterMustWork(uint l, uint r)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(12, 12)]
+        [InlineData(156, 874)]
+        [InlineData(321, 99984)]
+        [InlineData(0, 123456)]
+        [InlineData(654231, 987)]
+        [InlineData(695451, 6512)]
+        [InlineData(123456789123, 4045432065982464)]
+        [InlineData(4045432065982464, 123456789123)]
+        [InlineData(4045432065982464, 4045432065982464)]
+        public void OperatorGreaterMustWork(uint l, uint r)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
 
-			Assert.Equal(l > r, lhs > rhs);
-		}
+            Assert.Equal(l > r, lhs > rhs);
+        }
 
-		[Theory]
-		[InlineData(0, 0)]
-		[InlineData(0, 1)]
-		[InlineData(1, 0)]
-		[InlineData(1, 1)]
-		[InlineData(12, 12)]
-		[InlineData(156, 874)]
-		[InlineData(321, 99984)]
-		[InlineData(0, 123456)]
-		[InlineData(654231, 987)]
-		[InlineData(695451, 6512)]
-		[InlineData(123456789123, 4045432065982464)]
-		[InlineData(4045432065982464, 123456789123)]
-		[InlineData(4045432065982464, 4045432065982464)]
-		public void OperatorGreaterOrEquallMustWork(uint l, uint r)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(12, 12)]
+        [InlineData(156, 874)]
+        [InlineData(321, 99984)]
+        [InlineData(0, 123456)]
+        [InlineData(654231, 987)]
+        [InlineData(695451, 6512)]
+        [InlineData(123456789123, 4045432065982464)]
+        [InlineData(4045432065982464, 123456789123)]
+        [InlineData(4045432065982464, 4045432065982464)]
+        public void OperatorGreaterOrEquallMustWork(uint l, uint r)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
 
-			Assert.Equal(l >= r, lhs >= rhs);
-		}
+            Assert.Equal(l >= r, lhs >= rhs);
+        }
 
-		[Theory]
-		[InlineData(0, 0)]
-		[InlineData(0, 1)]
-		[InlineData(1, 0)]
-		[InlineData(1, 1)]
-		[InlineData(12, 12)]
-		[InlineData(156, 874)]
-		[InlineData(321, 99984)]
-		[InlineData(0, 123456)]
-		[InlineData(654231, 987)]
-		[InlineData(695451, 6512)]
-		[InlineData(123456789123, 4045432065982464)]
-		[InlineData(4045432065982464, 123456789123)]
-		[InlineData(4045432065982464, 4045432065982464)]
-		public void OperatorLessMustWork(uint l, uint r)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(12, 12)]
+        [InlineData(156, 874)]
+        [InlineData(321, 99984)]
+        [InlineData(0, 123456)]
+        [InlineData(654231, 987)]
+        [InlineData(695451, 6512)]
+        [InlineData(123456789123, 4045432065982464)]
+        [InlineData(4045432065982464, 123456789123)]
+        [InlineData(4045432065982464, 4045432065982464)]
+        public void OperatorLessMustWork(uint l, uint r)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
 
-			Assert.Equal(l < r, lhs < rhs);
-		}
+            Assert.Equal(l < r, lhs < rhs);
+        }
 
-		[Theory]
-		[InlineData(0, 0)]
-		[InlineData(0, 1)]
-		[InlineData(1, 0)]
-		[InlineData(1, 1)]
-		[InlineData(12, 12)]
-		[InlineData(156, 874)]
-		[InlineData(321, 99984)]
-		[InlineData(0, 123456)]
-		[InlineData(654231, 987)]
-		[InlineData(695451, 6512)]
-		[InlineData(123456789123, 4045432065982464)]
-		[InlineData(4045432065982464, 123456789123)]
-		[InlineData(4045432065982464, 4045432065982464)]
-		public void OperatorLessOrEquallMustWork(uint l, uint r)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 1)]
+        [InlineData(12, 12)]
+        [InlineData(156, 874)]
+        [InlineData(321, 99984)]
+        [InlineData(0, 123456)]
+        [InlineData(654231, 987)]
+        [InlineData(695451, 6512)]
+        [InlineData(123456789123, 4045432065982464)]
+        [InlineData(4045432065982464, 123456789123)]
+        [InlineData(4045432065982464, 4045432065982464)]
+        public void OperatorLessOrEquallMustWork(uint l, uint r)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
 
-			Assert.Equal(l <= r, lhs <= rhs);
-		}
+            Assert.Equal(l <= r, lhs <= rhs);
+        }
 
-		[Theory]
-		[InlineData(0, 0, 0)]
-		[InlineData(1, 0, 1)]
-		[InlineData(1, 1, 0)]
-		[InlineData(12, 12, 0)]
-		[InlineData(654231, 987, 653244)]
-		[InlineData(65421574231, 213451235, 65208122996)]
-		[InlineData(18446744073709551615, 18446744073709551615, 0)]
-		public void OperatorMinusMustWork(uint l, uint r, uint res)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
-			bigint result = new bigint(res);
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(1, 0, 1)]
+        [InlineData(1, 1, 0)]
+        [InlineData(12, 12, 0)]
+        [InlineData(654231, 987, 653244)]
+        [InlineData(65421574231, 213451235, 65208122996)]
+        [InlineData(18446744073709551615, 18446744073709551615, 0)]
+        public void OperatorMinusMustWork(uint l, uint r, uint res)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
+            bigint result = new bigint(res);
 
-			Assert.Equal<bigint>(result, lhs - rhs);
-		}
-		
-		[Theory]
-		[InlineData(0, 0, 0)]
-		[InlineData(0, 1, 1)]
-		[InlineData(123, 123, 246)]
-		[InlineData(9875, 622210, 632085)]
-		[InlineData(123456789123, 987654321987, 1111111111110)]
-		[InlineData(123456789123, 13982164348, 137438953471)]
-		[InlineData(4045432065982464, 458167561388031, 4503599627370495)]
-		public void OperatorMultiplicativePlusMustWork(uint l, uint r, uint result)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
-			bigint res = new bigint(result);
+            Assert.Equal<bigint>(result, lhs - rhs);
+        }
 
-			Assert.Equal<bigint>(res, lhs + rhs);
-		}
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(0, 1, 1)]
+        [InlineData(123, 123, 246)]
+        [InlineData(9875, 622210, 632085)]
+        [InlineData(123456789123, 987654321987, 1111111111110)]
+        [InlineData(123456789123, 13982164348, 137438953471)]
+        [InlineData(4045432065982464, 458167561388031, 4503599627370495)]
+        public void OperatorMultiplicativePlusMustWork(uint l, uint r, uint result)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
+            bigint res = new bigint(result);
 
-		[Theory]
-		[InlineData(45, 7, 3)]
-		//[InlineData(12589995, 2, 1)]
-		//[InlineData(12589994, 2, 0)]
-		[InlineData(123456789123, 987654, 39123)]
-		[InlineData(987654321987, 123456789123, 9003)]
-		public void OperatorMultiplicativeReminderMustWork(uint l, uint r, uint result)
-		{
-			bigint lhs = new bigint(l);
-			bigint rhs = new bigint(r);
-			bigint res = new bigint(result);
+            Assert.Equal<bigint>(res, lhs + rhs);
+        }
 
-			Assert.Equal<bigint>(res, lhs % rhs);
-		}
+        [Theory]
+        [InlineData(45, 7, 3)]
+        //[InlineData(12589995, 2, 1)]
+        //[InlineData(12589994, 2, 0)]
+        [InlineData(123456789123, 987654, 39123)]
+        [InlineData(987654321987, 123456789123, 9003)]
+        public void OperatorMultiplicativeReminderMustWork(uint l, uint r, uint result)
+        {
+            bigint lhs = new bigint(l);
+            bigint rhs = new bigint(r);
+            bigint res = new bigint(result);
 
-		#endregion operators
+            Assert.Equal<bigint>(res, lhs % rhs);
+        }
 
-		#region funcs
+        #endregion operators
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(123)]
-		[InlineData(9875)]
-		[InlineData(123456789123)]
-		[InlineData(4045432065982464)]
-		public void MethodDeepCloneMustWork(uint v)
-		{
-			bigint num = new bigint(v);
+        #region funcs
 
-			Assert.Equal<bigint>(num, num.DeepClone());
-		}
+        [Theory]
+        [InlineData(0)]
+        [InlineData(123)]
+        [InlineData(9875)]
+        [InlineData(123456789123)]
+        [InlineData(4045432065982464)]
+        public void MethodDeepCloneMustWork(uint v)
+        {
+            bigint num = new bigint(v);
 
-		#endregion funcs
-	}
+            Assert.Equal<bigint>(num, num.DeepClone());
+        }
+
+        #endregion funcs
+    }
 }

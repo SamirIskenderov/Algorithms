@@ -23,8 +23,8 @@ namespace Algorithms.Library
         {
             ISSN issn = new ISSN
             {
-                A = Common.rand.Next(1000, 9999),
-                B = Common.rand.Next(100, 999),
+                A = Common.Rand.Next(1000, 9999),
+                B = Common.Rand.Next(100, 999),
             };
 
             StringBuilder sb = new StringBuilder(32);

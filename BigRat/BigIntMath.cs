@@ -21,8 +21,8 @@ namespace Algorithms.BigRat
         {
             bigint result = new bigint();
 
-            int lBlockCount = mathHelper.GetBlocksCount(lhs);
-            int rBlockCount = mathHelper.GetBlocksCount(rhs);
+            int lBlockCount = this.mathHelper.GetBlocksCount(lhs);
+            int rBlockCount = this.mathHelper.GetBlocksCount(rhs);
 
             bigint min = null;
             bigint max = null;
@@ -82,8 +82,8 @@ namespace Algorithms.BigRat
         {
             bigint result = new bigint();
 
-            int lBlockCount = mathHelper.GetBlocksCount(lhs);
-            int rBlockCount = mathHelper.GetBlocksCount(rhs);
+            int lBlockCount = this.mathHelper.GetBlocksCount(lhs);
+            int rBlockCount = this.mathHelper.GetBlocksCount(rhs);
 
             bigint min = null;
             bigint max = null;

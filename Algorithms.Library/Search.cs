@@ -15,14 +15,14 @@ namespace Algorithms.Library
                 list = Sort.MergeSort(list);
             }
 
-            return BinarySearch(list, sreachingItem, sorted: true);
+            return BinarySearch(list, sreachingItem);
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        private static int BinarySearch<T>(IList<T> list, T sreachingItem, bool sorted)
+        private static int BinarySearch<T>(IList<T> list, T sreachingItem)
             where T : IComparable
         {
             int lhs = 0;

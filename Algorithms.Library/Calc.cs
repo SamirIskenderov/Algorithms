@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Algorithms.Library
 {
@@ -25,7 +26,7 @@ namespace Algorithms.Library
         {
             double sqrt5 = Math.Sqrt(5);
             double phi = (sqrt5 + 1) / 2;
-            return Math.Round(Math.Pow(phi, number) / sqrt5).ToString();
+            return Math.Round(Math.Pow(phi, number) / sqrt5).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Algorithms.Extensions;
+using Algorithms.Library;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Algorithms.Extensions;
-using Algorithms.Library;
 
 namespace Algorithms.Test
 {
@@ -17,7 +16,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
         }
     }
 }

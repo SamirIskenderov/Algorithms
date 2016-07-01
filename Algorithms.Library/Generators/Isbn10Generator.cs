@@ -11,38 +11,38 @@ namespace Algorithms.Library
         {
             ISBN10 isbn = new ISBN10();
 
-            int randALength = Common.rand.Next(0, 5);
+            int randALength = Common.Rand.Next(0, 5);
 
             switch (randALength)
             {
                 case 0:
-                    isbn.A = Common.rand.Next(0, 7);
-                    isbn.B = Common.rand.Next(1000, 9999);
-                    isbn.C = Common.rand.Next(1000, 9999);
+                    isbn.A = Common.Rand.Next(0, 7);
+                    isbn.B = Common.Rand.Next(1000, 9999);
+                    isbn.C = Common.Rand.Next(1000, 9999);
                     break;
 
                 case 1:
-                    isbn.A = Common.rand.Next(80, 94);
-                    isbn.B = Common.rand.Next(100, 999);
-                    isbn.C = Common.rand.Next(1000, 9999);
+                    isbn.A = Common.Rand.Next(80, 94);
+                    isbn.B = Common.Rand.Next(100, 999);
+                    isbn.C = Common.Rand.Next(1000, 9999);
                     break;
 
                 case 2:
-                    isbn.A = Common.rand.Next(950, 993);
-                    isbn.B = Common.rand.Next(100, 999);
-                    isbn.C = Common.rand.Next(100, 999);
+                    isbn.A = Common.Rand.Next(950, 993);
+                    isbn.B = Common.Rand.Next(100, 999);
+                    isbn.C = Common.Rand.Next(100, 999);
                     break;
 
                 case 3:
-                    isbn.A = Common.rand.Next(9940, 9989);
-                    isbn.B = Common.rand.Next(10, 99);
-                    isbn.C = Common.rand.Next(100, 999);
+                    isbn.A = Common.Rand.Next(9940, 9989);
+                    isbn.B = Common.Rand.Next(10, 99);
+                    isbn.C = Common.Rand.Next(100, 999);
                     break;
 
                 case 4:
-                    isbn.A = Common.rand.Next(99900, 99999);
-                    isbn.B = Common.rand.Next(10, 99);
-                    isbn.C = Common.rand.Next(10, 99);
+                    isbn.A = Common.Rand.Next(99900, 99999);
+                    isbn.B = Common.Rand.Next(10, 99);
+                    isbn.C = Common.Rand.Next(10, 99);
                     break;
 
                 default:

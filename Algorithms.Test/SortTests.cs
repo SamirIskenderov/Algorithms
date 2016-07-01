@@ -20,7 +20,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.Bogosort<int>(ref array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -34,7 +34,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.BubbleSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -48,7 +48,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.InsertSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -62,7 +62,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
 
             array = Sort.MergeSort<int>(array).ToList();
 
@@ -77,7 +77,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.PancakeSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -91,7 +91,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.QuickBubbleSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -105,7 +105,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.QuickSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));
@@ -119,7 +119,7 @@ namespace Algorithms.Test
             array.SetWithRandomElements(min: -10,
                     max: 10,
                     capacity: count,
-                    FuncToGetNewRandomElement: Common.Random.Next);
+                    funcToGetNewRandomElement: Common.Random.Next);
             Sort.SelectionSort<int>(array);
 
             Assert.AreEqual(true, IsArraySorted<int>(array));

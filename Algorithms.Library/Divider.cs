@@ -22,17 +22,20 @@ namespace Algorithms.Library
 
         public bool IsDivBy7(long number)
         {
-            if (number < 1000)
+            while (true)
             {
-                return number % 7 == 0;
+                if (number < 1000)
+                {
+                    return number % 7 == 0;
+                }
+
+                long head = (number / 1000);
+                long tail = (number % 1000);
+
+                long result = Math.Abs(head - tail);
+
+                number = result;
             }
-
-            long head = (number / 1000);
-            long tail = (number % 1000);
-
-            long result = Math.Abs(head - tail);
-
-            return this.IsDivBy7(result);
         }
 
         public bool IsDivBy8(long number)

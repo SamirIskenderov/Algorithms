@@ -4,7 +4,7 @@ namespace Algorithms.Library
 {
     internal static class Common
     {
-        internal static readonly Random rand = new Random();
+        internal static readonly Random Rand = new Random();
     }
 
     internal class User

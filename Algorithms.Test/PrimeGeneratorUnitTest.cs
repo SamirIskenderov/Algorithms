@@ -2,10 +2,10 @@
 
 namespace Algorithms.Test
 {
-	[TestClass]
-	public class PrimeGeneratorUnitTest
-	{
-		/*
+    [TestClass]
+    public class PrimeGeneratorUnitTest
+    {
+        /*
 			[TestMethod]
 			public void AllPrimesArePrimes()
 			{
@@ -26,18 +26,18 @@ namespace Algorithms.Test
 			}
 			*/
 
-		//[TestMethod]
-		//public void AllPrimesAreAll()
-		//{
-		//	const int count = 1000 * 1000;
+        //[TestMethod]
+        //public void AllPrimesAreAll()
+        //{
+        //	const int count = 1000 * 1000;
 
-		//	PrimeGenerator gen = new PrimeGenerator();
-		//	var primes = gen.GetFirst(count);
+        //	PrimeGenerator gen = new PrimeGenerator();
+        //	var primes = gen.GetFirst(count);
 
-		//	if (primes.Count != 78498)
-		//	{
-		//		Assert.Fail($"Now are {primes.Count}");
-		//	}
-		//}
-	}
+        //	if (primes.Count != 78498)
+        //	{
+        //		Assert.Fail($"Now are {primes.Count}");
+        //	}
+        //}
+    }
 }
