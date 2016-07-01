@@ -17,17 +17,18 @@ namespace Algorithms.Library
     {
         #region Public Constructors
 
-        public Graph()
+        public Graph() : this(null)
         {
-            this.Nodes = new List<GraphNode>();
-            this.State = State.Default;
         }
 
         public Graph(IEnumerable<GraphNode> nodes)
         {
             if (nodes == null)
             {
-                nodes = new List<GraphNode>();
+                nodes = new List<GraphNode>
+                {
+                    new GraphNode()
+                };
             }
 
             this.Nodes = nodes.ToList();

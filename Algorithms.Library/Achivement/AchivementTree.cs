@@ -24,6 +24,8 @@ namespace Algorithms.Library.Achivement
 
         #endregion Public Constructors
 
+        public GraphNode Head => this.graph.Head;
+
         #region Protected Internal Constructors
 
         protected internal AchivementTree(Graph graph)

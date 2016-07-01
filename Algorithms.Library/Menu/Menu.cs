@@ -17,7 +17,7 @@ namespace Algorithms.Library.Menu
         public Menu(IEnumerable<GraphNode> nodes) : this(new Graph(nodes))
         {
         }
-
+        public GraphNode Head => this.graph.Head;
         protected internal Menu(Graph graph)
         {
             this.graph = graph;

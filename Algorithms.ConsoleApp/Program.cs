@@ -10,19 +10,17 @@ namespace Algorithms.ConsoleApp
 		{
 			Menu menu = new Menu();
 
-            MenuNode head = new MenuNode("HEAD");
-
             MenuNode newGame = new MenuNode("New game");
             MenuNode loadGame = new MenuNode("Load");
             MenuNode saveGame = new MenuNode("Save");
             MenuNode options = new MenuNode("Options");
             MenuNode exit = new MenuNode("Exit");
 
-            head.Connect(newGame);
-            head.Connect(loadGame);
-            head.Connect(saveGame);
-            head.Connect(options);
-            head.Connect(exit);
+            menu.Head.Connect(newGame);
+            menu.Head.Connect(loadGame);
+            menu.Head.Connect(saveGame);
+            menu.Head.Connect(options);
+            menu.Head.Connect(exit);
 
             MenuNode newGameEasy = new MenuNode("Easy");
             MenuNode newGameNormal = new MenuNode("Normal");
@@ -45,8 +43,6 @@ namespace Algorithms.ConsoleApp
             options.Connect(optionsKeyboard);
             options.Connect(optionsAbout);
             options.Connect(optionsBack);
-
-            menu.AddNode(head);
         }
     }
 }
