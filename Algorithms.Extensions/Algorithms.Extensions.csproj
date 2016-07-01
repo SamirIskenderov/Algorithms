@@ -45,13 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common.cs" />
     <Compile Include="Exceptions\ApplicationException.cs" />
     <Compile Include="ArrayExtension.cs" />
     <Compile Include="BigIntegerExtension.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="Exceptions\ArgumentAppException.cs" />
-    <Compile Include="Exceptions\ArgumentNullAppException.cs" />
     <Compile Include="Exceptions\ValidationAppException.cs" />
     <Compile Include="FastObjectAllocator.cs" />
     <Compile Include="IComparableExtension.cs" />

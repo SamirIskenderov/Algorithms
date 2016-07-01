@@ -5,8 +5,6 @@ namespace Algorithms.Extensions
 {
 	public static class IListExtensions
 	{
-		public static Random CommonRandom { get; } = new Random();
-
 		public static void SetWithRandomElements<T>(this IList<T> array, T min, T max, int capacity, Func<T, T, T> FuncToGetNewRandomElement)
 		    where T : IConvertible
 		{

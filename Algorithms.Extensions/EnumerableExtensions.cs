@@ -20,8 +20,9 @@ namespace Algorithms.Extensions
 		}
 
 		public static bool SequenceEqualWithoutOrder<T>(this IEnumerable<T> source, IEnumerable<T> sequence)
+            where T: IComparable<T>
 		{
 			return source.OrderBy(x => x).SequenceEqual(sequence.OrderBy(x => x));
 		}
-	}
+    }
 }
