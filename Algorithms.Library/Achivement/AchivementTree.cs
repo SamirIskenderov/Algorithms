@@ -25,7 +25,7 @@ namespace Algorithms.Library.Achivement
 
         #endregion Public Constructors
 
-        public IEnumerable<T> Nodes => this.graph.Nodes.Cast<T>();
+        public IList<T> Nodes => this.graph.Nodes;
 
 
         #region Protected Internal Constructors
@@ -65,6 +65,21 @@ namespace Algorithms.Library.Achivement
 
             return this.IsAllowedRouteBetween(startNode, startNode, endNode);
         }
+
+        public State State
+        {
+            get
+            {
+                return this.graph.State;
+            }
+            set
+            {
+                this.graph.State = value;
+            }
+        }
+
+        public bool IsLooped()
+            => this.graph.IsLooped();
 
         public bool IsCycle()
         {

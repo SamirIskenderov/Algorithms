@@ -17,7 +17,7 @@ namespace Algorithms.Library.Menu
         {
         }
 
-        public IEnumerable<T> Nodes => this.graph.Nodes;
+        public IList<T> Nodes => this.graph.Nodes;
 
         public void Connect(T lhs, T rhs)
             => this.graph.Connect(lhs, rhs);
@@ -46,6 +46,28 @@ namespace Algorithms.Library.Menu
         public void RemoveNode(T node)
         {
             this.graph.RemoveNode(node);
+        }
+
+
+        public bool IsCycle(bool haveClearColor = true)
+            => this.graph.IsCycle(haveClearColor);
+
+        public bool IsLooped()
+            => this.graph.IsLooped();
+
+        public bool IsNonConnectivity()
+            => this.graph.IsNonConnectivity();
+
+        public State State
+        {
+            get
+            {
+                return this.graph.State;
+            }
+            set
+            {
+                this.graph.State = value;
+            }
         }
 
         #region Clone
