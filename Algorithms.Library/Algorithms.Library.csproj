@@ -35,16 +35,12 @@
     </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Algorithms.Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SandS.Algorithms.Library.1.0.2\lib\Algorithms.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Algorithms.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SandS.Algorithms.Library.1.0.2\lib\Algorithms.Library.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\SandS.Algorithms.Library.1.0.2\lib\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,9 +57,13 @@
     <Compile Include="Achivement\Achivement.cs" />
     <Compile Include="Achivement\AchivementTree.cs" />
     <Compile Include="Bitwise.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Enums\Commands.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Divider.cs" />
     <Compile Include="Calc.cs" />
+    <Compile Include="Enums\InputKeyPressType.cs" />
+    <Compile Include="Enums\MouseButton.cs" />
     <Compile Include="Generators\Isbn10Generator.cs" />
     <Compile Include="Generators\IssnGenerator.cs" />
     <Compile Include="Generators\PrimeGenerator.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Graph\GraphNode.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\MenuNode.cs" />
+    <Compile Include="Scope.cs" />
     <Compile Include="Search.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,11 +79,18 @@
     <Compile Include="Generators\TestGenerator\Generator.cs" />
     <Compile Include="Generators\TestGenerator\Helper.cs" />
     <Compile Include="Generators\TextGenerator.cs" />
+    <Compile Include="Strategy.cs" />
+    <Compile Include="StrategySet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Algorithms.Extensions\Algorithms.Extensions.csproj">
+      <Project>{a043ac6f-dc71-438a-9065-8f49b934bcb5}</Project>
+      <Name>Algorithms.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

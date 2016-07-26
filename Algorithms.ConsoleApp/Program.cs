@@ -1,4 +1,6 @@
-﻿using Algorithms.Library.Menu;
+﻿using System;
+using Algorithms.Library;
+using Algorithms.Library.Menu;
 
 namespace Algorithms.ConsoleApp
 {
@@ -41,6 +43,11 @@ namespace Algorithms.ConsoleApp
             options.Connect(optionsKeyboard);
             options.Connect(optionsAbout);
             options.Connect(optionsBack);
+
+            foreach (var node in menu.Nodes)
+            {
+                Console.WriteLine(node.Text);
+            }
         }
     }
 }

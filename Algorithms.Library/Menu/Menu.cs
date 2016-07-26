@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Algorithms.Library.Menu
 {
     public class Menu : ICloneable
     {
-        private readonly Graph graph;
+        private readonly Graph<MenuNode> graph;
 
-        public Menu() : this(new Graph())
+        public Menu() : this(new Graph<MenuNode>())
         {
         }
 
-        public Menu(IEnumerable<GraphNode> nodes) : this(new Graph(nodes))
+        public Menu(IEnumerable<MenuNode> nodes) : this(new Graph<MenuNode>(nodes))
         {
         }
 
         public GraphNode Head => this.graph.Head;
 
-        protected internal Menu(Graph graph)
+        public IEnumerable<MenuNode> Nodes => this.graph.Nodes;
+
+        protected internal Menu(Graph<MenuNode> graph)
         {
             this.graph = graph;
             this.graph.State = State.Default;
@@ -56,12 +59,12 @@ namespace Algorithms.Library.Menu
         /// <returns></returns>
         public Menu CloneDirectly()
         {
-            return new Menu(this.graph.Nodes);
+            return new Menu(this.graph.Nodes.Cast<MenuNode>());
         }
 
         public Menu DeepClone()
         {
-            Graph graph = this.graph.DeepClone();
+            Graph<MenuNode> graph = this.graph.DeepClone();
 
             return new Menu(graph);
         }

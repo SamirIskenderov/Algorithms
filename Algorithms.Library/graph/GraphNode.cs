@@ -15,6 +15,11 @@ namespace Algorithms.Library
     {
         #region Public Constructors
 
+        public GraphNode() : this(null, Color.White)
+        {
+            
+        }
+
         public GraphNode(IEnumerable<GraphNode> connections = null, Color color = Color.White)
         {
             this.Color = color;

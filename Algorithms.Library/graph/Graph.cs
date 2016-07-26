@@ -13,7 +13,8 @@ namespace Algorithms.Library
         CanBeNonConnectivly = 4,
     }
 
-    public class Graph : ICloneable
+    public class Graph<T> : ICloneable
+        where T : GraphNode, new()
     {
         #region Public Constructors
 
@@ -21,13 +22,13 @@ namespace Algorithms.Library
         {
         }
 
-        public Graph(IEnumerable<GraphNode> nodes)
+        public Graph(IEnumerable<T> nodes)
         {
             if (nodes == null)
             {
-                nodes = new List<GraphNode>
+                nodes = new List<T>
                 {
-                    new GraphNode()
+                    new T()
                 };
             }
 
@@ -40,9 +41,9 @@ namespace Algorithms.Library
         #region Public Properties
 
         public Guid Id { get; } = Guid.NewGuid();
-        public IList<GraphNode> Nodes { get; private set; }
+        public IList<T> Nodes { get; private set; }
         public State State { get; set; }
-        public GraphNode Head => this.Nodes[0];
+        public T Head => this.Nodes[0];
 
         #endregion Public Properties
 
@@ -50,12 +51,12 @@ namespace Algorithms.Library
 
         public void AddNode()
         {
-            GraphNode node = new GraphNode();
+            T node = new T();
             this.Nodes.Add(node);
             this.EnshureValid();
         }
 
-        public void AddNode(GraphNode node)
+        public void AddNode(T node)
         {
             if (this.Nodes.Contains(node))
             {
@@ -64,8 +65,15 @@ namespace Algorithms.Library
 
             this.Nodes.Add(node);
 
-            foreach (var connection in node.Connections)
+            foreach (var graphNode in node.Connections)
             {
+                var connection = graphNode as T;
+
+                if (connection == null)
+                {
+                    throw new InvalidCastException(nameof(connection));
+                }
+
                 if (!this.Nodes.Contains(connection))
                 {
                     this.AddNode(connection);
@@ -75,7 +83,7 @@ namespace Algorithms.Library
             this.EnshureValid();
         }
 
-        public void Connect(GraphNode lhs, GraphNode rhs)
+        public void Connect(T lhs, T rhs)
         {
             if (lhs == null || rhs == null)
             {
@@ -154,7 +162,7 @@ namespace Algorithms.Library
         {
             try
             {
-                GraphNode root = this.Nodes[0];
+                T root = this.Nodes[0];
 
                 foreach (var node in this.Nodes)
                 {
@@ -179,7 +187,7 @@ namespace Algorithms.Library
         /// <param name="startNode"></param>
         /// <param name="endNode"></param>
         /// <returns></returns>
-        public bool IsRouteBetween(GraphNode startNode, GraphNode endNode)
+        public bool IsRouteBetween(T startNode, T endNode)
         {
             if ((startNode == null) ||
                 (endNode == null))
@@ -190,16 +198,16 @@ namespace Algorithms.Library
             return this.IsRouteBetween(startNode, startNode, endNode);
         }
 
-        public void RemoveNode(GraphNode node)
+        public void RemoveNode(T node)
         {
             if (!this.Nodes.Contains(node))
             {
                 throw new ArgumentException($"Graph {this.Id} has no node {node}");
             }
 
-            foreach (var graphNode in this.Nodes)
+            foreach (var T in this.Nodes)
             {
-                graphNode.Disconnect(node);
+                T.Disconnect(node);
             }
 
             this.Nodes.Remove(node);
@@ -255,18 +263,24 @@ namespace Algorithms.Library
         /// </summary>
         private void ClearColor()
         {
-            foreach (var graphNode in this.Nodes)
+            foreach (var T in this.Nodes)
             {
-                graphNode.Color = Color.White;
+                T.Color = Color.White;
             }
         }
 
-        private bool IsCycle(GraphNode node, GraphNode lastNode)
+        private bool IsCycle(T node, T lastNode)
         {
             node.Color = Color.Grey;
 
-            foreach (var item in node.Connections)
+            foreach (var graphNode in node.Connections)
             {
+                var item = graphNode as T;
+                if (item == null)
+                {
+                    throw new InvalidCastException(nameof(item));
+                }
+
                 if ((item == lastNode) ||
                     (item == node))
                 {
@@ -292,7 +306,7 @@ namespace Algorithms.Library
             return false;
         }
 
-        private bool IsRouteBetween(GraphNode nodeNumber, GraphNode lastNode, GraphNode wannaget, bool haveClearColor = true)
+        private bool IsRouteBetween(T nodeNumber, T lastNode, T wannaget, bool haveClearColor = true)
         {
             if (haveClearColor)
             {
@@ -307,8 +321,14 @@ namespace Algorithms.Library
                     return true;
                 }
 
-                foreach (var item in nodeNumber.Connections)
+                foreach (var graphNode in nodeNumber.Connections)
                 {
+                    var item = graphNode as T;
+                    if (item == null)
+                    {
+                        throw new InvalidCastException(nameof(item));
+                    }
+
                     if (item == lastNode)
                     {
                         continue;
@@ -347,16 +367,16 @@ namespace Algorithms.Library
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public Graph CloneDirectly()
+        public Graph<T> CloneDirectly()
         {
-            return new Graph(this.Nodes);
+            return new Graph<T>(this.Nodes);
         }
 
-        public Graph DeepClone()
+        public Graph<T> DeepClone()
         {
-            IList<GraphNode> newNodes = this.Nodes.ToList();
+            IList<T> newNodes = this.Nodes.ToList();
 
-            return new Graph(newNodes)
+            return new Graph<T>(newNodes)
             {
                 State = this.State,
             };

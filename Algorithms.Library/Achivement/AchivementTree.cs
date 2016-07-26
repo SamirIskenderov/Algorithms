@@ -8,27 +8,29 @@ namespace Algorithms.Library.Achivement
     {
         #region Private Fields
 
-        private readonly Graph graph;
+        private readonly Graph<Achivement> graph;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AchivementTree() : this(new Graph())
+        public AchivementTree() : this(new Graph<Achivement>())
         {
         }
 
-        public AchivementTree(IEnumerable<GraphNode> nodes) : this(new Graph(nodes))
+        public AchivementTree(IEnumerable<Achivement> nodes) : this(new Graph<Achivement>(nodes))
         {
         }
 
         #endregion Public Constructors
 
         public GraphNode Head => this.graph.Head;
+        public IEnumerable<Achivement> Nodes => this.graph.Nodes.Cast<Achivement>();
+
 
         #region Protected Internal Constructors
 
-        protected internal AchivementTree(Graph graph)
+        protected internal AchivementTree(Graph<Achivement> graph)
         {
             this.graph = graph;
             this.graph.State = State.CanBeCycle | State.CanBeNonConnectivly;
@@ -167,7 +169,7 @@ namespace Algorithms.Library.Achivement
 
         public AchivementTree DeepClone()
         {
-            Graph graph = this.graph.DeepClone();
+            Graph<Achivement> graph = this.graph.DeepClone();
 
             return new AchivementTree(graph);
         }

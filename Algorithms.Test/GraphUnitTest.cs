@@ -20,11 +20,11 @@ namespace Algorithms.Test
         //       / \
         //      7   8
 
-        private static Graph NewGraph
+        private static Graph<GraphNode> NewGraph
         {
             get
             {
-                Graph graph = new Graph();
+                Graph<GraphNode> graph = new Graph<GraphNode>();
 
                 GraphNode node0 = new GraphNode();
                 GraphNode node1 = new GraphNode();
@@ -56,7 +56,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CreateTestGraphMustNotThrowArgExc()
         {
-            Graph graph = NewGraph.CloneDirectly();
+            Graph<GraphNode> graph = NewGraph.CloneDirectly();
             Assert.IsFalse(graph == null);
         }
 
@@ -67,7 +67,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalGraphMustNotContainsCycle()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsCycle());
         }
@@ -75,7 +75,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalGraphMustContainsCycleVer1()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |
@@ -105,7 +105,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalGraphMustContainsCycleVer2()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |
@@ -137,7 +137,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalGraphMustNotContainsLoops()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsLooped());
         }
@@ -145,7 +145,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CycleAndLoopIsDifferent()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsCycle());
             Assert.AreEqual(false, graph.IsLooped());
@@ -174,7 +174,7 @@ namespace Algorithms.Test
         //      7   8
         public void ModifyedOriginalGraphMustContainsLoop()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsLooped());
 
@@ -192,7 +192,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalGraphMustBeConnectivity()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(false, graph.IsNonConnectivity());
         }
@@ -200,7 +200,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalGraphMustBeConnectivity()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |
@@ -231,7 +231,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalGraphMustNotBeConnectivity()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |
@@ -265,7 +265,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalGraphMustHaveRouteBetweenNodes()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[2], graph.Nodes[5]));
         }
@@ -273,7 +273,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalGraphMustHaveRouteBetweenNodes()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |
@@ -302,7 +302,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void NonConnectivityGraphMustNotHaveRouteBetweenNonConnectiviedNodes()
         {
-            Graph graph = NewGraph;
+            Graph<GraphNode> graph = NewGraph;
 
             //      0
             //      |

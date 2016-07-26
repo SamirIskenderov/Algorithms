@@ -7,6 +7,11 @@ namespace Algorithms.Library.Menu
     {
         public string Text { get; set; }
 
+        public MenuNode() : this(string.Empty, null, Color.White)
+        {
+            
+        }
+
         public MenuNode(string text, IEnumerable<GraphNode> connections = null, Color color = Color.White) : base(connections, color)
         {
             this.Text = text;

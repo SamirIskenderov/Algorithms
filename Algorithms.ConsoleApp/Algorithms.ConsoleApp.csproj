@@ -62,17 +62,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Algorithms.Extensions\Algorithms.Extensions.csproj">
-      <Project>{a043ac6f-dc71-438a-9065-8f49b934bcb5}</Project>
-      <Name>Algorithms.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Algorithms.Library\Algorithms.Library.csproj">
       <Project>{5d5d9807-0ca8-49d0-aa90-efcd51bb9322}</Project>
       <Name>Algorithms.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BigRat\BigRat.csproj">
-      <Project>{6ec1db0e-3dae-46c9-9c10-1f763e81008e}</Project>
-      <Name>BigRat</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
