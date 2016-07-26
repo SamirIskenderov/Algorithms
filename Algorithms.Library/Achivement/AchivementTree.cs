@@ -4,32 +4,33 @@ using System.Linq;
 
 namespace Algorithms.Library.Achivement
 {
-    public class AchivementTree : ICloneable
+    public class AchivementTree <T>: ICloneable
+        where T : Achivement, new()
     {
         #region Private Fields
 
-        private readonly Graph<Achivement> graph;
+        private readonly Graph<T> graph;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AchivementTree() : this(new Graph<Achivement>())
+        public AchivementTree() : this(new Graph<T>())
         {
         }
 
-        public AchivementTree(IEnumerable<Achivement> nodes) : this(new Graph<Achivement>(nodes))
+        public AchivementTree(IEnumerable<T> nodes) : this(new Graph<T>(nodes))
         {
         }
 
         #endregion Public Constructors
 
-        public IEnumerable<Achivement> Nodes => this.graph.Nodes.Cast<Achivement>();
+        public IEnumerable<T> Nodes => this.graph.Nodes.Cast<T>();
 
 
         #region Protected Internal Constructors
 
-        protected internal AchivementTree(Graph<Achivement> graph)
+        protected internal AchivementTree(Graph<T> graph)
         {
             this.graph = graph;
             this.graph.State = State.CanBeCycle | State.CanBeNonConnectivly;
@@ -44,17 +45,17 @@ namespace Algorithms.Library.Achivement
             this.graph.AddNode();
         }
 
-        public void AddNode(Achivement achive)
+        public void AddNode(T achive)
         {
             this.graph.AddNode(achive);
         }
 
-        public void Connect(Achivement lhs, Achivement rhs)
+        public void Connect(T lhs, T rhs)
         {
             this.graph.Connect(lhs, rhs);
         }
 
-        public bool IsAllowedRouteBetween(Achivement startNode, Achivement endNode)
+        public bool IsAllowedRouteBetween(T startNode, T endNode)
         {
             if ((startNode == null) ||
                 (endNode == null))
@@ -75,20 +76,20 @@ namespace Algorithms.Library.Achivement
             return this.graph.IsNonConnectivity();
         }
 
-        public bool IsRouteBetween(Achivement startNode, Achivement endNode)
+        public bool IsRouteBetween(T startNode, T endNode)
         {
             return this.graph.IsRouteBetween(startNode, endNode);
         }
 
-        public void RemoveNode(Achivement node)
+        public void RemoveNode(T node)
         {
             this.graph.RemoveNode(node);
         }
 
-        public void Toggle(Achivement achive)
+        public void Toggle(T achive)
         {
             if (this.IsAllowedRouteBetween(this.graph.Nodes[0], this.graph.Nodes[0], achive) &&
-                (achive.Connections.Cast<Achivement>().Count(n => n.IsAvaliable) == 1))
+                (achive.Connections.Cast<T>().Count(n => n.IsAvaliable) == 1))
             {
                 achive.IsAvaliable = !achive.IsAvaliable;
             }
@@ -161,16 +162,16 @@ namespace Algorithms.Library.Achivement
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public AchivementTree CloneDirectly()
+        public AchivementTree<T> CloneDirectly()
         {
-            return new AchivementTree(this.graph.Nodes);
+            return new AchivementTree<T>(this.graph.Nodes);
         }
 
-        public AchivementTree DeepClone()
+        public AchivementTree<T> DeepClone()
         {
-            Graph<Achivement> graph = this.graph.DeepClone();
+            Graph<T> graph = this.graph.DeepClone();
 
-            return new AchivementTree(graph);
+            return new AchivementTree<T>(graph);
         }
 
         #endregion Clone

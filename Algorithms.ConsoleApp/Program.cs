@@ -8,7 +8,7 @@ namespace Algorithms.ConsoleApp
     {
         private static void Main()
         {
-            Menu menu = new Menu();
+            Menu< MenuNode> menu = new Menu<MenuNode>();
 
             MenuNode head = new MenuNode("Head");
 

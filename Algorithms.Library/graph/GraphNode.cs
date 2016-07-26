@@ -37,6 +37,7 @@ namespace Algorithms.Library
         #region Public Properties
 
         public Color Color { get; set; }
+
         public IList<GraphNode> Connections { get; private set; }
 
         #endregion Public Properties
@@ -72,7 +73,7 @@ namespace Algorithms.Library
         /// This method add connection to this. In result nodes appears in Connections property of each other.
         /// </summary>
         /// <param name="node"></param>
-        public void Connect(GraphNode node)
+        internal void Connect(GraphNode node)
         {
             if (node == null)
             {

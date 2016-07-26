@@ -4,24 +4,25 @@ using System.Linq;
 
 namespace Algorithms.Library.Menu
 {
-    public class Menu : ICloneable
+    public class Menu<T> : ICloneable
+        where T : MenuNode, new()
     {
-        private readonly Graph<MenuNode> graph;
+        private readonly Graph<T> graph;
 
-        public Menu() : this(new Graph<MenuNode>())
+        public Menu() : this(new Graph<T>())
         {
         }
 
-        public Menu(IEnumerable<MenuNode> nodes) : this(new Graph<MenuNode>(nodes))
+        public Menu(IEnumerable<T> nodes) : this(new Graph<T>(nodes))
         {
         }
 
-        public IEnumerable<MenuNode> Nodes => this.graph.Nodes;
+        public IEnumerable<T> Nodes => this.graph.Nodes;
 
-        public void Connect(MenuNode lhs, MenuNode rhs)
+        public void Connect(T lhs, T rhs)
             => this.graph.Connect(lhs, rhs);
 
-        protected internal Menu(Graph<MenuNode> graph)
+        protected internal Menu(Graph<T> graph)
         {
             this.graph = graph;
             this.graph.State = State.Default;
@@ -32,17 +33,17 @@ namespace Algorithms.Library.Menu
             this.graph.AddNode();
         }
 
-        public void AddNode(MenuNode node)
+        public void AddNode(T node)
         {
             this.graph.AddNode(node);
         }
 
-        public bool IsRouteBetween(MenuNode startNode, MenuNode endNode)
+        public bool IsRouteBetween(T startNode, T endNode)
         {
             return this.graph.IsRouteBetween(startNode, endNode);
         }
 
-        public void RemoveNode(MenuNode node)
+        public void RemoveNode(T node)
         {
             this.graph.RemoveNode(node);
         }
@@ -58,16 +59,16 @@ namespace Algorithms.Library.Menu
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public Menu CloneDirectly()
+        public Menu<T> CloneDirectly()
         {
-            return new Menu(this.graph.Nodes.Cast<MenuNode>());
+            return new Menu<T>(this.graph.Nodes.Cast<T>());
         }
 
-        public Menu DeepClone()
+        public Menu<T> DeepClone()
         {
-            Graph<MenuNode> graph = this.graph.DeepClone();
+            Graph<T> graph = this.graph.DeepClone();
 
-            return new Menu(graph);
+            return new Menu<T>(graph);
         }
 
         #endregion Clone

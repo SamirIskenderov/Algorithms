@@ -36,14 +36,14 @@ namespace Algorithms.Test
                 GraphNode node7 = new GraphNode();
                 GraphNode node8 = new GraphNode();
 
-                node0.Connect(node1);
-                node1.Connect(node2);
-                node2.Connect(node3);
-                node3.Connect(node8);
-                node3.Connect(node4);
-                node4.Connect(node5);
-                node5.Connect(node6);
-                node5.Connect(node7);
+                graph.Connect(node0, node1);
+                graph.Connect(node1, node2);
+                graph.Connect(node2, node3);
+                graph.Connect(node3, node8);
+                graph.Connect(node3, node4);
+                graph.Connect(node4, node5);
+                graph.Connect(node5, node6);
+                graph.Connect(node5, node7);
 
                 graph.AddNode(node0);
 
