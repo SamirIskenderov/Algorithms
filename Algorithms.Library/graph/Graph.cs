@@ -26,10 +26,7 @@ namespace Algorithms.Library
         {
             if (nodes == null)
             {
-                nodes = new List<T>
-                {
-                    new T()
-                };
+                nodes = new List<T>();
             }
 
             this.Nodes = nodes.ToList();
@@ -43,7 +40,6 @@ namespace Algorithms.Library
         public Guid Id { get; } = Guid.NewGuid();
         public IList<T> Nodes { get; private set; }
         public State State { get; set; }
-        public T Head => this.Nodes[0];
 
         #endregion Public Properties
 
@@ -160,6 +156,11 @@ namespace Algorithms.Library
         /// <returns></returns>
         public bool IsNonConnectivity()
         {
+            if (this.Nodes.Count == 0)
+            {
+                return this.State.HasFlag(State.CanBeNonConnectivly);
+            }
+
             try
             {
                 T root = this.Nodes[0];

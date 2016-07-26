@@ -16,9 +16,10 @@ namespace Algorithms.Library.Menu
         {
         }
 
-        public GraphNode Head => this.graph.Head;
-
         public IEnumerable<MenuNode> Nodes => this.graph.Nodes;
+
+        public void Connect(MenuNode lhs, MenuNode rhs)
+            => this.graph.Connect(lhs, rhs);
 
         protected internal Menu(Graph<MenuNode> graph)
         {

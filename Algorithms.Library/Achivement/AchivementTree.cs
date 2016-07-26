@@ -24,7 +24,6 @@ namespace Algorithms.Library.Achivement
 
         #endregion Public Constructors
 
-        public GraphNode Head => this.graph.Head;
         public IEnumerable<Achivement> Nodes => this.graph.Nodes.Cast<Achivement>();
 
 
@@ -88,7 +87,7 @@ namespace Algorithms.Library.Achivement
 
         public void Toggle(Achivement achive)
         {
-            if (this.IsAllowedRouteBetween(this.graph.Head, this.graph.Head, achive) &&
+            if (this.IsAllowedRouteBetween(this.graph.Nodes[0], this.graph.Nodes[0], achive) &&
                 (achive.Connections.Cast<Achivement>().Count(n => n.IsAvaliable) == 1))
             {
                 achive.IsAvaliable = !achive.IsAvaliable;
