@@ -5,7 +5,7 @@ using System.Linq;
 namespace Algorithms.Library.Achivement
 {
     public class AchivementTree<T> : ICloneable
-        where T : Achivement, new()
+        where T : Achivement
     {
         #region Private Fields
 

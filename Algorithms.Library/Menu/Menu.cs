@@ -5,7 +5,7 @@ using System.Linq;
 namespace Algorithms.Library.Menu
 {
     public class Menu<T> : ICloneable
-        where T : MenuNode, new()
+        where T : MenuNode
     {
         protected readonly Graph<T> graph;
 
