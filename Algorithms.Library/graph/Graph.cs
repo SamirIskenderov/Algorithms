@@ -14,7 +14,7 @@ namespace Algorithms.Library
     }
 
     public class Graph<T> : ICloneable
-        where T : GraphNode, new()
+        where T : GraphNode
     {
         #region Public Constructors
 
@@ -31,26 +31,22 @@ namespace Algorithms.Library
 
             this.Nodes = nodes.ToList();
             this.State = State.Default;
+            this.Id = Guid.NewGuid();
         }
 
         #endregion Public Constructors
 
         #region Public Properties
 
-        public Guid Id { get; } = Guid.NewGuid();
-        public IList<T> Nodes { get; private set; }
+        public Guid Id { get; } 
+
+        public IList<T> Nodes { get; }
+
         public State State { get; set; }
 
         #endregion Public Properties
 
         #region Public Methods
-
-        public void AddNode()
-        {
-            T node = new T();
-            this.Nodes.Add(node);
-            this.EnshureValid();
-        }
 
         public void AddNode(T node)
         {
@@ -61,7 +57,7 @@ namespace Algorithms.Library
 
             this.Nodes.Add(node);
 
-            foreach (var graphNode in node.Connections)
+            foreach (var graphNode in node.Children)
             {
                 var connection = graphNode as T;
 
@@ -136,18 +132,10 @@ namespace Algorithms.Library
         /// <returns></returns>
         public bool IsLooped()
         {
-            foreach (var node in this.Nodes)
-            {
-                foreach (var connect in node.Connections)
-                {
-                    if (node == connect)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return (from node in this.Nodes
+                        from connect in node.Children
+                            where node == connect
+                                select node).Any();
         }
 
         /// <summary>
@@ -165,15 +153,7 @@ namespace Algorithms.Library
             {
                 T root = this.Nodes[0];
 
-                foreach (var node in this.Nodes)
-                {
-                    if (!this.IsRouteBetween(node, root))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return this.Nodes.Any(node => !this.IsRouteBetween(node, root));
             }
             finally
             {
@@ -274,9 +254,10 @@ namespace Algorithms.Library
         {
             node.Color = Color.Grey;
 
-            foreach (var graphNode in node.Connections)
+            foreach (var graphNode in node.Children)
             {
-                var item = graphNode as T;
+                T item = graphNode as T;
+
                 if (item == null)
                 {
                     throw new InvalidCastException(nameof(item));
@@ -322,7 +303,7 @@ namespace Algorithms.Library
                     return true;
                 }
 
-                foreach (var graphNode in nodeNumber.Connections)
+                foreach (var graphNode in nodeNumber.Children)
                 {
                     var item = graphNode as T;
                     if (item == null)
@@ -361,14 +342,14 @@ namespace Algorithms.Library
 
         public object Clone()
         {
-            return (object)this.CloneDirectly();
+            return this.ShallowClone();
         }
 
         /// <summary>
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public Graph<T> CloneDirectly()
+        public Graph<T> ShallowClone()
         {
             return new Graph<T>(this.Nodes);
         }

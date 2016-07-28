@@ -22,6 +22,14 @@ namespace Algorithms.Test
         //       / \
         //      7   8
 
+        private static MenuNode NewMenuNode
+        {
+            get
+            {
+                return new MenuNode("Some new node");
+            }
+        }
+
         private static Menu<MenuNode> NewMenu
         {
             get
@@ -58,7 +66,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CreateTestMenuMustNotThrowArgExc()
         {
-            Menu<MenuNode> menu = NewMenu.CloneDirectly();
+            Menu<MenuNode> menu = NewMenu.ShallowClone();
             Assert.IsFalse(menu == null);
         }
 
@@ -224,7 +232,7 @@ namespace Algorithms.Test
 
             menu.State = State.CanBeNonConnectivly;
 
-            menu.AddNode();
+            menu.AddNode(NewMenuNode);
             menu.Connect(menu.Nodes[7], menu.Nodes[9]);
 
             Assert.AreEqual(false, menu.IsNonConnectivity());
@@ -255,7 +263,7 @@ namespace Algorithms.Test
 
             menu.State = State.CanBeNonConnectivly;
 
-            menu.AddNode();
+            menu.AddNode(NewMenuNode);
 
             Assert.AreEqual(true, menu.IsNonConnectivity());
         }
@@ -295,7 +303,7 @@ namespace Algorithms.Test
 
             menu.State = State.CanBeNonConnectivly;
 
-            menu.AddNode();
+            menu.AddNode(NewMenuNode);
             menu.Connect(menu.Nodes[7], menu.Nodes[9]);
 
             Assert.AreEqual(true, menu.IsRouteBetween(menu.Nodes[9], menu.Nodes[6]));
@@ -324,7 +332,7 @@ namespace Algorithms.Test
 
             menu.State = State.CanBeNonConnectivly;
 
-            menu.AddNode();
+            menu.AddNode(NewMenuNode);
 
             Assert.AreEqual(false, menu.IsRouteBetween(menu.Nodes[9], menu.Nodes[6]));
         }

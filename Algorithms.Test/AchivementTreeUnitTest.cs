@@ -22,11 +22,21 @@ namespace Algorithms.Test
         //       / \
         //      7   8
 
-        private static AchivementTree<Achivement> NewAchivement
+        private static Achivement NewAchivement
         {
             get
             {
-                AchivementTree<Achivement> achivement = new AchivementTree<Achivement>();
+                AchiveText text = new AchiveText();
+
+                return new Achivement(text, 100);
+            }
+        }
+
+        private static AchivementTree<Achivement> NewAchivementTree
+        {
+            get
+            {
+                AchivementTree<Achivement> achivementTree = new AchivementTree<Achivement>();
 
                 Achivement node0 = new Achivement();
                 Achivement node1 = new Achivement();
@@ -38,18 +48,18 @@ namespace Algorithms.Test
                 Achivement node7 = new Achivement();
                 Achivement node8 = new Achivement();
 
-                achivement.Connect(node0, node1);
-                achivement.Connect(node1, node2);
-                achivement.Connect(node2, node3);
-                achivement.Connect(node3, node8);
-                achivement.Connect(node3, node4);
-                achivement.Connect(node4, node5);
-                achivement.Connect(node5, node6);
-                achivement.Connect(node5, node7);
+                achivementTree.Connect(node0, node1);
+                achivementTree.Connect(node1, node2);
+                achivementTree.Connect(node2, node3);
+                achivementTree.Connect(node3, node8);
+                achivementTree.Connect(node3, node4);
+                achivementTree.Connect(node4, node5);
+                achivementTree.Connect(node5, node6);
+                achivementTree.Connect(node5, node7);
 
-                achivement.AddNode(node0);
+                achivementTree.AddNode(node0);
 
-                return achivement;
+                return achivementTree;
             }
         }
 
@@ -58,7 +68,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CreateTestAchivementMustNotThrowArgExc()
         {
-            AchivementTree<Achivement> achivement = NewAchivement.CloneDirectly();
+            AchivementTree<Achivement> achivement = NewAchivementTree.ShallowClone();
             Assert.IsFalse(achivement == null);
         }
 
@@ -69,7 +79,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalAchivementMustNotContainsCycle()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(false, achivement.IsCycle());
         }
@@ -77,7 +87,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalAchivementMustContainsCycleVer1()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -107,7 +117,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalAchivementMustContainsCycleVer2()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -139,7 +149,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalAchivementMustNotContainsLoops()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(false, achivement.IsLooped());
         }
@@ -147,7 +157,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CycleAndLoopIsDifferent()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(false, achivement.IsCycle());
             Assert.AreEqual(false, achivement.IsLooped());
@@ -176,7 +186,7 @@ namespace Algorithms.Test
         //      7   8
         public void ModifyedOriginalAchivementMustContainsLoop()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(false, achivement.IsLooped());
 
@@ -194,7 +204,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalAchivementMustBeConnectivity()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(false, achivement.IsNonConnectivity());
         }
@@ -202,7 +212,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalAchivementMustBeConnectivity()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -224,7 +234,7 @@ namespace Algorithms.Test
 
             achivement.State = State.CanBeNonConnectivly;
 
-            achivement.AddNode();
+            achivement.AddNode(NewAchivement);
             achivement.Connect(achivement.Nodes[7], achivement.Nodes[9]);
 
             Assert.AreEqual(false, achivement.IsNonConnectivity());
@@ -233,7 +243,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalAchivementMustNotBeConnectivity()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -255,7 +265,7 @@ namespace Algorithms.Test
 
             achivement.State = State.CanBeNonConnectivly;
 
-            achivement.AddNode();
+            achivement.AddNode(NewAchivement);
 
             Assert.AreEqual(true, achivement.IsNonConnectivity());
         }
@@ -267,7 +277,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void OriginalAchivementMustHaveRouteBetweenNodes()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             Assert.AreEqual(true, achivement.IsRouteBetween(achivement.Nodes[2], achivement.Nodes[5]));
         }
@@ -275,7 +285,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void ModifyedOriginalAchivementMustHaveRouteBetweenNodes()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -295,7 +305,7 @@ namespace Algorithms.Test
 
             achivement.State = State.CanBeNonConnectivly;
 
-            achivement.AddNode();
+            achivement.AddNode(NewAchivement);
             achivement.Connect(achivement.Nodes[7], achivement.Nodes[9]);
 
             Assert.AreEqual(true, achivement.IsRouteBetween(achivement.Nodes[9], achivement.Nodes[6]));
@@ -304,7 +314,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void NonConnectivityAchivementMustNotHaveRouteBetweenNonConnectiviedNodes()
         {
-            AchivementTree<Achivement> achivement = NewAchivement;
+            AchivementTree<Achivement> achivement = NewAchivementTree;
 
             //      0
             //      |
@@ -324,7 +334,7 @@ namespace Algorithms.Test
 
             achivement.State = State.CanBeNonConnectivly;
 
-            achivement.AddNode();
+            achivement.AddNode(NewAchivement);
 
             Assert.AreEqual(false, achivement.IsRouteBetween(achivement.Nodes[9], achivement.Nodes[6]));
         }

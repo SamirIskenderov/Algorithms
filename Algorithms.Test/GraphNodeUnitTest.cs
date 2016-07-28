@@ -19,9 +19,9 @@ namespace Algorithms.Test
                 GraphNode node1 = new GraphNode();
                 GraphNode node2 = new GraphNode();
 
-                node.Connections.Add(node0);
-                node.Connections.Add(node1);
-                node.Connections.Add(node2);
+                node.Children.Add(node0);
+                node.Children.Add(node1);
+                node.Children.Add(node2);
 
                 return node;
             }

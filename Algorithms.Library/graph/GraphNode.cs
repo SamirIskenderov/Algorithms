@@ -29,7 +29,7 @@ namespace Algorithms.Library
                 connections = new List<GraphNode>();
             }
 
-            this.Connections = connections.ToList();
+            this.Children = connections.ToList();
         }
 
         #endregion Public Constructors
@@ -38,7 +38,7 @@ namespace Algorithms.Library
 
         public Color Color { get; set; }
 
-        public IList<GraphNode> Connections { get; private set; }
+        public IList<GraphNode> Children { get; }
 
         #endregion Public Properties
 
@@ -55,12 +55,12 @@ namespace Algorithms.Library
         /// <returns></returns>
         public virtual GraphNode CloneDirectly()
         {
-            return new GraphNode(this.Connections, this.Color);
+            return new GraphNode(this.Children, this.Color);
         }
 
         public virtual GraphNode DeepClone()
         {
-            IList<GraphNode> connection = this.Connections.ToList();
+            IList<GraphNode> connection = this.Children.ToList();
 
             return new GraphNode(connection, this.Color);
         }
@@ -80,19 +80,19 @@ namespace Algorithms.Library
                 throw new ArgumentNullException();
             }
 
-            this.Connections.Add(node);
-            node.Connections.Add(this);
+            this.Children.Add(node);
+            node.Children.Add(this);
         }
 
-        public void Disconnect(GraphNode node)
+        internal void Disconnect(GraphNode node)
         {
             if (node == null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.Connections.Remove(node);
-            node.Connections.Remove(this);
+            this.Children.Remove(node);
+            node.Children.Remove(this);
         }
 
         #endregion Public Methods

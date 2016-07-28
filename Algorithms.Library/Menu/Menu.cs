@@ -7,7 +7,7 @@ namespace Algorithms.Library.Menu
     public class Menu<T> : ICloneable
         where T : MenuNode, new()
     {
-        private readonly Graph<T> graph;
+        protected readonly Graph<T> graph;
 
         public Menu() : this(new Graph<T>())
         {
@@ -26,11 +26,6 @@ namespace Algorithms.Library.Menu
         {
             this.graph = graph;
             this.graph.State = State.Default;
-        }
-
-        public void AddNode()
-        {
-            this.graph.AddNode();
         }
 
         public void AddNode(T node)
@@ -74,16 +69,16 @@ namespace Algorithms.Library.Menu
 
         public object Clone()
         {
-            return (object)this.CloneDirectly();
+            return this.ShallowClone();
         }
 
         /// <summary>
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public Menu<T> CloneDirectly()
+        public Menu<T> ShallowClone()
         {
-            return new Menu<T>(this.graph.Nodes.Cast<T>());
+            return new Menu<T>(this.graph.Nodes);
         }
 
         public Menu<T> DeepClone()

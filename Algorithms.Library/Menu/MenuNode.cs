@@ -21,7 +21,5 @@ namespace Algorithms.Library.Menu
         {
             return this.Text;
         }
-
-        public Action Invoke { get; set; }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Algorithms.Library.Achivement
 {
-    public class AchivementTree <T>: ICloneable
+    public class AchivementTree<T> : ICloneable
         where T : Achivement, new()
     {
         #region Private Fields
 
-        private readonly Graph<T> graph;
+        protected readonly Graph<T> graph;
 
         #endregion Private Fields
 
@@ -25,8 +25,11 @@ namespace Algorithms.Library.Achivement
 
         #endregion Public Constructors
 
+        #region Public Properties
+
         public IList<T> Nodes => this.graph.Nodes;
 
+        #endregion Public Properties
 
         #region Protected Internal Constructors
 
@@ -40,9 +43,16 @@ namespace Algorithms.Library.Achivement
 
         #region Public Methods
 
-        public void AddNode()
+        public State State
         {
-            this.graph.AddNode();
+            get
+            {
+                return this.graph.State;
+            }
+            set
+            {
+                this.graph.State = value;
+            }
         }
 
         public void AddNode(T achive)
@@ -66,25 +76,13 @@ namespace Algorithms.Library.Achivement
             return this.IsAllowedRouteBetween(startNode, startNode, endNode);
         }
 
-        public State State
-        {
-            get
-            {
-                return this.graph.State;
-            }
-            set
-            {
-                this.graph.State = value;
-            }
-        }
-
-        public bool IsLooped()
-            => this.graph.IsLooped();
-
         public bool IsCycle()
         {
             return this.graph.IsCycle();
         }
+
+        public bool IsLooped()
+                    => this.graph.IsLooped();
 
         public bool IsNonConnectivity()
         {
@@ -104,7 +102,7 @@ namespace Algorithms.Library.Achivement
         public void Toggle(T achive)
         {
             if (this.IsAllowedRouteBetween(this.graph.Nodes[0], this.graph.Nodes[0], achive) &&
-                (achive.Connections.Cast<T>().Count(n => n.IsAvaliable) == 1))
+                (achive.Children.Cast<T>().Count(n => n.IsAvaliable) == 1))
             {
                 achive.IsAvaliable = !achive.IsAvaliable;
             }
@@ -137,7 +135,7 @@ namespace Algorithms.Library.Achivement
                     return true;
                 }
 
-                foreach (var item in nodeNumber.Connections)
+                foreach (var item in nodeNumber.Children)
                 {
                     if (item == lastNode)
                     {
@@ -170,14 +168,14 @@ namespace Algorithms.Library.Achivement
 
         public object Clone()
         {
-            return (object)this.CloneDirectly();
+            return this.ShallowClone();
         }
 
         /// <summary>
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public AchivementTree<T> CloneDirectly()
+        public AchivementTree<T> ShallowClone()
         {
             return new AchivementTree<T>(this.graph.Nodes);
         }

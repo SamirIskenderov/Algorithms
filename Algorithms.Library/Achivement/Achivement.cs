@@ -29,8 +29,6 @@ namespace Algorithms.Library.Achivement
 
         public bool IsAvaliable { get; set; }
 
-        public Action Invoke { get; set; }
-
         public int Points { get; set; }
     }
 }

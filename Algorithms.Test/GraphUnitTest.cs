@@ -20,6 +20,14 @@ namespace Algorithms.Test
         //       / \
         //      7   8
 
+        private static GraphNode NewGraphNode
+        {
+            get
+            {
+                return new GraphNode();
+            }
+        }
+
         private static Graph<GraphNode> NewGraph
         {
             get
@@ -56,7 +64,7 @@ namespace Algorithms.Test
         [TestMethod]
         public void CreateTestGraphMustNotThrowArgExc()
         {
-            Graph<GraphNode> graph = NewGraph.CloneDirectly();
+            Graph<GraphNode> graph = NewGraph.ShallowClone();
             Assert.IsFalse(graph == null);
         }
 
@@ -222,7 +230,7 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-            graph.AddNode();
+            graph.AddNode(NewGraphNode);
             graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
             Assert.AreEqual(false, graph.IsNonConnectivity());
@@ -253,7 +261,7 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-            graph.AddNode();
+            graph.AddNode(NewGraphNode);
 
             Assert.AreEqual(true, graph.IsNonConnectivity());
         }
@@ -293,7 +301,7 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-            graph.AddNode();
+            graph.AddNode(NewGraphNode);
             graph.Connect(graph.Nodes[7], graph.Nodes[9]);
 
             Assert.AreEqual(true, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
@@ -322,7 +330,7 @@ namespace Algorithms.Test
 
             graph.State = State.CanBeNonConnectivly;
 
-            graph.AddNode();
+            graph.AddNode(NewGraphNode);
 
             Assert.AreEqual(false, graph.IsRouteBetween(graph.Nodes[9], graph.Nodes[6]));
         }
