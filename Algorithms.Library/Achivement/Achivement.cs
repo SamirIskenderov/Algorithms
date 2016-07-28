@@ -28,6 +28,7 @@ namespace Algorithms.Library.Achivement
         public AchiveText AchiveText { get; set; }
 
         public bool IsAvaliable { get; set; }
+        public new IList<Achivement> Children { get; }
 
         public int Points { get; set; }
     }

@@ -21,5 +21,7 @@ namespace Algorithms.Library.Menu
         {
             return this.Text;
         }
+
+        public new IList<MenuNode> Children { get; }
     }
 }
