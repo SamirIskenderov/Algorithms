@@ -9,17 +9,17 @@ namespace Algorithms.Library.Achivement
     {
         #region Private Fields
 
-        protected readonly Graph<T> graph;
+        protected readonly Graph<Achivement> graph;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AchivementTree() : this(new Graph<T>())
+        public AchivementTree() : this(new Graph<Achivement>())
         {
         }
 
-        public AchivementTree(IEnumerable<T> nodes) : this(new Graph<T>(nodes))
+        public AchivementTree(IEnumerable<T> nodes) : this(new Graph<Achivement>(nodes))
         {
         }
 
@@ -27,13 +27,13 @@ namespace Algorithms.Library.Achivement
 
         #region Public Properties
 
-        public IList<T> Nodes => this.graph.Nodes;
+        public IList<Achivement> Nodes => this.graph.Nodes;
 
         #endregion Public Properties
 
         #region Protected Internal Constructors
 
-        protected internal AchivementTree(Graph<T> graph)
+        protected internal AchivementTree(Graph<Achivement> graph)
         {
             this.graph = graph;
             this.graph.State = State.CanBeCycle | State.CanBeNonConnectivly;
@@ -120,7 +120,7 @@ namespace Algorithms.Library.Achivement
             }
         }
 
-        private bool IsAllowedRouteBetween(GraphNode nodeNumber, GraphNode lastNode, GraphNode wannaget, bool haveClearColor = true)
+        private bool IsAllowedRouteBetween(Achivement nodeNumber, Achivement lastNode, Achivement wannaget, bool haveClearColor = true)
         {
             if (haveClearColor)
             {
@@ -177,12 +177,14 @@ namespace Algorithms.Library.Achivement
         /// <returns></returns>
         public AchivementTree<T> ShallowClone()
         {
-            return new AchivementTree<T>(this.graph.Nodes);
+            Graph<Achivement> graph = this.graph.ShallowClone();
+
+            return new AchivementTree<T>(graph);
         }
 
         public AchivementTree<T> DeepClone()
         {
-            Graph<T> graph = this.graph.DeepClone();
+            Graph<Achivement> graph = this.graph.DeepClone();
 
             return new AchivementTree<T>(graph);
         }

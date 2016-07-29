@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Algorithms.Library
 {
@@ -11,7 +12,8 @@ namespace Algorithms.Library
         White = 2,
     }
 
-    public class GraphNode : ICloneable
+    public abstract class GraphNode<U> : ICloneable
+        where U : GraphNode<U>
     {
         #region Public Constructors
 
@@ -20,13 +22,13 @@ namespace Algorithms.Library
             
         }
 
-        public GraphNode(IEnumerable<GraphNode> connections = null, Color color = Color.White)
+        public GraphNode(IEnumerable<U> connections = null, Color color = Color.White)
         {
             this.Color = color;
 
             if (connections == null)
             {
-                connections = new List<GraphNode>();
+                connections = new List<U>();
             }
 
             this.Children = connections.ToList();
@@ -38,7 +40,7 @@ namespace Algorithms.Library
 
         public Color Color { get; set; }
 
-        public IList<GraphNode> Children { get; }
+        public IList<U> Children { get; }
 
         #endregion Public Properties
 
@@ -46,23 +48,17 @@ namespace Algorithms.Library
 
         public virtual object Clone()
         {
-            return (object)this.CloneDirectly();
+            return (object)this.ShallowClone();
         }
 
         /// <summary>
         /// Overload of this.Clone() by return value
         /// </summary>
         /// <returns></returns>
-        public virtual GraphNode CloneDirectly()
+        public virtual GraphNode<U> ShallowClone()
         {
-            return new GraphNode(this.Children, this.Color);
-        }
-
-        public virtual GraphNode DeepClone()
-        {
-            IList<GraphNode> connection = this.Children.ToList();
-
-            return new GraphNode(connection, this.Color);
+            var str = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<GraphNode<U>>(str);
         }
 
         #endregion Clone
@@ -73,7 +69,7 @@ namespace Algorithms.Library
         /// This method add connection to this. In result nodes appears in Connections property of each other.
         /// </summary>
         /// <param name="node"></param>
-        internal void Connect(GraphNode node)
+        internal void Connect(U node)
         {
             if (node == null)
             {
@@ -81,10 +77,10 @@ namespace Algorithms.Library
             }
 
             this.Children.Add(node);
-            node.Children.Add(this);
+            node.Children.Add(this as U);
         }
 
-        internal void Disconnect(GraphNode node)
+        internal void Disconnect(U node)
         {
             if (node == null)
             {
@@ -92,7 +88,7 @@ namespace Algorithms.Library
             }
 
             this.Children.Remove(node);
-            node.Children.Remove(this);
+            node.Children.Remove(this as U);
         }
 
         #endregion Public Methods

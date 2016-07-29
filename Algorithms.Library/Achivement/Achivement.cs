@@ -10,14 +10,14 @@ namespace Algorithms.Library.Achivement
         public string Description { get; set; }
     }
 
-    public class Achivement : GraphNode, ICloneable
+    public class Achivement : GraphNode<Achivement>, ICloneable
     {
         public Achivement(): this(new AchiveText(), points: 0, isAvaliable: false, connections: null, color: Color.White)
         {
             
         }
 
-        public Achivement(AchiveText achiveText, int points, bool isAvaliable = false, IEnumerable<GraphNode> connections = null, Color color = Color.White) : base(connections, color)
+        public Achivement(AchiveText achiveText, int points, bool isAvaliable = false, IEnumerable<Achivement> connections = null, Color color = Color.White) : base(connections, color)
         {
             this.AchiveText = achiveText;
             this.Points = points;

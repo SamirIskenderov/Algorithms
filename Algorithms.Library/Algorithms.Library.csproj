@@ -82,6 +82,7 @@
     <Compile Include="StrategySet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graph\read.me" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

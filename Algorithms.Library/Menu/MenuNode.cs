@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Algorithms.Library.Menu
 {
-    public class MenuNode : GraphNode, ICloneable
+    public class MenuNode : GraphNode<MenuNode>, ICloneable
     {
         public string Text { get; set; }
 
@@ -12,7 +12,7 @@ namespace Algorithms.Library.Menu
             
         }
 
-        public MenuNode(string text, IEnumerable<GraphNode> connections = null, Color color = Color.White) : base(connections, color)
+        public MenuNode(string text, IEnumerable<MenuNode> connections = null, Color color = Color.White) : base(connections, color)
         {
             this.Text = text;
         }

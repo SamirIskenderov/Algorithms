@@ -1,0 +1,52 @@
+﻿Here is simplifyed structure of Graph -> (any graph child) relationship.
+
+public class Graph<T>
+    where T : GraphNode<T>
+{
+    public Graph()
+    {
+        Value = new List<T>();
+    }
+
+    public IList<T> Value;
+}
+
+public class Menu<S>
+    where S : MenuNode
+{
+    public Menu()
+    {
+        this.graph = new Graph<MenuNode>();
+    }
+
+    protected Graph<MenuNode> graph;
+
+    public IList<MenuNode> Value => this.graph.Value;
+}
+
+public abstract class GraphNode<U> // this is abstract due to I can't made a single graph node anyway: I need an U type.
+    where U : GraphNode<U> // don't use new U() here due to infinite loop.
+{
+    public IList<U> Value;
+}
+
+public class MenuNode : GraphNode<MenuNode> // yea, that's about 70 wtf point out of 100.
+											// I rely here on default type loader behaveour with generics cyclomatic dependencies
+{
+
+}
+
+class NewProgram
+{
+    static void NewMain()
+    {
+        Menu<MenuNode> menu = new Menu<MenuNode>();
+        IList<MenuNode> a = menu.Value;
+
+        MenuNode node = new MenuNode();
+        IList<MenuNode> b = node.Value; // all that shit is going due to of this return type.
+										// On the one hand I wanna MenuNode containt exactly MenuNode list.
+										// On the other, I want to avoid casts due to this code will be calling from game loop cycle's method Update().
+										// Casting is too expensive.
+    }
+}

@@ -14,7 +14,7 @@ namespace Algorithms.Library
     }
 
     public class Graph<T> : ICloneable
-        where T : GraphNode
+        where T : GraphNode<T>
     {
         #region Public Constructors
 
